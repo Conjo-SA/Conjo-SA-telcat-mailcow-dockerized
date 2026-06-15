@@ -74,6 +74,6 @@ mailcow.conf_backup
 rebuild-images.sh
 refresh_images.sh
 update_diffs/
-create_cold_standby.sh
+#create_cold_standby.sh
 !data/conf/nginx/mailcow_auth.conf
 data/conf/postfix/postfix-tlspol
