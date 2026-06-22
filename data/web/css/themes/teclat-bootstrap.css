@@ -1,0 +1,201 @@
+@charset "UTF-8";
+@import url("/css/themes/lumen-bootstrap.css");
+
+/* Tecla T brand overrides */
+:root {
+  --bs-primary: #00c896;
+  --bs-primary-rgb: 0, 200, 150;
+  --bs-success: #00c896;
+  --bs-success-rgb: 0, 200, 150;
+  --bs-info: #007bff;
+  --bs-info-rgb: 0, 123, 255;
+  --bs-secondary: #2a2f47;
+  --bs-secondary-rgb: 42, 47, 71;
+  --bs-light: #242941;
+  --bs-light-rgb: 36, 41, 65;
+  --bs-dark: #10152b;
+  --bs-dark-rgb: 16, 21, 43;
+  --bs-body-color: #e0e0e0;
+  --bs-body-color-rgb: 224, 224, 224;
+  --bs-body-bg: #1a1a2e;
+  --bs-body-bg-rgb: 26, 26, 46;
+  --bs-font-sans-serif: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+}
+
+body {
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
+  background-image:
+    radial-gradient(circle at 10% 10%, rgba(0, 200, 150, 0.18), rgba(0, 0, 0, 0) 40%),
+    radial-gradient(circle at 90% 90%, rgba(0, 123, 255, 0.18), rgba(0, 0, 0, 0) 45%),
+    linear-gradient(180deg, #1a1a2e 0%, #111326 100%);
+  background-attachment: fixed;
+}
+
+a {
+  color: #34a4ff;
+}
+
+a:hover,
+a:focus {
+  color: #74c2ff;
+}
+
+.text-muted {
+  color: #a8b0c9 !important;
+}
+
+legend,
+.card-title,
+.modal-title,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #ffffff;
+}
+
+.navbar.bg-light {
+  background-color: rgba(16, 21, 43, 0.95) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.nav-link,
+.navbar-light .navbar-nav .nav-link,
+.navbar-light .navbar-brand {
+  color: #e0e0e0 !important;
+}
+
+.nav-link:hover,
+.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-brand:hover {
+  color: #00c896 !important;
+}
+
+.card {
+  background-color: rgba(31, 36, 59, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #e0e0e0;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25);
+}
+
+.card-header {
+  background-color: rgba(17, 21, 40, 0.9);
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.table,
+.table > :not(caption) > * > * {
+  color: #e0e0e0;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  color: #f0f3ff;
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.form-control,
+.form-select,
+.input-group-text,
+.form-control:focus,
+.form-select:focus {
+  color: #e0e0e0;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.form-control::placeholder {
+  color: #9da7c8;
+}
+
+.form-check-input {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.form-check-input:checked {
+  background-color: #00c896;
+  border-color: #00c896;
+}
+
+.btn-primary,
+.btn-success {
+  color: #ffffff;
+  border-color: transparent;
+  background-image: linear-gradient(135deg, #00c896 0%, #00a87e 100%);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-success:hover,
+.btn-success:focus {
+  color: #ffffff;
+  border-color: transparent;
+  background-image: linear-gradient(135deg, #00d9a2 0%, #00b487 100%);
+}
+
+.btn-secondary,
+.page-link,
+.paginate_button,
+.btn-light {
+  color: #e0e0e0 !important;
+  background-color: #2a2f47 !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-light:hover,
+.btn-light:focus {
+  color: #ffffff !important;
+  background-color: #343c5c !important;
+}
+
+.page-item.active .page-link,
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  color: #ffffff;
+  background-color: #00c896;
+  border-color: #00c896;
+}
+
+.dropdown-menu {
+  color: #e0e0e0;
+  background-color: #1f243b;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.dropdown-item {
+  color: #e0e0e0;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  color: #ffffff;
+  background-color: rgba(0, 200, 150, 0.2);
+}
+
+.alert-info {
+  color: #e7f3ff;
+  background-color: rgba(0, 123, 255, 0.18);
+  border-color: rgba(0, 123, 255, 0.35);
+}
+
+.badge.bg-info {
+  background-color: #007bff !important;
+}
+
+.main-logo,
+.main-logo-dark {
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.35));
+}
