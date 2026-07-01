@@ -3,8 +3,377 @@
 {% block navbar %}{% endblock %}
 
 {% block content %}
-<div class="row mb-4" style="margin-top: 60px">
-  <div class="col-12 col-md-7 col-lg-6 col-xl-5 ms-auto me-auto">
+<!-- Elementos decorativos de fundo para a identidade visual premium -->
+<div class="glow-bg-1"></div>
+<div class="glow-bg-2"></div>
+
+<div class="dot-particle" style="top: 15%; left: 20%;"></div>
+<div class="dot-particle" style="top: 30%; right: 25%;"></div>
+<div class="dot-particle" style="top: 75%; left: 15%;"></div>
+<div class="dot-particle" style="top: 60%; right: 15%;"></div>
+<div class="dot-particle" style="top: 80%; right: 40%; width: 6px; height: 6px; background-color: #00b8ff; opacity: 0.2;"></div>
+<div class="dot-particle" style="top: 25%; left: 45%; width: 5px; height: 5px; background-color: #00d4b2; opacity: 0.25;"></div>
+
+<style>
+  /* Custom modern styling to mimic the beautiful dark identity */
+  body {
+    background: radial-gradient(circle at center, #0a0e1c 0%, #04060c 100%) !important;
+    color: #f1f5f9 !important;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    overflow-x: hidden;
+  }
+  
+  /* Glowing backgrounds */
+  .glow-bg-1 {
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    background: #00d4b2;
+    filter: blur(150px);
+    opacity: 0.07;
+    top: 10%;
+    left: 5%;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -1;
+  }
+  
+  .glow-bg-2 {
+    position: fixed;
+    width: 450px;
+    height: 450px;
+    background: #00b8ff;
+    filter: blur(150px);
+    opacity: 0.05;
+    bottom: 10%;
+    right: 5%;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -1;
+  }
+  
+  .dot-particle {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    background-color: #00d4b2;
+    border-radius: 50%;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* Card styling - Glassmorphism */
+  .card {
+    background: rgba(13, 20, 38, 0.45) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.07) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4) !important;
+    overflow: hidden;
+  }
+  
+  .card-header {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+    color: #e2e8f0 !important;
+    padding: 16px 24px !important;
+    font-weight: 500;
+  }
+  
+  .card-body {
+    padding: 32px !important;
+  }
+
+  /* Main logo adjustments */
+  .mailcow-logo {
+    margin-bottom: 2rem !important;
+  }
+  
+  .main-logo, .main-logo-dark {
+    max-height: 55px !important;
+    filter: drop-shadow(0 0 12px rgba(0, 212, 178, 0.15)) !important;
+  }
+
+  /* Form control & input group styling */
+  .input-group {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 12px !important;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .input-group:focus-within {
+    border-color: #00d4b2 !important;
+    box-shadow: 0 0 0 3px rgba(0, 212, 178, 0.15) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+  }
+  
+  .input-group-text {
+    background: transparent !important;
+    border: none !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+    padding-left: 16px !important;
+    padding-right: 8px !important;
+    transition: color 0.3s ease;
+  }
+  
+  .input-group:focus-within .input-group-text {
+    color: #00d4b2 !important;
+  }
+  
+  .form-control {
+    background: transparent !important;
+    border: none !important;
+    color: #f8fafc !important;
+    padding: 12px 16px 12px 8px !important;
+    font-size: 0.95rem !important;
+  }
+  
+  .form-control:focus {
+    box-shadow: none !important;
+    background: transparent !important;
+    color: #ffffff !important;
+  }
+  
+  .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.3) !important;
+  }
+  
+  /* Buttons styling - Green/Cyan Gradient Pill Button */
+  .btn-success {
+    background: linear-gradient(135deg, #00d4b2 0%, #00b8ff 100%) !important;
+    border: none !important;
+    color: #04060c !important;
+    font-weight: 600 !important;
+    border-radius: 30px !important;
+    padding: 14px 28px !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.5px !important;
+    box-shadow: 0 4px 20px rgba(0, 212, 178, 0.3) !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  
+  .btn-success:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(0, 212, 178, 0.5) !important;
+    background: linear-gradient(135deg, #00e5c0 0%, #1ad1ff 100%) !important;
+    color: #04060c !important;
+  }
+  
+  .btn-success:active {
+    transform: translateY(0) !important;
+  }
+
+  /* Link styling */
+  .text-muted a {
+    color: #00b8ff !important;
+    text-decoration: none !important;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+  
+  .text-muted a:hover {
+    color: #00d4b2 !important;
+  }
+  
+  /* Other links text bottom */
+  p.text-muted {
+    color: rgba(255, 255, 255, 0.4) !important;
+  }
+  
+  p.text-muted a {
+    color: #00b8ff !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease;
+    margin: 0 4px;
+  }
+  
+  p.text-muted a:hover {
+    color: #00d4b2 !important;
+    text-decoration: underline !important;
+  }
+
+  /* Language dropdown selection */
+  .dropdown-menu.login {
+    background: rgba(13, 20, 38, 0.9) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 12px !important;
+  }
+  
+  .dropdown-menu.login .dropdown-item {
+    color: rgba(255, 255, 255, 0.8) !important;
+    transition: all 0.2s ease;
+  }
+  
+  .dropdown-menu.login .dropdown-item:hover, 
+  .dropdown-menu.login .dropdown-item.active {
+    background: rgba(0, 212, 178, 0.15) !important;
+    color: #00d4b2 !important;
+  }
+
+  /* Footer details overriding */
+  .footer {
+    border-top: none !important;
+    color: rgba(255, 255, 255, 0.2) !important;
+    font-size: 0.8rem !important;
+    margin-top: 48px !important;
+    text-align: center !important;
+  }
+  
+  .footer hr {
+    display: none !important;
+  }
+  
+  .footer a {
+    color: rgba(0, 184, 255, 0.5) !important;
+    text-decoration: none !important;
+  }
+  
+  .footer a:hover {
+    color: #00d4b2 !important;
+  }
+
+  /* Dark mode toggle switch styling */
+  .form-check-input {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+  }
+  
+  .form-check-input:checked {
+    background-color: #00d4b2 !important;
+    border-color: #00d4b2 !important;
+  }
+
+  /* Apps section */
+  legend {
+    color: #e2e8f0 !important;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    margin-top: 24px !important;
+  }
+  
+  hr {
+    border-color: rgba(255, 255, 255, 0.08) !important;
+  }
+  
+  .btn-primary.btn-block {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #00b8ff !important;
+    border-radius: 10px !important;
+    padding: 10px 16px !important;
+    transition: all 0.2s ease !important;
+    font-weight: 500 !important;
+  }
+  
+  .btn-primary.btn-block:hover {
+    background: rgba(0, 212, 178, 0.1) !important;
+    border-color: #00d4b2 !important;
+    color: #00d4b2 !important;
+    transform: translateY(-1px) !important;
+  }
+
+  /* Row alignment & spacing */
+  .login-row {
+    min-height: 78vh !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Intro Portal Column Styles */
+  .portal-badge {
+    display: inline-block;
+    align-self: flex-start;
+    background: rgba(0, 212, 178, 0.1);
+    color: #00d4b2;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(0, 212, 178, 0.15);
+  }
+  
+  .portal-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: #ffffff;
+    margin-bottom: 20px;
+  }
+  
+  @media (max-width: 991px) {
+    .portal-title {
+      font-size: 2rem;
+    }
+  }
+  
+  .gradient-text {
+    background: linear-gradient(135deg, #00d4b2 0%, #00b8ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .portal-desc {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+  }
+  
+  .feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    color: #00d4b2;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .feature-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 4px;
+  }
+  
+  .feature-desc {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+</style>
+
+<div class="row login-row align-items-center py-5 mb-4" style="position: relative; z-index: 1;">
+  <!-- Left Side: Portal Intro Message -->
+  <div class="col-12 col-lg-6 col-xl-5 d-flex flex-column justify-content-center pe-lg-5 mb-5 mb-lg-0">
+    <span class="portal-badge">NOVO PORTAL DE E-MAIL</span>
+    <h1 class="portal-title">Conectando os <span class="gradient-text">Teclers</span> com mais segurança e agilidade</h1>
+    <p class="portal-desc">
+      Seja bem-vindo à nova plataforma de e-mail corporativo da Tecla T. Desenvolvida para aproximar nossa equipe e otimizar nosso dia a dia, ela combina velocidade, segurança de ponta e facilidade de uso para você focar no que realmente importa.
+    </p>
+    
+    <div class="portal-features mt-2">
+      <div class="feature-item d-flex align-items-start mb-4">
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side: Login Form -->
+  <div class="col-12 col-lg-5 col-xl-4 offset-xl-1">
 
     <div class="card">
       <div class="card-header d-flex align-items-center text-break">
@@ -38,7 +407,6 @@
         {% if ui_texts.ui_announcement_text and ui_texts.ui_announcement_active %}
         <div class="my-4 alert alert-{{ ui_texts.ui_announcement_type }} rot-enc ui-announcement-alert">{{ ui_texts.ui_announcement_text|rot13 }}</div>
         {% endif %}
-        <legend>{% if oauth2_request %}{{ lang.oauth2.authorize_app }}{% else %}{{ ui_texts.main_name|raw }}{% endif %}</legend><hr />
         {% if is_mobileconfig %}
         <div class="my-4 alert alert-info ">{{ lang.login.mobileconfig_info }}</div>
         {% endif %}
@@ -65,16 +433,7 @@
             <button type="submit" class="btn btn-xs-lg btn-success w-100 mt-2 mx-auto" style="max-width: 400px;" value="Login">{{ lang.login.login }}</button>
           </div>
         </form>
-        <div class="hr-title"><strong>{{ lang.login.other_logins }}</strong></div>
         {% endif %}
-        <div class="d-flex flex-column align-items-center">
-          {% if has_iam_sso %}
-          <a class="btn btn-xs-lg btn-secondary w-100 mt-2" style="max-width: 400px;" href="/?iam_sso=1"><i class="bi bi-cloud-arrow-up-fill"></i> {{ lang.admin.iam_sso }}</a>
-          {% endif %}
-          {% if custom_login.force_sso != 1 %}
-          <a class="btn btn-xs-lg btn-secondary w-100 mt-2" style="max-width: 400px;" href="#" id="fido2-login"><i class="bi bi-shield-fill-check"></i> {{ lang.login.fido2_webauthn }}</a>
-          {% endif %}
-        </div>
         {% if login_delay %}
         <p><div class="my-4 alert alert-info">{{ lang.login.delayed|format(login_delay) }}</b></div></p>
         {% endif %}
