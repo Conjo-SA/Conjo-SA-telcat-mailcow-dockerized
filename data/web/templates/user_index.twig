@@ -276,10 +276,104 @@
     color: #00d4b2 !important;
     transform: translateY(-1px) !important;
   }
+
+  /* Row alignment & spacing */
+  .login-row {
+    min-height: 78vh !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Intro Portal Column Styles */
+  .portal-badge {
+    display: inline-block;
+    align-self: flex-start;
+    background: rgba(0, 212, 178, 0.1);
+    color: #00d4b2;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(0, 212, 178, 0.15);
+  }
+  
+  .portal-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: #ffffff;
+    margin-bottom: 20px;
+  }
+  
+  @media (max-width: 991px) {
+    .portal-title {
+      font-size: 2rem;
+    }
+  }
+  
+  .gradient-text {
+    background: linear-gradient(135deg, #00d4b2 0%, #00b8ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .portal-desc {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+  }
+  
+  .feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    color: #00d4b2;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .feature-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 4px;
+  }
+  
+  .feature-desc {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
 </style>
 
-<div class="row mb-4" style="margin-top: 60px; position: relative; z-index: 1;">
-  <div class="col-12 col-md-7 col-lg-6 col-xl-5 ms-auto me-auto">
+<div class="row login-row align-items-center py-5 mb-4" style="position: relative; z-index: 1;">
+  <!-- Left Side: Portal Intro Message -->
+  <div class="col-12 col-lg-6 col-xl-5 d-flex flex-column justify-content-center pe-lg-5 mb-5 mb-lg-0">
+    <span class="portal-badge">NOVO PORTAL DE E-MAIL</span>
+    <h1 class="portal-title">Conectando os <span class="gradient-text">Teclers</span> com mais segurança e agilidade</h1>
+    <p class="portal-desc">
+      Seja bem-vindo à nova plataforma de e-mail corporativo da Tecla T. Desenvolvida para aproximar nossa equipe e otimizar nosso dia a dia, ela combina velocidade, segurança de ponta e facilidade de uso para você focar no que realmente importa.
+    </p>
+    
+    <div class="portal-features mt-2">
+      <div class="feature-item d-flex align-items-start mb-4">
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side: Login Form -->
+  <div class="col-12 col-lg-5 col-xl-4 offset-xl-1">
 
     <div class="card">
       <div class="card-header d-flex align-items-center text-break">
