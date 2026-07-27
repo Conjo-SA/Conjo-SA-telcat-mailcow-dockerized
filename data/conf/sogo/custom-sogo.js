@@ -214,3 +214,43 @@ if (typeof CKEDITOR !== "undefined") {
     //CKEDITOR.config.scayt_autoStartup = true;
 }
 
+// --- Teclat: Auto-Refresh Mail (Estilo Push/Gmail) ---
+// O SOGo Web nativamente não utiliza WebSockets (Push) para atualizar a caixa
+// de entrada em tempo real de forma instantânea como o Gmail. Para simular
+// esse comportamento de forma transparente, este script clica no botão "Refresh" 
+// a cada 30 segundos de forma invisível ao usuário.
+// IMPORTANTE: Este clique simula a ação nativa do Angular do SOGo (AJAX).
+// Ele atualizará APENAS a lista de e-mails, sem recarregar a página (F5).
+// Assim, se o usuário estiver escrevendo um e-mail (Compose), ele NÃO perderá
+// o que está digitando.
+(function() {
+    var REFRESH_INTERVAL = 60000; // 1 minuto (ajuste conforme necessário)
+
+    function autoRefreshMail() {
+        // Executa apenas no módulo de Mail (ignorando Calendário, Contatos, etc)
+        if (!/\/Mail\b/.test(window.location.pathname + window.location.hash)) return;
+
+        // Localiza o botão de Refresh pelo ícone 'refresh' no Material Design
+        var buttons = document.querySelectorAll('button');
+        for (var i = 0; i < buttons.length; i++) {
+            var btn = buttons[i];
+            var icon = btn.querySelector('md-icon');
+            if (icon && icon.textContent.trim() === 'refresh') {
+                // Clica no botão apenas se ele não estiver desabilitado
+                if (!btn.disabled && !btn.classList.contains('ng-hide')) {
+                    btn.click();
+                }
+                break;
+            }
+        }
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", function() {
+            setInterval(autoRefreshMail, REFRESH_INTERVAL);
+        });
+    } else {
+        setInterval(autoRefreshMail, REFRESH_INTERVAL);
+    }
+})();
+// -----------------------------------------------------------------------------
