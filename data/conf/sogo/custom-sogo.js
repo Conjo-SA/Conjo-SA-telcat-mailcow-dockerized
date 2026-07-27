@@ -227,18 +227,35 @@ if (typeof CKEDITOR !== "undefined") {
     var REFRESH_INTERVAL = 60000; // 1 minuto (ajuste conforme necessário)
 
     function autoRefreshMail() {
-        // Executa apenas no módulo de Mail (ignorando Calendário, Contatos, etc)
-        if (!/\/Mail\b/.test(window.location.pathname + window.location.hash)) return;
+        // Verifica se estamos no módulo de Mail (ignorando Calendário, Contatos)
+        if (!/\/Mail/i.test(window.location.href)) return;
 
-        // Localiza o botão de Refresh pelo ícone 'refresh' no Material Design
-        var buttons = document.querySelectorAll('button');
+        // Tenta localizar o botão por diversas abordagens (Angular, CSS ou Ícone)
+        var buttons = document.querySelectorAll('button, md-button, .md-button, a.md-button');
         for (var i = 0; i < buttons.length; i++) {
             var btn = buttons[i];
-            var icon = btn.querySelector('md-icon');
-            if (icon && icon.textContent.trim() === 'refresh') {
-                // Clica no botão apenas se ele não estiver desabilitado
-                if (!btn.disabled && !btn.classList.contains('ng-hide')) {
-                    btn.click();
+            var isRefreshBtn = false;
+            
+            var ngClick = btn.getAttribute('ng-click');
+            if (ngClick && ngClick.toLowerCase().indexOf('refresh') !== -1) {
+                isRefreshBtn = true;
+            } else {
+                var icon = btn.querySelector('md-icon');
+                var iconText = icon ? icon.textContent.trim().toLowerCase() : '';
+                if (iconText === 'refresh' || iconText === 'autorenew') {
+                    isRefreshBtn = true;
+                }
+            }
+
+            if (isRefreshBtn) {
+                // Só clica se o botão estiver visível e ativo
+                if (!btn.disabled && !btn.hasAttribute('disabled') && btn.offsetParent !== null) {
+                    if (window.angular) {
+                        angular.element(btn).triggerHandler('click');
+                    } else {
+                        btn.click();
+                    }
+                    console.log("[Teclat] Auto-refresh acionado na lista de emails.");
                 }
                 break;
             }
