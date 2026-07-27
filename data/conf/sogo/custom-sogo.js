@@ -224,41 +224,42 @@ if (typeof CKEDITOR !== "undefined") {
 // Assim, se o usuário estiver escrevendo um e-mail (Compose), ele NÃO perderá
 // o que está digitando.
 (function() {
-    var REFRESH_INTERVAL = 60000; // 1 minuto (ajuste conforme necessário)
+    var REFRESH_INTERVAL = 30000; // 30 segundos (ajuste conforme necessário)
 
     function autoRefreshMail() {
-        // Verifica se estamos no módulo de Mail (ignorando Calendário, Contatos)
+        // Verifica se estamos no módulo de Mail
         if (!/\/Mail/i.test(window.location.href)) return;
 
-        // Tenta localizar o botão por diversas abordagens (Angular, CSS ou Ícone)
-        var buttons = document.querySelectorAll('button, md-button, .md-button, a.md-button');
-        for (var i = 0; i < buttons.length; i++) {
-            var btn = buttons[i];
-            var isRefreshBtn = false;
-            
-            var ngClick = btn.getAttribute('ng-click');
-            if (ngClick && ngClick.toLowerCase().indexOf('refresh') !== -1) {
-                isRefreshBtn = true;
-            } else {
-                var icon = btn.querySelector('md-icon');
-                var iconText = icon ? icon.textContent.trim().toLowerCase() : '';
-                if (iconText === 'refresh' || iconText === 'autorenew') {
-                    isRefreshBtn = true;
+        // 1. Tenta achar o elemento exatamente pela ação ng-click do SOGo ou pelos textos de acessibilidade
+        var btn = document.querySelector('[ng-click*="refresh" i]') || 
+                  document.querySelector('[ng-click*="Refresh" i]') ||
+                  document.querySelector('[aria-label*="Refresh" i]') ||
+                  document.querySelector('[title*="Refresh" i]');
+        
+        // 2. Se não achar, procura um md-icon e pega o elemento pai (o botão)
+        if (!btn) {
+            var icons = document.querySelectorAll('md-icon');
+            for (var i = 0; i < icons.length; i++) {
+                var txt = icons[i].textContent.trim().toLowerCase();
+                if (txt === 'refresh' || txt === 'autorenew') {
+                    btn = icons[i].parentElement;
+                    break;
                 }
             }
+        }
 
-            if (isRefreshBtn) {
-                // Só clica se o botão estiver visível e ativo
-                if (!btn.disabled && !btn.hasAttribute('disabled') && btn.offsetParent !== null) {
-                    if (window.angular) {
-                        angular.element(btn).triggerHandler('click');
-                    } else {
-                        btn.click();
-                    }
-                    console.log("[Teclat] Auto-refresh acionado na lista de emails.");
-                }
-                break;
-            }
+        if (btn) {
+            // Dispara um evento de clique nativo do mouse. 
+            // O AngularJS responde melhor a isso do que ao btn.click() simples.
+            var event = new MouseEvent('click', {
+                view: window,
+                bubbles: true,
+                cancelable: true
+            });
+            btn.dispatchEvent(event);
+            console.log("[Teclat] Auto-refresh acionado (simulação de mouse).");
+        } else {
+            console.log("[Teclat] Erro: Botão de atualizar não foi encontrado na tela.");
         }
     }
 
