@@ -1,31 +1,26 @@
 /* ==========================================================================
-   Teclat — skin "Gmail" para o SOGo 5.12.x (mailcow)
-   --------------------------------------------------------------------------
-   Camada de overrides aplicada POR CIMA do tema padrão (theme-default.css).
-   Injetada em runtime pelo custom-sogo.js (link para css/custom-gmail.css).
-   Montada via docker-compose.override.yml em:
-     /usr/local/lib/GNUstep/SOGo/WebServerResources/css/custom-gmail.css
-   Referências de seletores: UI/WebServerResources/scss do Alinto/sogo 5.12.8
+   Teclat — Novo Layout SOGo (Dark Sidebar, Teal Buttons)
    ========================================================================== */
 
 :root {
-  --gm-blue: #1a73e8;
-  --gm-blue-dark: #1967d2;
-  --gm-blue-hover: #d3e3fd;
-  --gm-bg: #f6f8fc;
-  --gm-read-bg: #f2f6fc;
-  --gm-hover-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0,
-    0 1px 2px 0 rgba(60, 64, 67, .3), 0 1px 3px 1px rgba(60, 64, 67, .15);
-  --gm-border: #dadce0;
-  --gm-text: #202124;
-  --gm-text-2: #5f6368;
-  --gm-search-bg: #eaf1fb;
-  --gm-font: 'Google Sans', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --gm-blue: #00c4b5;
+  --gm-blue-dark: #00a498;
+  --gm-blue-hover: rgba(255, 255, 255, 0.1);
+  --gm-bg: #ffffff;
+  --gm-read-bg: #ffffff;
+  --gm-border: #e5e7eb;
+  --gm-text: #1f2937;
+  --gm-text-2: #6b7280;
+  --gm-search-bg: #f3f4f6;
+  --gm-font: "Inter", "Google Sans", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* Dark Sidebar */
+  --tcl-sidebar-bg: #111827;
+  --tcl-sidebar-text: #9ca3af;
+  --tcl-sidebar-text-active: #ffffff;
+  --tcl-sidebar-hover: rgba(255, 255, 255, 0.05);
 }
 
-/* --------------------------------------------------------------------------
-   Base: fundo geral e tipografia
-   -------------------------------------------------------------------------- */
 body,
 md-content,
 .md-default-theme,
@@ -39,9 +34,7 @@ body {
   color: var(--gm-text);
 }
 
-/* --------------------------------------------------------------------------
-   Toolbars: brancas, sem sombra pesada, borda inferior sutil
-   -------------------------------------------------------------------------- */
+/* Toolbars */
 md-toolbar,
 md-toolbar.md-default-theme:not(.md-menu-toolbar),
 md-toolbar:not(.md-menu-toolbar) {
@@ -59,20 +52,17 @@ md-toolbar:not(.md-menu-toolbar) .md-toolbar-tools {
   color: var(--gm-text) !important;
 }
 
-/* Linha divisória sutil abaixo da toolbar principal */
 .toolbar-main,
 md-toolbar.toolbar-main {
-  border-bottom: 1px solid #f1f3f4 !important;
+  border-bottom: 1px solid var(--gm-border) !important;
 }
 
-/* --------------------------------------------------------------------------
-   Busca: pill cinza-azulada arredondada (estilo Gmail)
-   -------------------------------------------------------------------------- */
+/* Search */
 md-toolbar .sg-toolbar-group-last md-input-container,
-md-toolbar form[name='searchForm'],
+md-toolbar form[name="searchForm"],
 md-toolbar .md-toolbar-tools md-input-container {
   background-color: var(--gm-search-bg) !important;
-  border-radius: 24px !important;
+  border-radius: 8px !important;
   padding: 0 16px !important;
   margin: 8px 4px !important;
 }
@@ -89,138 +79,131 @@ md-toolbar md-input-container .md-errors-spacer {
   display: none;
 }
 
-/* --------------------------------------------------------------------------
-   FAB "Escrever": pill branco com sombra Gmail, canto inferior esquerdo
-   (o label .sg-gmail-fab-label é adicionado pelo custom-sogo.js APENAS no
-   botão principal com ícone 'edit'; as mini-ações do speed-dial mantêm o
-   estilo circular padrão)
-   -------------------------------------------------------------------------- */
+/* FAB Compose */
 .md-button.md-fab:has(.sg-gmail-fab-label) {
-  background-color: #fff !important;
-  color: var(--gm-text) !important;
-  border-radius: 16px !important;
-  width: auto !important;
+  background-color: var(--gm-blue) !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+  width: 224px !important;
   min-width: 56px;
-  height: 56px !important;
-  padding: 0 20px 0 16px !important;
-  box-shadow: 0 1px 3px 0 rgba(60, 64, 67, .3), 0 4px 8px 3px rgba(60, 64, 67, .15) !important;
+  height: 48px !important;
+  padding: 0 16px !important;
+  box-shadow: none !important;
   display: inline-flex;
   align-items: center;
+  justify-content: flex-start;
 }
 
 .md-button.md-fab:has(.sg-gmail-fab-label):hover {
-  background-color: #edf2fc !important;
-  box-shadow: 0 1px 3px 0 rgba(60, 64, 67, .3), 0 8px 12px 6px rgba(60, 64, 67, .15) !important;
+  background-color: var(--gm-blue-dark) !important;
+  box-shadow: none !important;
 }
 
 .md-button.md-fab:has(.sg-gmail-fab-label) md-icon {
-  color: var(--gm-blue) !important;
+  color: #fff !important;
+  margin-right: 12px;
 }
 
 .md-button.md-fab .sg-gmail-fab-label {
   font-family: var(--gm-font);
   font-size: 14px;
   font-weight: 500;
-  color: var(--gm-text);
-  margin-left: 12px;
+  color: #fff;
   text-transform: none;
   letter-spacing: .25px;
 }
 
-/* Posição Gmail: canto inferior esquerdo, sobre a sidebar */
 md-fab-speed-dial.sg-fab-bottom-center,
 .md-button.md-fab.sg-fab-bottom-center {
   position: fixed !important;
   left: 16px !important;
   right: auto !important;
-  bottom: 24px !important;
+  top: 80px !important;
+  bottom: auto !important;
   transform: none;
   z-index: 61;
 }
 
-/* Mini-ações do speed-dial (abrir em popup / nova janela inteira): removidas —
-   no Gmail só existe o Escrever, que abre a janela de composição ancorada */
 md-fab-speed-dial md-fab-actions {
   display: none !important;
 }
 
-/* --------------------------------------------------------------------------
-   Sidebar: fundo claro, itens em pill, seleção azul-clara (Gmail)
-   -------------------------------------------------------------------------- */
+/* Sidebar */
 md-sidenav,
 md-sidenav.md-default-theme,
-.md-sidenav-left {
-  background-color: var(--gm-bg) !important;
+.md-sidenav-left,
+md-sidenav md-content,
+md-sidenav.md-default-theme md-content {
+  background-color: var(--tcl-sidebar-bg) !important;
+  color: var(--tcl-sidebar-text) !important;
 }
 
 md-sidenav md-toolbar {
-  background-color: var(--gm-bg) !important;
+  background-color: var(--tcl-sidebar-bg) !important;
 }
 
 md-sidenav md-list-item,
 md-sidenav .md-button {
-  color: var(--gm-text) !important;
+  color: var(--tcl-sidebar-text) !important;
 }
 
-/* Pill arredondado à direita nos itens de pasta (formato Gmail) */
+md-sidenav .sg-section-list {
+  margin-top: 60px !important;
+}
+
 md-sidenav md-list-item.sg-mailbox-list-item,
 .sg-section-list md-list-item {
-  border-radius: 0 16px 16px 0 !important;
-  margin-right: 12px !important;
+  border-radius: 8px !important;
+  margin: 4px 12px !important;
 }
 
 md-sidenav md-list-item.md-clickable:not([disabled]):hover,
 .sg-section-list md-list-item:hover:not([disabled]) {
-  background-color: rgba(32, 33, 36, .06) !important;
-  border-radius: 0 16px 16px 0 !important;
+  background-color: var(--tcl-sidebar-hover) !important;
+  border-radius: 8px !important;
 }
 
-/* Pasta/da seção selecionada */
 .sg-section-list md-list-item.sg-active,
 .sg-section-list md-list-item:focus,
 md-sidenav md-list-item.sg-active {
-  background-color: var(--gm-blue-hover) !important;
-  color: var(--gm-blue-dark) !important;
-  font-weight: 700;
+  background-color: var(--tcl-sidebar-active) !important;
+  color: var(--tcl-sidebar-text-active) !important;
+  font-weight: 500;
 }
 
 .sg-section-list md-list-item.sg-active md-icon,
 md-sidenav md-list-item.sg-active md-icon {
-  color: var(--gm-blue-dark) !important;
+  color: var(--gm-blue) !important;
 }
 
-/* Badge de não lidas (contador) no estilo Gmail: número simples em negrito */
+md-sidenav md-toolbar .md-toolbar-tools img {
+  filter: brightness(0) invert(1) !important;
+}
+
 .sg-counter-badge {
-  background: transparent !important;
-  color: var(--gm-text) !important;
-  font-weight: 700 !important;
+  background: var(--gm-blue) !important;
+  color: #fff !important;
+  font-weight: 500 !important;
+  border-radius: 12px;
+  padding: 2px 8px;
 }
 
-/* --------------------------------------------------------------------------
-   Lista de mensagens: densa, com linhas e hover do Gmail
-   -------------------------------------------------------------------------- */
-[id='messagesList'] {
+/* Message List */
+[id="messagesList"] {
   background-color: #fff;
 }
 
-/* Cada linha */
-[id='messagesList'] md-list-item,
+[id="messagesList"] md-list-item,
 .view-list md-list-item.sg-message-list-item {
-  border-bottom: 1px solid #f1f3f4 !important;
-  min-height: 44px !important;
+  border-bottom: 1px solid var(--gm-border) !important;
+  min-height: 48px !important;
 }
 
-[id='messagesList'] md-list-item > .md-button:first-child,
-[id='messagesList'] md-list-item .md-list-item-inner {
-  min-height: 44px !important;
-}
-
-/* Lidas: fundo cinza-azulado; Não lidas: branco + negrito (padrão Gmail) */
-[id='messagesList'] md-list-item:not(.unread) {
+[id="messagesList"] md-list-item:not(.unread) {
   background-color: var(--gm-read-bg) !important;
 }
 
-[id='messagesList'] md-list-item.unread {
+[id="messagesList"] md-list-item.unread {
   background-color: #fff !important;
 }
 
@@ -228,53 +211,38 @@ md-sidenav md-list-item.sg-active md-icon {
 .unread .sg-md-body,
 .unread .sg-tile-date,
 .unread .sg-tile-subject {
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   color: var(--gm-text) !important;
 }
 
-[id='messagesList'] md-list-item:not(.unread) .sg-md-subhead,
-[id='messagesList'] md-list-item:not(.unread) .sg-tile-subject,
-[id='messagesList'] md-list-item:not(.unread) .sg-md-body {
+[id="messagesList"] md-list-item:not(.unread) .sg-md-subhead,
+[id="messagesList"] md-list-item:not(.unread) .sg-tile-subject,
+[id="messagesList"] md-list-item:not(.unread) .sg-md-body {
   color: var(--gm-text-2) !important;
 }
 
-/* Hover: sombra flutuante do Gmail */
-[id='messagesList'] md-list-item:hover {
-  box-shadow: var(--gm-hover-shadow) !important;
-  z-index: 2;
-  position: relative;
+[id="messagesList"] md-list-item:hover {
+  background-color: #f9fafb !important;
 }
 
-/* Selecionada: azul-claro Gmail (sobrepõe md-accent md-bg md-hue-2) */
-[id='messagesList'] md-list-item.md-accent.md-bg,
-[id='messagesList'] md-list-item.md-accent.md-bg.md-hue-2 {
-  background-color: #c2dbff !important;
+[id="messagesList"] md-list-item.md-accent.md-bg,
+[id="messagesList"] md-list-item.md-accent.md-bg.md-hue-2 {
+  background-color: #f3f4f6 !important;
   color: var(--gm-text) !important;
 }
 
-/* Avatares menores para densidade Gmail (opcional: some em telas largas) */
-[id='messagesList'] sg-avatar-image img,
-[id='messagesList'] .md-avatar {
+[id="messagesList"] sg-avatar-image img,
+[id="messagesList"] .md-avatar {
   width: 32px !important;
   height: 32px !important;
 }
 
-/* Datas e tamanhos discretos */
-.sg-tile-date,
-.sg-tile-size {
-  color: var(--gm-text-2) !important;
-  font-size: 12px !important;
-}
-
-/* Estrela amarela do Gmail */
 .sg-icon-star,
 md-icon.sg-icon-star {
-  color: #f4b400 !important;
+  color: #f59e0b !important;
 }
 
-/* --------------------------------------------------------------------------
-   Botões, links e acentos azuis
-   -------------------------------------------------------------------------- */
+/* Base Buttons */
 a,
 .md-button.md-primary:not(.md-raised):not(.md-fab) {
   color: var(--gm-blue);
@@ -285,7 +253,7 @@ a,
 md-dialog .md-button.md-raised {
   background-color: var(--gm-blue) !important;
   color: #fff !important;
-  border-radius: 18px !important;
+  border-radius: 8px !important;
   text-transform: none !important;
   font-weight: 500;
 }
@@ -296,79 +264,31 @@ md-dialog .md-button.md-raised {
 }
 
 .md-button {
-  border-radius: 18px;
+  border-radius: 8px;
   text-transform: none !important;
 }
 
-/* Checkboxes e switches azuis */
-md-checkbox.md-checked .md-icon {
-  background-color: var(--gm-blue) !important;
-}
-
-md-switch.md-checked .md-thumb {
-  background-color: var(--gm-blue) !important;
-}
-
-md-switch.md-checked .md-bar {
-  background-color: rgba(26, 115, 232, .5) !important;
-}
-
-/* Progress bars / spinners */
-md-progress-linear .md-bar,
-md-progress-circular path {
-  stroke: var(--gm-blue);
-  background-color: var(--gm-blue);
-}
-
-/* Abas (Preferências etc.) */
-md-tabs md-ink-bar {
-  color: var(--gm-blue) !important;
-  background: var(--gm-blue) !important;
-}
-
-md-tabs .md-tab.md-active {
-  color: var(--gm-blue) !important;
-}
-
-/* --------------------------------------------------------------------------
-   Cards, diálogos e visual geral mais arredondado
-   -------------------------------------------------------------------------- */
+/* Modals */
 md-card,
 md-dialog {
-  border-radius: 16px !important;
-  box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .3), 0 1px 3px 1px rgba(60, 64, 67, .15) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
 }
 
-/* Painel de leitura com respiro estilo Gmail */
 .view-detail md-card {
-  border: 1px solid transparent;
+  border: none;
+  box-shadow: none !important;
 }
 
-/* --------------------------------------------------------------------------
-   Scrollbars finas
-   -------------------------------------------------------------------------- */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* Sidebar size */
+md-sidenav.md-sidenav-left,
+md-sidenav {
+  width: 256px !important;
+  min-width: 256px !important;
+  max-width: 256px !important;
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: #dadce0;
-  border-radius: 8px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: #bdc1c6;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-/* ==========================================================================
-   Janela de composição estilo Gmail
-   (md-dialog#mailEditor.sg-mail-editor — ver UIxMailEditor.wox)
-   ========================================================================== */
+/* Janela de composição estilo Gmail (md-dialog#mailEditor.sg-mail-editor — ver UIxMailEditor.wox)==========================================================================*/
 
 /* Ancorar a janela no canto inferior direito (como o compose do Gmail) */
 .md-dialog-container:has(md-dialog.sg-mail-editor) {
@@ -485,9 +405,10 @@ md-dialog.sg-mail-editor header.sg-padded {
   padding-bottom: 0;
 }
 
-md-dialog.sg-mail-editor header.sg-padded > .msg-header-buttons {
+md-dialog.sg-mail-editor header.sg-padded>.msg-header-buttons {
   position: absolute;
-  top: 44px; /* alinhado à linha "Para" (abaixo da linha "De") */
+  top: 44px;
+  /* alinhado à linha "Para" (abaixo da linha "De") */
   right: 16px;
   display: flex;
   flex-direction: row !important;
@@ -496,7 +417,7 @@ md-dialog.sg-mail-editor header.sg-padded > .msg-header-buttons {
   z-index: 2;
 }
 
-md-dialog.sg-mail-editor header.sg-padded > .msg-header-buttons .sg-icon-button {
+md-dialog.sg-mail-editor header.sg-padded>.msg-header-buttons .sg-icon-button {
   min-width: 0;
   margin: 0;
   padding: 0 6px;
@@ -576,7 +497,8 @@ md-dialog.sg-mail-editor .sg-gmail-send-btn {
   align-items: center;
   justify-content: center;
   overflow: visible;
-  order: -1; /* primeiro item do rodapé, como no Gmail */
+  order: -1;
+  /* primeiro item do rodapé, como no Gmail */
   flex-shrink: 0;
 }
 
@@ -590,7 +512,8 @@ md-dialog.sg-mail-editor .sg-gmail-send-btn[disabled] {
 }
 
 md-dialog.sg-mail-editor .sg-gmail-send-btn md-icon {
-  display: none !important; /* Gmail usa só o rótulo "Enviar" */
+  display: none !important;
+  /* Gmail usa só o rótulo "Enviar" */
 }
 
 .sg-gmail-send-btn .sg-gmail-send-label {
@@ -610,4 +533,3 @@ md-sidenav {
   min-width: 256px !important;
   max-width: 256px !important;
 }
-
