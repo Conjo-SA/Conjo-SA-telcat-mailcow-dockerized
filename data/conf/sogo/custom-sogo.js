@@ -256,7 +256,7 @@
               <md-icon class="material-icons">contacts</md-icon>
               <span>Contatos</span>
             </div>
-            <div class="tcl-menu-popup-item" onclick="window.location.href='/user'">
+            <div class="tcl-menu-popup-item" onclick="window.location.href='https://mail.localhost:8443/SOGo/so/${userEmail}/Preferences#!/general'">
               <md-icon class="material-icons">build</md-icon>
               <span>Preferências</span>
             </div>
@@ -294,29 +294,30 @@
     }
   }
 
-  // Nova Função: Transforma os avatares genéricos em iniciais coloridas e ajusta data
   function applyCustomAvatars() {
-    document.querySelectorAll('md-list-item.sg-message-list-item:not(.tcl-avatar-applied)').forEach(item => {
-      // 1. Avatar
+    // Retiramos o :not(.tcl-avatar-applied) para que o script sempre verifique
+    // as linhas recicladas pelo md-virtual-repeat do Angular (ao fazer scroll)
+    document.querySelectorAll('md-list-item.sg-message-list-item').forEach(item => {
       const nameSpan = item.querySelector('.sg-md-subhead > div > span:not(.sg-label-outline)');
       const avatarContainer = item.querySelector('sg-avatar-image');
       
       if (nameSpan && avatarContainer) {
         const name = nameSpan.textContent.trim();
-        const icon = avatarContainer.querySelector('md-icon[aria-label="person"]');
-        const img = avatarContainer.querySelector('img');
+        // Alterado para um fundo azul claro (0ea5e9) com duas siglas geradas pela api
+        const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0ea5e9&color=fff&rounded=true&size=40`;
         
-        if (name && icon && img) {
-          icon.style.display = 'none';
-          const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=2563eb&color=fff&rounded=true&size=40`;
-          img.src = avatarUrl;
-          img.classList.remove('ng-hide');
-          img.style.display = 'block';
-          img.style.borderRadius = '50%';
+        let tclImg = avatarContainer.querySelector('img.tcl-custom-avatar');
+        if (!tclImg) {
+          tclImg = document.createElement('img');
+          tclImg.className = 'tcl-custom-avatar';
+          avatarContainer.appendChild(tclImg);
+        }
+        
+        // Se a reciclagem do Angular mudou o nome da linha, atualizamos a imagem
+        if (tclImg.src !== avatarUrl) {
+          tclImg.src = avatarUrl;
         }
       }
-      
-      item.classList.add('tcl-avatar-applied');
     });
   }
 
@@ -324,50 +325,48 @@
   function applyViewerAvatar(node) {
     const root = node && node.nodeType === 1 ? node : document;
     
-    // O cabeçalho fica em md-card-content > .layout-wrap > div:first-child
     root.querySelectorAll('.sg-face md-card-content > .layout-wrap > div:first-child:not(.tcl-viewer-avatar-applied)').forEach(item => {
-      // Pega o span que tem o nome do remetente
       const nameSpan = item.querySelector('span[ng-bind-html*="name"]');
       const avatarContainer = item.querySelector('sg-avatar-image');
       
       if (nameSpan && avatarContainer) {
         const name = nameSpan.textContent.trim();
-        const icon = avatarContainer.querySelector('md-icon[aria-label="person"]');
-        const img = avatarContainer.querySelector('img');
+        const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0ea5e9&color=fff&rounded=true&size=58`;
         
-        if (name && icon && img) {
-          icon.style.display = 'none';
-          // Tamanho 58px para o visualizador
-          const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=2563eb&color=fff&rounded=true&size=58`;
-          img.src = avatarUrl;
-          img.classList.remove('ng-hide');
-          img.style.display = 'block';
-          img.style.borderRadius = '50%';
+        // 1. Criar nossa própria imagem que o Angular não controla
+        let tclImg = avatarContainer.querySelector('img.tcl-custom-avatar');
+        if (!tclImg) {
+          tclImg = document.createElement('img');
+          tclImg.className = 'tcl-custom-avatar';
+          tclImg.style.borderRadius = '50%';
+          tclImg.style.display = 'block';
+          tclImg.style.width = '58px';
+          tclImg.style.height = '58px';
+          avatarContainer.appendChild(tclImg);
+        }
+        
+        if (tclImg.src !== avatarUrl) {
+          tclImg.src = avatarUrl;
         }
         
         // REORGANIZAÇÃO DA ESTRUTURA PARA FLEXBOX NATIVO
         const wrapContainer = item.closest('.layout-wrap');
         if (wrapContainer) {
           const msgRecipients = wrapContainer.querySelector('.msg-recipients');
-          const senderInfoDiv = avatarContainer.nextElementSibling; // A div com span (Nome) e a (E-mail)
+          const senderInfoDiv = avatarContainer.nextElementSibling;
           
           if (msgRecipients && senderInfoDiv) {
-            // Move os destinatários ("Para:") pra dentro do bloco do remetente
             senderInfoDiv.appendChild(msgRecipients);
-            
-            // Transforma o bloco do remetente em flex column para que Nome, De e Para fiquem empilhados
             senderInfoDiv.style.display = 'flex';
             senderInfoDiv.style.flexDirection = 'column';
             senderInfoDiv.style.alignItems = 'flex-start';
             senderInfoDiv.style.justifyContent = 'center';
             senderInfoDiv.style.width = '100%';
             
-            // Remove a classe flex-50 para ocupar a largura toda
             item.classList.remove('flex-50');
             item.classList.add('flex-100');
             item.style.maxWidth = '100%';
             
-            // Limpa formatações restritivas antigas
             msgRecipients.classList.remove('flex-50');
             msgRecipients.style.padding = '0';
             msgRecipients.style.margin = '4px 0 0 0';
@@ -383,6 +382,9 @@
 
   // Nova Função: Cria e sincroniza a Data Principal e as setas dentro do Header do Calendário
   function customizeCalendarHeader(root) {
+    var isCalendar = /\/Calendar\b/.test(window.location.pathname + window.location.hash);
+    if (!isCalendar) return;
+
     var scope = root && root.querySelectorAll ? root : document;
     var cardActions = scope.querySelector('md-card-actions');
     
@@ -782,7 +784,7 @@ if (typeof CKEDITOR !== "undefined") {
           if (node.querySelector('form[name="messageForm"]') || node.querySelector('#dialogContent_mailEditor')) {
             node.classList.add('tcl-mail-modal');
             node.classList.remove('md-dialog-fullscreen'); // Remove fullscreen nativo do angular
-          } else if (node.querySelector('form[name="eventForm"]')) {
+          } else if (node.querySelector('form[name="eventForm"]') || node.querySelector('form[name="taskForm"]') || node.querySelector('md-icon[aria-label="assignment_turned_in"]')) {
             node.classList.add('tcl-event-modal');
             node.classList.remove('md-dialog-fullscreen');
             setupEventModal(node);
@@ -793,7 +795,7 @@ if (typeof CKEDITOR !== "undefined") {
             if (dialog.querySelector('form[name="messageForm"]') || dialog.querySelector('#dialogContent_mailEditor')) {
               dialog.classList.add('tcl-mail-modal');
               dialog.classList.remove('md-dialog-fullscreen');
-            } else if (dialog.querySelector('form[name="eventForm"]')) {
+            } else if (dialog.querySelector('form[name="eventForm"]') || dialog.querySelector('form[name="taskForm"]') || dialog.querySelector('md-icon[aria-label="assignment_turned_in"]')) {
               dialog.classList.add('tcl-event-modal');
               dialog.classList.remove('md-dialog-fullscreen');
               setupEventModal(dialog);
@@ -807,3 +809,169 @@ if (typeof CKEDITOR !== "undefined") {
 })();
 // -----------------------------------------------------------------------------------
 
+
+// ── Preferências: Injetar títulos de seção e divisores ──────────────────────
+(function() {
+    function injectPreferencesSections() {
+        var form = document.getElementById('generalOptionsView-content');
+        if (!form || document.getElementById('tcl-pref-sections-injected')) return;
+
+        var container = form.querySelector('div.flex-100, div[flex="100"]');
+        if (!container) return;
+
+        // Marcar como injetado
+        var marker = document.createElement('span');
+        marker.id = 'tcl-pref-sections-injected';
+        marker.style.display = 'none';
+        container.appendChild(marker);
+
+        function makeHr() {
+            var hr = document.createElement('hr');
+            hr.className = 'tcl-pref-hr';
+            return hr;
+        }
+
+        function makeHeading(text) {
+            var h = document.createElement('h3');
+            h.className = 'tcl-pref-section-title';
+            h.textContent = text;
+            return h;
+        }
+
+        // Buscar elementos-âncora
+        var idiomaRow = container.querySelector('div[layout="row"]:not([layout-align])');
+        var modulo = container.querySelector('#select_107, md-select[aria-label*="padrão" i], md-select[aria-label*="implicit" i], md-select[aria-label*="Modul" i], md-select[aria-label*="Módulo" i]');
+        var gravatarRow = container.querySelector('div[layout-align="start start"], div[layout="row"][layout-align]');
+
+        if (idiomaRow) {
+            container.insertBefore(makeHr(), idiomaRow);
+            container.insertBefore(makeHeading('Idioma e Localização'), idiomaRow);
+        }
+
+        if (modulo) {
+            var moduloContainer = modulo.closest('md-input-container');
+            if (moduloContainer) {
+                container.insertBefore(makeHr(), moduloContainer);
+                container.insertBefore(makeHeading('Preferências'), moduloContainer);
+            }
+        }
+
+        if (gravatarRow) {
+            container.insertBefore(makeHr(), gravatarRow);
+            container.insertBefore(makeHeading('Avatar e Aparência'), gravatarRow);
+        }
+    }
+
+    // Observar quando a tela de preferências carrega
+    var prefObserver = new MutationObserver(function(mutations) {
+        if (document.getElementById('generalOptionsView-content')) {
+            setTimeout(injectPreferencesSections, 300);
+        }
+    });
+    prefObserver.observe(document.body, { childList: true, subtree: true });
+
+    // Tentar na carga inicial também
+    setTimeout(injectPreferencesSections, 500);
+})();
+// ────────────────────────────────────────────────────────────────────────────
+
+// ── Preferências: Botão Salvar em TODAS as abas ──────────────────────────────
+(function() {
+    function injectUniversalSaveButton() {
+        // Encontra abas ativas (md-tab-content > div) OU painéis sem aba (md-content direto no module)
+        var selectors = [
+            'md-tab-content > div[md-tabs-template]', 
+            'div[ui-view="module"] > md-content'
+        ];
+        var targetNodes = document.querySelectorAll(selectors.join(', '));
+        
+        Array.from(targetNodes).forEach(function(content, index) {
+            // Ignorar md-contents que sejam apenas avisos ou cards soltos (ex: hasActiveExternalSieveScripts)
+            if (content.tagName.toLowerCase() === 'md-content' && content.classList.contains('ng-hide') && content.querySelector('md-card')) return;
+            // Evitar injetar no md-content pai que apenas segura as abas
+            if (content.querySelector('md-tabs')) return;
+
+            // Criar ID único para cada container baseado no index ou ID real
+            var uniqueId = content.id || ('tab-content-' + index);
+            var btnId = 'tcl-pref-save-btn-' + uniqueId;
+            
+            if (document.getElementById(btnId)) return; // Já injetou nesta aba
+
+            // Para evitar que o footer sobreponha elementos (como os botões "Criar Filtro"), 
+            // precisamos injetá-lo DENTRO do painel com rolagem real (md-content ou div.md-padding)
+            // Filtramos elementos com ng-include porque o SOGo cria painéis ocultos de Sieve!
+            // Filtramos [role="listbox"] para evitar injetar dentro de menus dropdown (md-select-menu)
+            var container = content.querySelector('[role="tabpanel"]:not(md-tab-content)') || 
+                            content.querySelector('md-content:not([ng-include]):not([role="listbox"])') || 
+                            content;
+
+            // Criar rodapé com o botão
+            var footer = document.createElement('div');
+            footer.className = 'tcl-pref-footer';
+
+            var btn = document.createElement('button');
+            btn.id = btnId;
+            btn.className = 'tcl-pref-save-button';
+            btn.textContent = 'Salvar alterações';
+
+            // Comportamento do clique
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                var originalBtn = document.querySelector('md-toolbar.md-tall button.md-fab[ng-click*="save"]');
+                if (originalBtn && !originalBtn.disabled) {
+                    originalBtn.click();
+                }
+            });
+
+            // Sincronizar estado disabled lendo o escopo do Angular diretamente
+            function syncDisabledState() {
+                var isDisabled = true;
+                
+                // Tenta ler o estado oficial do Angular (formulário sujo/alterado)
+                // Ignoramos a validação de form.$valid para que o botão fique verde
+                // assim que o usuário alterar algo. Se estiver inválido, o SOGo 
+                // mostrará as mensagens de erro em vermelho ao tentar salvar.
+                try {
+                    var formElement = document.querySelector('form[name="preferencesForm"]');
+                    var scope = window.angular && formElement ? window.angular.element(formElement).scope() : null;
+                    if (scope && scope.preferencesForm) {
+                        // Se o formulário tiver alterações ($dirty), habilitamos o botão!
+                        isDisabled = !scope.preferencesForm.$dirty;
+                    } else {
+                        // Fallback para ler a classe do botão original
+                        var originalBtn = document.querySelector('button.md-fab[ng-click*="save"]');
+                        if (originalBtn) {
+                            isDisabled = originalBtn.classList.contains('ng-hide') || originalBtn.disabled;
+                        }
+                    }
+                } catch (e) {
+                    // Fallback de segurança
+                    var originalBtn = document.querySelector('button.md-fab[ng-click*="save"]');
+                    if (originalBtn) {
+                        isDisabled = originalBtn.classList.contains('ng-hide') || originalBtn.disabled;
+                    }
+                }
+
+                btn.disabled = isDisabled;
+                btn.classList.toggle('tcl-pref-save-disabled', isDisabled);
+            }
+
+            footer.appendChild(btn);
+            container.appendChild(footer);
+
+            setInterval(syncDisabledState, 500);
+            syncDisabledState();
+        });
+    }
+
+    var prefSaveObserver = new MutationObserver(function() {
+        var hasContent = document.querySelector('md-tab-content > div[md-tabs-template]') || document.querySelector('div[ui-view="module"] > md-content');
+        if (hasContent) {
+            setTimeout(injectUniversalSaveButton, 300);
+        }
+    });
+    
+    prefSaveObserver.observe(document.body, { childList: true, subtree: true });
+    setTimeout(injectUniversalSaveButton, 500);
+})();
+// ─────────────────────────────────────────────────────────────────────────────

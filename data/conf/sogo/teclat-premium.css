@@ -423,6 +423,17 @@ md-list-item.sg-message-list-item sg-avatar-image md-icon {
   font-size: 34px !important;
 }
 
+/* Esconder os avatares nativos do SOGo definitivamente para dar lugar ao nosso customizado */
+md-list-item.sg-message-list-item sg-avatar-image md-icon[aria-label="person"],
+md-list-item.sg-message-list-item sg-avatar-image img:not(.tcl-custom-avatar) {
+  display: none !important;
+}
+/* Garantir que o nosso fique visível */
+md-list-item.sg-message-list-item sg-avatar-image img.tcl-custom-avatar {
+  display: block !important;
+  border-radius: 50% !important;
+}
+
 
 
 /* 3. Estrela de Favorito (Removida a pedido) */
@@ -994,6 +1005,17 @@ md-card md-card-content {
   min-height: 58px !important;
   line-height: 58px !important;
   font-size: 32px !important; 
+  border-radius: 50% !important;
+}
+
+/* Esconder os avatares nativos do SOGo no visualizador definitivamente para dar lugar ao nosso customizado */
+.sg-face md-card-content sg-avatar-image md-icon[aria-label="person"],
+.sg-face md-card-content sg-avatar-image img:not(.tcl-custom-avatar) {
+  display: none !important;
+}
+/* Garantir que o nosso fique visível no visualizador */
+.sg-face md-card-content sg-avatar-image img.tcl-custom-avatar {
+  display: block !important;
   border-radius: 50% !important;
 }
 .sg-face md-card-content sg-avatar-image {
@@ -2142,7 +2164,7 @@ md-dialog:has(.advanced-search) {
   border-radius: 16px !important;
   background-color: #ffffff !important;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
-  width: 900px !important;
+  width: 760px !important;
   max-width: 90vw !important;
   height: auto !important;
   max-height: 90vh !important;
@@ -3708,12 +3730,12 @@ body.tcl-dark-mode md-icon[aria-label="sort"] {
    ========================================================================== */
 
 /* Fundo e bordas do Modal */
-md-dialog:has(form[name="eventForm"]) {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) {
     border-radius: 24px !important;
     background-color: #ffffff !important;
     /* Efeito de sombreamento de modal flutuante premium (estilo macOS) */
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 20px rgba(0, 0, 0, 0.1) !important;
-    width: 900px !important;
+    width: 760px !important;
     max-width: 80vw !important;
     height: auto !important;
     max-height: 85vh !important;
@@ -3723,13 +3745,13 @@ md-dialog:has(form[name="eventForm"]) {
     flex-direction: column !important;
     overflow: hidden !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) {
     background-color: #040418 !important;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 0, 0, 0.4) !important;
 }
 
 /* Exibir o md-dialog-content como Grid Principal */
-md-dialog:has(form[name="eventForm"]) md-dialog-content {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
     column-gap: 32px !important;
@@ -3741,18 +3763,18 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content {
 }
 
 /* Remover QUALQUER sombreamento e fundos brancos nativos de elementos DENTRO do modal */
-md-dialog:has(form[name="eventForm"]) md-dialog-content *,
-md-dialog:has(form[name="eventForm"]) .md-toolbar-tools * {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content *,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) .md-toolbar-tools * {
     box-shadow: none !important;
 }
 
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section {
     background-color: transparent !important;
 }
 
 /* Rodapé do Modal */
-md-dialog:has(form[name="eventForm"]) .md-actions,
-md-dialog:has(form[name="eventForm"]) md-dialog-actions {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) .md-actions,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-actions {
     display: flex !important;
     justify-content: flex-end !important;
     padding: 16px 32px 24px 32px !important;
@@ -3760,8 +3782,8 @@ md-dialog:has(form[name="eventForm"]) md-dialog-actions {
 }
 
 /* Estilo dos Botões de Ação no Rodapé */
-md-dialog:has(form[name="eventForm"]) md-dialog-actions button,
-md-dialog:has(form[name="eventForm"]) .md-actions button {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-actions button,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) .md-actions button {
     height: 40px !important;
     min-height: 40px !important;
     padding: 0 24px !important;
@@ -3778,45 +3800,45 @@ md-dialog:has(form[name="eventForm"]) .md-actions button {
 }
 
 /* Botões Secundários (Cancelar / Repor / Limpar) */
-md-dialog:has(form[name="eventForm"]) md-dialog-actions button:not(.md-primary),
-md-dialog:has(form[name="eventForm"]) .md-actions button:not(.md-primary) {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-actions button:not(.md-primary),
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) .md-actions button:not(.md-primary) {
     background-color: #eeeeee !important;
     color: #0b1a30 !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-actions button:not(.md-primary),
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) .md-actions button:not(.md-primary) {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-actions button:not(.md-primary),
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) .md-actions button:not(.md-primary) {
     background-color: #16243d !important;
     color: #ffffff !important;
 }
 
 /* Botão Primário (Salvar / Guardar) */
-md-dialog:has(form[name="eventForm"]) md-dialog-actions button.md-primary,
-md-dialog:has(form[name="eventForm"]) .md-actions button.md-primary {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-actions button.md-primary,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) .md-actions button.md-primary {
     background-color: #00e5c1 !important;
     color: #0b1a30 !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-actions button.md-primary,
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) .md-actions button.md-primary {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-actions button.md-primary,
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) .md-actions button.md-primary {
     background-color: #00e5c1 !important;
     color: #0b1a30 !important;
 }
 
 /* Hover effects */
-md-dialog:has(form[name="eventForm"]) md-dialog-actions button:not(.md-primary):hover,
-md-dialog:has(form[name="eventForm"]) .md-actions button:not(.md-primary):hover {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-actions button:not(.md-primary):hover,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) .md-actions button:not(.md-primary):hover {
     background-color: #e2e8f0 !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-actions button:not(.md-primary):hover,
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) .md-actions button:not(.md-primary):hover {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-actions button:not(.md-primary):hover,
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) .md-actions button:not(.md-primary):hover {
     background-color: #1e293b !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-actions button.md-primary:hover,
-md-dialog:has(form[name="eventForm"]) .md-actions button.md-primary:hover {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-actions button.md-primary:hover,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) .md-actions button.md-primary:hover {
     background-color: #00c4a9 !important;
 }
 
 /* Mapeamento das Seções no Grid Principal do md-dialog-content */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(1) {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(1) {
     grid-column: 1 / span 2 !important;
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
@@ -3826,11 +3848,11 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
     padding-bottom: 24px !important;
     margin-bottom: 24px !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(1) {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(1) {
     border-bottom-color: rgba(255, 255, 255, 0.05) !important;
 }
 
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(2) {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(2) {
     grid-column: 1 / span 2 !important;
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
@@ -3841,20 +3863,21 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
     margin-bottom: 12px !important;
 }
 
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) {
     grid-column: 1 !important;
     grid-row: 3 !important;
     display: flex !important;
     flex-direction: column !important;
-    gap: 16px !important;
+    gap: 4px !important;
     border-bottom: none !important;
     padding-bottom: 0 !important;
     margin-bottom: 0 !important;
     min-width: 0 !important;
     height: max-content !important;
+    padding-top: 8px !important;
 }
 
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(4) {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(4) {
     grid-column: 2 !important;
     grid-row: 3 !important;
     display: flex !important;
@@ -3864,21 +3887,22 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
     border-bottom: none !important;
     padding-bottom: 0 !important;
     margin-bottom: 0 !important;
-    gap: 16px !important;
+    gap: 4px !important;
+    padding-top: 8px !important;
 }
 
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(4) > div.layout-row {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(4) > div.layout-row {
     min-width: 0 !important;
     height: max-content !important;
     margin: 0 !important;
     padding: 0 !important;
 }
 
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(4) > div.layout-row > md-icon.material-icons {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(4) > div.layout-row > md-icon.material-icons {
     display: none !important; /* Remove native search icon */
 }
 
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(4) > div[ng-show="editor.component.attendees.length"]:not(.ng-hide) {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(4) > div[ng-show="editor.component.attendees.length"]:not(.ng-hide) {
     width: 100% !important;
     max-width: 100% !important;
     overflow-x: auto !important;
@@ -3886,50 +3910,65 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
     margin: 0 !important;
 }
 
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(5) {
-    grid-column: 1 !important;
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(5) {
+    grid-column: 1 / span 2 !important;
+    grid-row: 4 !important;
     display: block !important;
     border-bottom: none !important;
     padding-bottom: 0 !important;
     margin-bottom: 0 !important;
+    padding-top: 8px !important;
+}
+
+/* Label customizado para o campo de convidar participantes (seção 4) */
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(4)::before {
+    content: "Convidar participantes";
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    color: #475569;
+    display: block;
+    margin-bottom: 2px;
+}
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(4)::before {
+    color: #94a3b8;
 }
 
 /* Quebrar os div.layout-row do SOGo (para que participem do Grid da seção) */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(1) > div.layout-row:not(.layout-align-start-center) {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(1) > div.layout-row:not(.layout-align-start-center) {
     display: contents !important;
 }
 
 /* ===== MAPEAMENTO DO GRID - SEÇÃO 1 ===== */
 /* Localização */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(1) > div.layout-row:not(.layout-align-start-center) > md-input-container:nth-child(1) {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(1) > div.layout-row:not(.layout-align-start-center) > md-input-container:nth-child(1) {
     grid-column: 1 !important;
     grid-row: 1 !important;
 }
 /* Calendário */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(1) > div.layout-row:not(.layout-align-start-center) > md-input-container:nth-child(2) {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(1) > div.layout-row:not(.layout-align-start-center) > md-input-container:nth-child(2) {
     grid-column: 2 !important;
     grid-row: 1 !important;
 }
 /* Descrição */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(1) > md-input-container {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(1) > md-input-container {
     grid-column: 1 !important;
     grid-row: 2 !important;
 }
 /* Prioridade */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(1) > div.layout-row:not(.layout-align-start-center) > .pseudo-input-container {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(1) > div.layout-row:not(.layout-align-start-center) > .pseudo-input-container {
     grid-column: 2 !important;
     grid-row: 2 !important;
     align-self: flex-start !important;
     margin-top: 6px !important;
 }
 /* Categoria */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(1) > md-chips {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(1) > md-chips {
     grid-column: 1 !important;
     grid-row: 3 !important;
 }
 /* Privacidade */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(1) > md-radio-group,
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(1) > div.layout-row:not(.layout-align-start-center) > md-radio-group {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(1) > md-radio-group,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(1) > div.layout-row:not(.layout-align-start-center) > md-radio-group {
     grid-column: 2 !important;
     grid-row: 3 !important;
     display: flex !important;
@@ -3941,12 +3980,12 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
     align-self: flex-start !important;
     margin-top: 26px !important; /* Alinha os botões com o input da categoria, ignorando a ausência de label */
 }
-md-dialog:has(form[name="eventForm"]) md-radio-group md-radio-button {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-radio-group md-radio-button {
     margin: 0 !important;
     padding: 0 !important;
 }
 /* Enviar Notificações (Isolado na coluna 2) */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(1) > md-checkbox {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(1) > md-checkbox {
     grid-column: 2 !important;
     grid-row: 4 !important;
     margin: 0 !important;
@@ -3954,7 +3993,7 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
 }
 
 /* Botões de Ação (Atalho, Meet) e Inputs Dinâmicos de URL */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(1) > div.layout-row.layout-align-start-center {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(1) > div.layout-row.layout-align-start-center {
     grid-column: 1 / 3 !important; /* Ocupa as duas colunas para que inputs de URL grandes caibam inteiros */
     grid-row: auto !important; /* Empilha automaticamente um embaixo do outro (Row 5, 6...) */
     align-self: center !important;
@@ -3963,19 +4002,19 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
 }
 
 /* Forçar os Botões (Atalho, Meet) para CIMA dos Inputs de URL */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(1) > div.layout-row.layout-align-start-center:has(.button-label) {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(1) > div.layout-row.layout-align-start-center:has(.button-label) {
     order: 1 !important;
 }
 /* Forçar os Inputs de URL para BAIXO dos botões */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(1) > div.layout-row.layout-align-start-center:has(md-input-container),
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(1) > div[ng-repeat*="attach"] {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(1) > div.layout-row.layout-align-start-center:has(md-input-container),
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(1) > div[ng-repeat*="attach"] {
     order: 2 !important;
     grid-column: 1 / 3 !important;
 }
 
 /* ===== MAPEAMENTO DO GRID - SEÇÃO 2 (Datas e Checkboxes) ===== */
 /* Checkboxes (Dia todo e Livre) */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(2) > div.layout-row:nth-of-type(1) {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(2) > div.layout-row:nth-of-type(1) {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
@@ -3983,22 +4022,22 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
     grid-column: 2 !important;
     grid-row: 1 !important;
     margin: 0 !important;
-    align-self: flex-start !important;
-    margin-top: 26px !important; /* Alinha no topo com os pickers de Data/Hora */
+    align-self: flex-end !important;
+    padding-bottom: 6px !important;
 }
-/* Date and Time Row (Remover o display contents se quisermos flex, mas aqui é container) */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(2) > div.layout-row:nth-of-type(2) {
+/* De (coluna esquerda, linha 1) */
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(2) > div.layout-row:nth-of-type(2) {
     display: contents !important;
 }
 /* De */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(2) > div.layout-row:nth-of-type(2) > div:nth-child(1) {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(2) > div.layout-row:nth-of-type(2) > div:nth-child(1) {
     grid-column: 1 !important;
     grid-row: 1 !important;
     display: flex !important;
     flex-direction: column !important;
 }
-/* Para */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(2) > div.layout-row:nth-of-type(2) > div:nth-child(2) {
+/* Para (oculto por padrão via JS) */
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(2) > div.layout-row:nth-of-type(2) > div:nth-child(2) {
     grid-column: 1 !important;
     grid-row: 2 !important;
     display: flex !important;
@@ -4006,7 +4045,7 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
 }
 
 /* Colocar Datepicker e Timepicker lado a lado perfeitamente */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(2) .layout-wrap {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(2) .layout-wrap {
     display: flex !important;
     flex-direction: row !important;
     flex-wrap: nowrap !important;
@@ -4014,15 +4053,15 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
     gap: 16px !important;
     width: 100% !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(2) md-datepicker,
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(2) sg-timepicker {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(2) md-datepicker,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(2) sg-timepicker {
     flex: 1 1 auto !important;
     width: 100% !important;
     margin: 0 !important;
 }
 
 /* Para hidden class */
-md-dialog:has(form[name="eventForm"]) .tcl-para-hidden {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) .tcl-para-hidden {
     display: none !important;
 }
 
@@ -4030,7 +4069,7 @@ md-dialog:has(form[name="eventForm"]) .tcl-para-hidden {
 
 
 
-md-dialog:has(form[name="eventForm"]) md-dialog-content .attendees {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .attendees {
     grid-column: 1 / 3 !important;
     grid-row: auto !important;
     width: 100% !important;
@@ -4040,24 +4079,24 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .attendees {
     display: flex !important;
     flex-direction: column !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .attendees {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .attendees {
     border-top-color: #334155 !important;
 }
 
 /* Cabeçalho do Free/Busy (Checkbox e Timepickers) */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .attendees > div[layout="row"].layout-align-end-center {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .attendees > div[layout="row"].layout-align-end-center {
     display: flex !important;
     justify-content: flex-end !important;
     align-items: center !important;
     gap: 16px !important;
     margin-bottom: 16px !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .attendees > div[layout="row"].layout-align-end-center md-checkbox {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .attendees > div[layout="row"].layout-align-end-center md-checkbox {
     margin: 0 !important;
 }
 
 /* Conteiner da Lista e Calendário */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .attendees > div[layout="row"]:not(.layout-align-end-center) {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .attendees > div[layout="row"]:not(.layout-align-end-center) {
     display: flex !important;
     flex-wrap: nowrap !important;
     width: 100% !important;
@@ -4066,10 +4105,10 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .attendees > div[layout=
     padding-bottom: 8px !important;
 }
 
-md-dialog:has(form[name="eventForm"]) md-dialog-content .attendees md-list {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .attendees md-list {
     flex-shrink: 0 !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .attendees md-content#freebusy {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .attendees md-content#freebusy {
     flex-grow: 1 !important;
     overflow-x: auto !important;
 }
@@ -4077,8 +4116,8 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .attendees md-content#fr
 /* =======================================================
    ESTILIZAÇÃO DOS COMPONENTES (Inputs, Labels, Cores)
    ======================================================= */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-input-container,
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section .pseudo-input-container {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-input-container,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section .pseudo-input-container {
     padding: 0 !important;
     margin: 0 0 6px 0 !important;
     display: flex !important;
@@ -4089,14 +4128,14 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section .pseudo
 }
 
 /* Label virtual para md-chips e Scroll Horizontal para Convidados/Categorias */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-chips {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-chips {
     display: flex !important;
     flex-direction: column !important;
     margin: 0 0 6px 0 !important;
     width: 100% !important;
 }
 
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-chips md-chips-wrap {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-chips md-chips-wrap {
     display: flex !important;
     flex-wrap: nowrap !important;
     overflow-x: auto !important;
@@ -4108,21 +4147,21 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-chip
 }
 
 /* Scrollbar Customizada para os Convidados */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-chips md-chips-wrap::-webkit-scrollbar {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-chips md-chips-wrap::-webkit-scrollbar {
     height: 6px !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-chips md-chips-wrap::-webkit-scrollbar-thumb {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-chips md-chips-wrap::-webkit-scrollbar-thumb {
     background-color: #cbd5e1 !important;
     border-radius: 4px !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-chips md-chips-wrap::-webkit-scrollbar-track {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-chips md-chips-wrap::-webkit-scrollbar-track {
     background-color: transparent !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-chips md-chips-wrap::-webkit-scrollbar-thumb {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-chips md-chips-wrap::-webkit-scrollbar-thumb {
     background-color: #475569 !important;
 }
 
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(1) md-chips::before {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(1) md-chips::before {
     content: "Adicionar uma categoria";
     position: static !important;
     font-size: 12px !important;
@@ -4131,18 +4170,18 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
     margin-bottom: 2px !important;
     display: block !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(1) md-chips::before {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(1) md-chips::before {
     color: #94a3b8 !important;
 }
 
 /* Remover placeholders nativos duplicados */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-autocomplete-wrap input::placeholder {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-autocomplete-wrap input::placeholder {
     color: transparent !important;
 }
 
 /* Labels padrão */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section label,
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section .pseudo-input-label {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section label,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section .pseudo-input-label {
     position: static !important;
     transform: none !important;
     font-size: 12px !important;
@@ -4153,23 +4192,23 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section .pseudo
     pointer-events: none !important;
     order: -1 !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section label,
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section .pseudo-input-label {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section label,
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section .pseudo-input-label {
     color: #94a3b8 !important;
 }
 
 /* Ocultar decorações nativas do Angular Material */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-input-container::after,
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-input-container::before,
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section .md-errors-spacer {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-input-container::after,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-input-container::before,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section .md-errors-spacer {
     display: none !important;
 }
 
 /* Estilo padrão de inputs, selects, autocompletes, chips */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section input.md-input:not([type="checkbox"]):not([type="radio"]),
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-select,
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section .md-resize-wrapper,
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-chips-wrap {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section input.md-input:not([type="checkbox"]):not([type="radio"]),
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-select,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section .md-resize-wrapper,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-chips-wrap {
     background-color: #f1f5f9 !important;
     border-radius: 8px !important;
     border: 1px solid transparent !important;
@@ -4184,19 +4223,19 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-chip
     box-shadow: none !important;
     width: 100% !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section input.md-input:not([type="checkbox"]):not([type="radio"]),
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-select,
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section .md-resize-wrapper,
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-chips-wrap {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section input.md-input:not([type="checkbox"]):not([type="radio"]),
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-select,
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section .md-resize-wrapper,
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-chips-wrap {
     background-color: #0b1a30 !important;
     color: #ffffff !important;
 }
 
 /* Seta dropdown nas categorias (chips) */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-chips {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-chips {
     position: relative !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-chips-wrap::after {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-chips-wrap::after {
     content: "arrow_drop_down" !important;
     font-family: "Material Icons" !important;
     color: #101223 !important;
@@ -4207,17 +4246,17 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-chip
     transform: translateY(-50%) !important;
     pointer-events: none !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-chips-wrap::after {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-chips-wrap::after {
     color: #ffffff !important;
 }
 
 /* Descrição (Textarea) */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section .md-resize-wrapper {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section .md-resize-wrapper {
     height: auto !important;
     min-height: 47px !important;
     padding: 14px 12px !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section .md-resize-wrapper textarea.md-input {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section .md-resize-wrapper textarea.md-input {
     background: transparent !important;
     border: none !important;
     padding: 0 !important;
@@ -4230,8 +4269,8 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section .md-res
 }
 
 /* Autocomplete e Chips inputs */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-chips input.md-input:not([type="checkbox"]):not([type="radio"]),
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-autocomplete-wrap input.md-input:not([type="checkbox"]):not([type="radio"]) {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-chips input.md-input:not([type="checkbox"]):not([type="radio"]),
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-autocomplete-wrap input.md-input:not([type="checkbox"]):not([type="radio"]) {
     background: transparent !important;
     border: none !important;
     padding: 0 !important;
@@ -4240,7 +4279,7 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-auto
     color: inherit !important;
     box-shadow: none !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-autocomplete-wrap {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-autocomplete-wrap {
     background: transparent !important;
     box-shadow: none !important;
     border: none !important;
@@ -4250,7 +4289,7 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-auto
 }
 
 /* Select values */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-select .md-select-value {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-select .md-select-value {
     border: none !important;
     padding: 0 !important;
     margin: 0 !important;
@@ -4262,15 +4301,15 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-sele
     justify-content: space-between !important;
     background: transparent !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-select .md-select-value > span:first-child {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-select .md-select-value > span:first-child {
     display: flex !important;
     align-items: center !important;
     flex: 1 !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-select .md-select-icon {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-select .md-select-icon {
     color: #101223 !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-select .md-select-icon {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-select .md-select-icon {
     color: #ffffff !important;
 }
 
@@ -4278,7 +4317,7 @@ body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-f
    ESTILO DO DATEPICKER E TIMEPICKER (PILLS)
    ======================================================= */
 /* Flex container para alinhar os pickers inline */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(2) div.layout-row:nth-of-type(2) > div > div[layout="row"] {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(2) div.layout-row:nth-of-type(2) > div > div[layout="row"] {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
@@ -4287,18 +4326,18 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
 }
 
 /* Datepicker */
-md-dialog:has(form[name="eventForm"]) md-datepicker {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-datepicker {
     background: transparent !important;
     border: none !important;
     padding: 0 !important;
     margin: 0 !important;
     display: inline-block !important;
 }
-md-dialog:has(form[name="eventForm"]) md-datepicker button.md-datepicker-button,
-md-dialog:has(form[name="eventForm"]) md-datepicker button.md-datepicker-triangle-button {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-datepicker button.md-datepicker-button,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-datepicker button.md-datepicker-triangle-button {
     display: none !important;
 }
-md-dialog:has(form[name="eventForm"]) md-datepicker .md-datepicker-input-container {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-datepicker .md-datepicker-input-container {
     background-color: #f1f5f9 !important;
     border-radius: 8px !important;
     border: 1px solid transparent !important;
@@ -4309,10 +4348,10 @@ md-dialog:has(form[name="eventForm"]) md-datepicker .md-datepicker-input-contain
     align-items: center !important;
     box-shadow: none !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-datepicker .md-datepicker-input-container {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-datepicker .md-datepicker-input-container {
     background-color: #0b1a30 !important;
 }
-md-dialog:has(form[name="eventForm"]) md-datepicker input.md-datepicker-input {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-datepicker input.md-datepicker-input {
     background: transparent !important;
     border: none !important;
     font-size: 13px !important;
@@ -4322,10 +4361,10 @@ md-dialog:has(form[name="eventForm"]) md-datepicker input.md-datepicker-input {
     height: 100% !important;
     padding: 0 !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-datepicker input.md-datepicker-input {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-datepicker input.md-datepicker-input {
     color: #ffffff !important;
 }
-md-dialog:has(form[name="eventForm"]) md-datepicker .md-datepicker-input-container::before {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-datepicker .md-datepicker-input-container::before {
     content: "+" !important;
     color: #00c4a9 !important;
     font-weight: bold !important;
@@ -4335,7 +4374,7 @@ md-dialog:has(form[name="eventForm"]) md-datepicker .md-datepicker-input-contain
     top: 50% !important;
     transform: translateY(-50%) !important;
 }
-md-dialog:has(form[name="eventForm"]) md-datepicker .md-datepicker-input-container::after {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-datepicker .md-datepicker-input-container::after {
     content: "event" !important;
     font-family: "Material Icons" !important;
     color: #64748b !important;
@@ -4346,19 +4385,19 @@ md-dialog:has(form[name="eventForm"]) md-datepicker .md-datepicker-input-contain
     transform: translateY(-50%) !important;
     pointer-events: none !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-datepicker .md-datepicker-input-container::after {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-datepicker .md-datepicker-input-container::after {
     color: #94a3b8 !important;
 }
 
 /* Timepicker */
-md-dialog:has(form[name="eventForm"]) sg-timepicker {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) sg-timepicker {
     position: relative !important;
     display: inline-block !important;
 }
-md-dialog:has(form[name="eventForm"]) sg-timepicker .sg-timepicker-button {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) sg-timepicker .sg-timepicker-button {
     display: none !important;
 }
-md-dialog:has(form[name="eventForm"]) sg-timepicker input {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) sg-timepicker input {
     background-color: #f1f5f9 !important;
     border-radius: 8px !important;
     border: 1px solid transparent !important;
@@ -4373,19 +4412,19 @@ md-dialog:has(form[name="eventForm"]) sg-timepicker input {
 }
 
 /* Remover border bottom/separator de md-input-container caso envolva os pickers na seção 2 */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(2) md-input-container::before,
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(2) md-input-container::after {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(2) md-input-container::before,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(2) md-input-container::after {
     display: none !important;
 }
 
 /* Alinhamento da linha "De" e "Até" e botão remover */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(2) div[ng-if] > div.layout-row,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(2) div[ng-if] > div.layout-row,
 md-dialog:has(md-icon[aria-label="assignment_turned_in"]) md-dialog-content .sg-form-section:nth-of-type(2) > div[ng-if] {
     flex-wrap: nowrap !important;
     align-items: center !important;
     gap: 8px !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(2) button[ng-click*="remove"] {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(2) button[ng-click*="remove"] {
     margin: 0 !important;
     padding: 0 !important;
     width: 24px !important;
@@ -4396,24 +4435,24 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
     color: #64748b !important;
     line-height: 24px !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(2) button[ng-click*="remove"] {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(2) button[ng-click*="remove"] {
     color: #94a3b8 !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(2) button[ng-click*="remove"] md-icon {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(2) button[ng-click*="remove"] md-icon {
     font-size: 24px !important;
     width: 24px !important;
     height: 24px !important;
 }
 
 /* Remover o botão nativo de triângulo do sg-timepicker */
-md-dialog:has(form[name="eventForm"]) sg-timepicker button.sg-timepicker-triangle-button {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) sg-timepicker button.sg-timepicker-triangle-button {
     display: none !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) sg-timepicker input {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) sg-timepicker input {
     background-color: #0b1a30 !important;
     color: #ffffff !important;
 }
-md-dialog:has(form[name="eventForm"]) sg-timepicker .sg-timepicker-input-container::after {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) sg-timepicker .sg-timepicker-input-container::after {
     content: "schedule" !important;
     font-family: "Material Icons" !important;
     color: #64748b !important;
@@ -4424,13 +4463,13 @@ md-dialog:has(form[name="eventForm"]) sg-timepicker .sg-timepicker-input-contain
     transform: translateY(-50%) !important;
     pointer-events: none !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) sg-timepicker .sg-timepicker-input-container::after {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) sg-timepicker .sg-timepicker-input-container::after {
     color: #94a3b8 !important;
 }
 
 /* Label dos Pickers De/Para */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(2) > div.layout-row:nth-of-type(2) > div > span.sg-md-caption,
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(2) > div.layout-row:nth-of-type(2) > div > label {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(2) > div.layout-row:nth-of-type(2) > div > span.sg-md-caption,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(2) > div.layout-row:nth-of-type(2) > div > label {
     font-size: 13px !important;
     font-weight: 700 !important;
     color: #0b1a30 !important;
@@ -4438,8 +4477,8 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
     display: inline-block !important;
     text-transform: none !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(2) > div.layout-row:nth-of-type(2) > div > span.sg-md-caption,
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(2) > div.layout-row:nth-of-type(2) > div > label {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(2) > div.layout-row:nth-of-type(2) > div > span.sg-md-caption,
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(2) > div.layout-row:nth-of-type(2) > div > label {
     color: #ffffff !important;
 }
 
@@ -4461,18 +4500,18 @@ body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-f
    REPETIR E CONVIDAR PARTICIPANTES
    ======================================================= */
 /* Convidar participantes */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(4) md-icon {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(4) md-icon {
     display: none !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(4) md-autocomplete {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(4) md-autocomplete {
     display: flex !important;
     flex-direction: column !important;
     width: 100% !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(4) md-autocomplete md-input-container label {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(4) md-autocomplete md-input-container label {
     display: none !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(4) md-autocomplete::before {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(4) md-autocomplete::before {
     content: "Convidar participantes" !important;
     position: static !important;
     font-size: 12px !important;
@@ -4481,10 +4520,10 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
     margin-bottom: 2px !important;
     display: block !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(4) md-autocomplete::before {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(4) md-autocomplete::before {
     color: #94a3b8 !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(4) md-autocomplete-wrap {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(4) md-autocomplete-wrap {
     position: relative !important;
     background-color: #f1f5f9 !important;
     border-radius: 8px !important;
@@ -4493,10 +4532,10 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
     align-items: center !important;
     padding-right: 32px !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(4) md-autocomplete-wrap {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(4) md-autocomplete-wrap {
     background-color: #0b1a30 !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(4) md-autocomplete-wrap::after {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(4) md-autocomplete-wrap::after {
     content: "search" !important;
     font-family: "Material Icons" !important;
     color: #64748b !important;
@@ -4507,10 +4546,10 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
     transform: translateY(-50%) !important;
     pointer-events: none !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(4) md-autocomplete-wrap::after {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(4) md-autocomplete-wrap::after {
     color: #94a3b8 !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(4) md-autocomplete-wrap input {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(4) md-autocomplete-wrap input {
     background: transparent !important;
     border: none !important;
     height: 100% !important;
@@ -4518,27 +4557,27 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
     color: #101223 !important;
     font-size: 13px !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(4) md-autocomplete-wrap input {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(4) md-autocomplete-wrap input {
     color: #ffffff !important;
 }
 
 /* =======================================================
    BOTÕES VERDES ANEXAR E MEET (Estilo simples "+ Texto")
    ======================================================= */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section > div.layout-row .md-button md-icon {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section > div.layout-row .md-button md-icon {
     display: none !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section > div.layout-row .button-label::before {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section > div.layout-row .button-label::before {
     content: "+ " !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section div.layout-row:has(.button-label) {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section div.layout-row:has(.button-label) {
     margin: 0 0 6px 0 !important;
     padding: 0 !important;
     min-height: 32px !important;
     align-items: center !important;
     position: relative !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section div.layout-row:has(.button-label) .button-label {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section div.layout-row:has(.button-label) .button-label {
     color: #00c4a9 !important;
     font-weight: 600 !important;
     font-size: 14px !important;
@@ -4547,7 +4586,7 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section div.lay
     min-height: auto !important;
     pointer-events: none !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section div.layout-row:has(.button-label) .md-button {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section div.layout-row:has(.button-label) .md-button {
     position: absolute !important;
     top: 0 !important;
     left: 0 !important;
@@ -4560,7 +4599,7 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section div.lay
     z-index: 10 !important;
     cursor: pointer !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section div.layout-row:has(.button-label) .md-button md-icon {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section div.layout-row:has(.button-label) .md-button md-icon {
     color: #00c4a9 !important;
     font-size: 20px !important;
     line-height: 20px !important;
@@ -4568,30 +4607,30 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section div.lay
     height: 20px !important;
 }
 /* No dark mode o verde pode ser o mesmo ou um pouco mais vibrante */
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section div.layout-row:has(.button-label) .button-label,
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section div.layout-row:has(.button-label) .md-button md-icon {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section div.layout-row:has(.button-label) .button-label,
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section div.layout-row:has(.button-label) .md-button md-icon {
     color: #00c4a9 !important;
 }
 
 /* Slider, Radios e Checkboxes: Cores Exatas da Imagem */
 /* Prioridade (Verde #00c4a9) */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-slider .md-thumb:after {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-slider .md-thumb:after {
     background-color: #00c4a9 !important;
     border-color: #00c4a9 !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-slider .md-track.md-track-fill {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-slider .md-track.md-track-fill {
     background-color: #00c4a9 !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-slider .md-track {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-slider .md-track {
     background-color: #cbd5e1 !important; /* Fundo cinza claro da trilha */
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-slider .md-track {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-slider .md-track {
     background-color: #334155 !important;
 }
 
 /* Privacidade (Radios: Público, Confidencial, Privado) e Checkboxes Gerais */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-radio-button,
-md-dialog:has(form[name="eventForm"]) md-checkbox {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-radio-button,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-checkbox {
     margin: 0 !important;
     display: flex !important;
     align-items: center !important;
@@ -4599,8 +4638,8 @@ md-dialog:has(form[name="eventForm"]) md-checkbox {
 }
 
 /* Remover posicionamento absoluto nativo do Material e corrigir o Top */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-radio-button .md-container,
-md-dialog:has(form[name="eventForm"]) md-checkbox .md-container {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-radio-button .md-container,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-checkbox .md-container {
     width: 16px !important;
     height: 16px !important;
     min-width: 16px !important;
@@ -4612,7 +4651,7 @@ md-dialog:has(form[name="eventForm"]) md-checkbox .md-container {
     margin: 0 !important;
 }
 
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-radio-button .md-off {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-radio-button .md-off {
     width: 16px !important;
     height: 16px !important;
     border-width: 1.5px !important;
@@ -4621,20 +4660,20 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-radi
     left: 0 !important;
     margin: 0 !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-radio-button .md-off {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-radio-button .md-off {
     border-color: #475569 !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-radio-button.md-checked .md-off {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-radio-button.md-checked .md-off {
     border-color: #00c4a9 !important;
     background-color: #00c4a9 !important; /* Preenchido como círculo sólido verde */
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-radio-button.md-checked .md-on {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-radio-button.md-checked .md-on {
     display: none !important; /* Esconder a bolinha interna pra ficar sólido */
 }
 
 /* Label dos Radios e Checkboxes (Gap já controla a distância, margem zerada) */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-radio-button .md-label,
-md-dialog:has(form[name="eventForm"]) md-checkbox .md-label {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-radio-button .md-label,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-checkbox .md-label {
     margin: 0 !important;
     padding: 0 !important;
     line-height: 1 !important;
@@ -4642,38 +4681,38 @@ md-dialog:has(form[name="eventForm"]) md-checkbox .md-label {
     font-size: 13px !important;
     font-weight: 500 !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section md-radio-button .md-label,
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-checkbox .md-label {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section md-radio-button .md-label,
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-checkbox .md-label {
     color: #94a3b8 !important;
 }
 
 /* Checkboxes (Azul #005af0) - Presente nas notificações, Lembrar, Dia todo... */
-md-dialog:has(form[name="eventForm"]) md-checkbox .md-icon {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-checkbox .md-icon {
     width: 16px !important;
     height: 16px !important;
     border-radius: 4px !important;
     border-width: 1.5px !important;
     border-color: #cbd5e1 !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-checkbox .md-icon {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-checkbox .md-icon {
     border-color: #475569 !important;
 }
-md-dialog:has(form[name="eventForm"]) md-checkbox.md-checked .md-icon {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-checkbox.md-checked .md-icon {
     background-color: #005af0 !important; /* Azul escuro/roxo do checkbox do print */
     border-color: #005af0 !important;
 }
-md-dialog:has(form[name="eventForm"]) md-checkbox .md-label {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-checkbox .md-label {
     color: #475569 !important;
     font-size: 13px !important;
     font-weight: 500 !important;
     margin-left: 8px !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-checkbox .md-label {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-checkbox .md-label {
     color: #94a3b8 !important;
 }
 
 /* Botões Anexar e Meet (+ em Verde) */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section > div.layout-row button.md-button {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section > div.layout-row button.md-button {
     background: transparent !important;
     padding: 0 !important;
     margin: 0 !important;
@@ -4682,14 +4721,14 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section > div.l
     display: flex !important;
     align-items: center !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section > div.layout-row button.md-button md-icon {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section > div.layout-row button.md-button md-icon {
     color: #00c4a9 !important;
     margin: 0 !important;
     font-size: 24px !important;
     height: 24px !important;
     width: 24px !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section > div.layout-row .button-label {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section > div.layout-row .button-label {
     color: #00c4a9 !important;
     font-weight: 600 !important;
     font-size: 14px !important;
@@ -4700,7 +4739,7 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section > div.l
 }
 
 /* Toolbar Header (Transparente para mesclar) */
-md-dialog:has(form[name="eventForm"]) md-toolbar {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-toolbar {
     background-color: transparent !important;
     color: #101223 !important;
     box-shadow: none !important;
@@ -4712,12 +4751,12 @@ md-dialog:has(form[name="eventForm"]) md-toolbar {
     width: 100% !important;
     box-sizing: border-box !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-toolbar {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-toolbar {
     color: #ffffff !important;
 }
 
 /* Flexbox para a Toolbar (Título + Ícone) */
-md-dialog:has(form[name="eventForm"]) md-toolbar .md-toolbar-tools {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-toolbar .md-toolbar-tools {
     display: flex !important;
     align-items: flex-end !important;
     padding: 0 !important;
@@ -4727,12 +4766,12 @@ md-dialog:has(form[name="eventForm"]) md-toolbar .md-toolbar-tools {
 }
 
 /* Remover os botões de maximizar/fechar temporariamente se estiverem atrapalhando (ou deixa-los normais) */
-md-dialog:has(form[name="eventForm"]) md-toolbar button.md-icon-button {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-toolbar button.md-icon-button {
     display: none !important; /* Vamos focar só no título e ícone por enquanto */
 }
 
 /* O container do input de título (Título do Evento) */
-md-dialog:has(form[name="eventForm"]) md-toolbar md-input-container {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-toolbar md-input-container {
     flex: 1 !important;
     padding: 0 !important;
     margin: 0 !important;
@@ -4741,14 +4780,14 @@ md-dialog:has(form[name="eventForm"]) md-toolbar md-input-container {
 }
 
 /* Remover a linha inferior nativa do Material Design do input de título */
-md-dialog:has(form[name="eventForm"]) md-toolbar md-input-container::after,
-md-dialog:has(form[name="eventForm"]) md-toolbar md-input-container::before,
-md-dialog:has(form[name="eventForm"]) md-toolbar md-input-container .md-errors-spacer {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-toolbar md-input-container::after,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-toolbar md-input-container::before,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-toolbar md-input-container .md-errors-spacer {
     display: none !important;
 }
 
 /* O Label do Título (Acima do input) */
-md-dialog:has(form[name="eventForm"]) md-toolbar md-input-container > label {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-toolbar md-input-container > label {
     position: static !important;
     transform: none !important;
     font-size: 14px !important;
@@ -4758,12 +4797,12 @@ md-dialog:has(form[name="eventForm"]) md-toolbar md-input-container > label {
     display: block !important;
     width: 100% !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-toolbar md-input-container > label {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-toolbar md-input-container > label {
     color: #ffffff !important;
 }
 
 /* O Input do Título (Fundo cinza/branco) */
-md-dialog:has(form[name="eventForm"]) md-toolbar md-input-container > input.md-title {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-toolbar md-input-container > input.md-title {
     background-color: #f1f5f9 !important;
     border: 1px solid #e2e8f0 !important;
     border-radius: 8px !important;
@@ -4775,28 +4814,28 @@ md-dialog:has(form[name="eventForm"]) md-toolbar md-input-container > input.md-t
     box-shadow: none !important;
     order: 2 !important; /* Força o input pra baixo da label */
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-toolbar md-input-container > input.md-title {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-toolbar md-input-container > input.md-title {
     background-color: #0b1a30 !important;
     border-color: rgba(255,255,255,0.05) !important;
     color: #ffffff !important;
 }
 
 /* Esconder os traços decorativos do angular material */
-md-dialog:has(form[name="eventForm"]) md-toolbar md-input-container::after,
-md-dialog:has(form[name="eventForm"]) md-toolbar md-input-container::before,
-md-dialog:has(form[name="eventForm"]) md-toolbar md-input-container .md-errors-spacer {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-toolbar md-input-container::after,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-toolbar md-input-container::before,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-toolbar md-input-container .md-errors-spacer {
     display: none !important;
 }
 
 /* O container interno da toolbar que segura o input */
-md-dialog:has(form[name="eventForm"]) md-toolbar .md-toolbar-item {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-toolbar .md-toolbar-item {
     flex: 1 !important;
     margin-right: 16px !important; /* Espaço entre o input e o ícone */
     display: block !important;
 }
 
 /* O ícone de Calendário (Trocando para event_available e pondo pra fora) */
-md-dialog:has(form[name="eventForm"]) md-toolbar .sg-icon-toolbar-bg {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-toolbar .sg-icon-toolbar-bg {
     position: relative !important;
     display: flex !important;
     align-items: center !important;
@@ -4810,7 +4849,7 @@ md-dialog:has(form[name="eventForm"]) md-toolbar .sg-icon-toolbar-bg {
 }
 
 /* Criando o novo ícone por cima no formato exato */
-md-dialog:has(form[name="eventForm"]) md-toolbar .sg-icon-toolbar-bg::after {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-toolbar .sg-icon-toolbar-bg::after {
     content: "event_available" !important;
     font-family: "Material Icons" !important;
     color: #0b1a30 !important; /* Azul escuro no light mode */
@@ -4821,34 +4860,34 @@ md-dialog:has(form[name="eventForm"]) md-toolbar .sg-icon-toolbar-bg::after {
     transform: translate(-50%, -50%) !important;
 }
 
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-toolbar .sg-icon-toolbar-bg::after {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-toolbar .sg-icon-toolbar-bg::after {
     color: #ffffff !important; /* Branco no dark mode */
 }
 
 /* Ocultar dividers hr nativos */
-md-dialog:has(form[name="eventForm"]) hr {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) hr {
     display: none !important;
 }
 
 /*
 --- TRECHO COMENTADO PARA FAZERMOS POR PARTES ---
 
-md-dialog:has(form[name="eventForm"]) md-input-container {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-input-container {
     padding: 0 !important;
     margin: 0 0 16px 0 !important;
     display: flex !important;
     flex-direction: column !important;
 }
 
-md-dialog:has(form[name="eventForm"]) md-input-container > label,
-md-dialog:has(form[name="eventForm"]) .pseudo-input-label {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-input-container > label,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) .pseudo-input-label {
     position: static !important;
 ... (resto do código)
 */
 
 /* ===== ESTILOS DO EDITOR DE REPETIÇÃO ===== */
 /* Alinhamento principal das linhas da seção 3 */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) > div.layout-row {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) > div.layout-row {
     display: flex !important;
     align-items: flex-end !important;
     gap: 12px !important;
@@ -4857,12 +4896,12 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
 }
 
 /* Botão de abrir/fechar editor */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) > div.layout-row > button.sg-icon-button {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) > div.layout-row > button.sg-icon-button {
     margin-bottom: 4px !important; /* Alinhar visualmente com o select de 47px */
 }
 
 /* Área do Editor Expandido (ex: A cada X dias) */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) > div[ng-show="editor.showRecurrenceEditor"] {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) > div[ng-show="editor.showRecurrenceEditor"] {
     display: flex !important;
     flex-direction: column !important;
     gap: 16px !important;
@@ -4871,12 +4910,12 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
     border-left: 2px solid #e2e8f0 !important;
 }
 
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) > div[ng-show="editor.showRecurrenceEditor"] {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) > div[ng-show="editor.showRecurrenceEditor"] {
     border-left-color: #334155 !important;
 }
 
 /* Sub-linhas do Editor Expandido (A cada X dias) */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) div[ng-show="editor.showRecurrenceEditor"] .layout-row {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) div[ng-show="editor.showRecurrenceEditor"] .layout-row {
     display: flex !important;
     align-items: center !important;
     gap: 12px !important;
@@ -4884,24 +4923,24 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
     padding: 0 !important;
 }
 
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) md-input-container {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) md-input-container {
     margin: 0 !important;
     padding: 0 !important;
 }
 
 /* Esconder os labels nativos dos selects */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) md-input-container:has(md-select) > label {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) md-input-container:has(md-select) > label {
     display: none !important;
 }
 
 /* Fake labels para os selects principais */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) md-input-container:has(md-select[ng-model="editor.component.repeat.frequency"])::before {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) md-input-container:has(md-select[ng-model="editor.component.repeat.frequency"])::before {
     content: "Repetir" !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) md-input-container:has(md-select[ng-model="editor.component.repeat.end"])::before {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) md-input-container:has(md-select[ng-model="editor.component.repeat.end"])::before {
     content: "Finalizar Repetição" !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) md-input-container:has(md-select)::before {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) md-input-container:has(md-select)::before {
     position: static !important;
     font-size: 12px !important;
     font-weight: 500 !important;
@@ -4910,12 +4949,12 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
     display: block !important;
 }
 
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) md-input-container:has(md-select)::before {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) md-input-container:has(md-select)::before {
     color: #94a3b8 !important;
 }
 
 /* Selects */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) md-select {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) md-select {
     background-color: #f1f5f9 !important;
     border-radius: 8px !important;
     padding: 8px 12px !important;
@@ -4925,13 +4964,13 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
     margin: 0 !important;
 }
 
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) md-select {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) md-select {
     background-color: #0b1a30 !important;
     color: #ffffff !important;
 }
 
 /* Inputs de número / texto ("A cada X dias") */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) input {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) input {
     background-color: #f1f5f9 !important;
     border-radius: 8px !important;
     padding: 8px 12px !important;
@@ -4941,41 +4980,41 @@ md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-
     text-align: center !important;
 }
 
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) input {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) input {
     background-color: #0b1a30 !important;
     color: #ffffff !important;
 }
 
 /* Container do input vezes */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) md-input-container:has(input[ng-model="editor.component.repeat.count"]) > label {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) md-input-container:has(input[ng-model="editor.component.repeat.count"]) > label {
     display: none !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) md-input-container:has(input[ng-model="editor.component.repeat.count"])::after {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) md-input-container:has(input[ng-model="editor.component.repeat.count"])::after {
     content: "vezes" !important;
     margin-left: 8px !important;
     color: #101223 !important;
     font-size: 14px !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) md-input-container:has(input[ng-model="editor.component.repeat.count"])::after {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) md-input-container:has(input[ng-model="editor.component.repeat.count"])::after {
     color: #ffffff !important;
 }
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) md-input-container:has(input[ng-model="editor.component.repeat.count"]) {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) md-input-container:has(input[ng-model="editor.component.repeat.count"]) {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
 }
 
 /* Remover spacer de erro para inputs da seção 3 */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) .md-errors-spacer {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) .md-errors-spacer {
     display: none !important;
 }
 
 /* Cor dos Textos nativos ("A cada", "Dias") */
-md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) div[ng-show="editor.showRecurrenceEditor"] {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) div[ng-show="editor.showRecurrenceEditor"] {
     color: #101223 !important;
     font-size: 14px !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-dialog-content .sg-form-section:nth-of-type(3) div[ng-show="editor.showRecurrenceEditor"] {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-dialog-content .sg-form-section:nth-of-type(3) div[ng-show="editor.showRecurrenceEditor"] {
     color: #ffffff !important;
 }
 
@@ -5055,12 +5094,12 @@ md-dialog:has(md-icon[aria-label="assignment_turned_in"]) md-dialog-content .sg-
 /* =======================================================
    SUBSTITUIR LABEL "URL" POR "ADICIONAR ATALHO"
    ======================================================= */
-md-dialog:has(form[name="eventForm"]) md-input-container:has(input[type="url"]) label,
-md-dialog:has(form[name="eventForm"]) md-input-container:has(input[ng-model*="attach"]) label {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-input-container:has(input[type="url"]) label,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-input-container:has(input[ng-model*="attach"]) label {
     color: transparent !important;
 }
-md-dialog:has(form[name="eventForm"]) md-input-container:has(input[type="url"]) label::before,
-md-dialog:has(form[name="eventForm"]) md-input-container:has(input[ng-model*="attach"]) label::before {
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-input-container:has(input[type="url"]) label::before,
+:is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-input-container:has(input[ng-model*="attach"]) label::before {
     content: "Adicionar atalho" !important;
     position: absolute !important;
     left: 0 !important;
@@ -5068,8 +5107,8 @@ md-dialog:has(form[name="eventForm"]) md-input-container:has(input[ng-model*="at
     color: #475569 !important;
     pointer-events: none !important;
 }
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-input-container:has(input[type="url"]) label::before,
-body.tcl-dark-mode md-dialog:has(form[name="eventForm"]) md-input-container:has(input[ng-model*="attach"]) label::before {
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-input-container:has(input[type="url"]) label::before,
+body.tcl-dark-mode :is(md-dialog:has(form[name="eventForm"]), md-dialog:has(md-icon[aria-label="assignment_turned_in"])) md-input-container:has(input[ng-model*="attach"]) label::before {
     color: #94a3b8 !important;
 }
 
@@ -6063,4 +6102,1078 @@ body.tcl-dark-mode md-dialog:has(md-icon[aria-label="event"].sg-icon-toolbar-bg)
 /* Ajuste do ícone dropdown dentro dos botões de ação */
 md-dialog:has(md-icon[aria-label="event"].sg-icon-toolbar-bg) md-dialog-actions > md-menu > button md-icon {
     color: inherit !important;
+}
+
+md-content:has(a[href*="#!/general"]) md-list-item .md-button {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Correções para a Sidebar de Preferências */
+md-content:has(a[href*="#!/general"]) .md-subheader {
+    display: none !important;
+}
+
+md-content:has(a[href*="#!/general"]) md-list-item {
+    padding-left: 16px !important;
+}
+
+md-content:has(a[href*="#!/general"]) md-list-item .md-list-item-inner {
+    padding-left: 16px !important;
+}
+
+md-content:has(a[href*="#!/general"]) md-list-item.md-bg {
+    background-color: #0e1936 !important;
+    border-radius: 0 5px 5px 0 !important;
+    margin: 4px 16px 4px 0 !important;
+    width: calc(100% - 16px) !important;
+    position: relative !important;
+}
+
+md-content:has(a[href*="#!/general"]) md-list-item.md-bg::before {
+    content: "" !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 4px !important;
+    background-color: #00cfb0 !important;
+    border-radius: 0 4px 4px 0 !important;
+    z-index: 10 !important;
+    display: block !important;
+}
+
+md-content:has(a[href*="#!/general"]) md-list-item.md-bg md-icon {
+    color: #ffffff !important;
+}
+
+md-content:has(a[href*="#!/general"]) md-list-item.md-bg p.sg-item-name {
+    color: #ffffff !important;
+    font-weight: 500 !important;
+}
+
+md-content:has(a[href*="#!/general"]) md-list-item:not(.md-bg) md-icon {
+    color: #94a3b8 !important;
+}
+
+md-content:has(a[href*="#!/general"]) md-list-item:not(.md-bg) p.sg-item-name {
+    color: #94a3b8 !important;
+}
+
+md-content:has(a[href*="#!/general"]) md-list-item:hover {
+    background-color: #1e293b !important;
+    border-radius: 0 5px 5px 0 !important;
+    margin: 4px 16px 4px 0 !important;
+    width: calc(100% - 16px) !important;
+}
+
+md-content:has(a[href*="#!/general"]) md-list-item:hover md-icon,
+md-content:has(a[href*="#!/general"]) md-list-item:hover p.sg-item-name {
+    color: #f8fafc !important;
+}
+
+md-content:has(a[href*="#!/general"]) md-list {
+    margin-top: 60px !important;
+}
+
+/* ==========================================================================
+   Header da Tela de Preferências
+   ========================================================================== */
+
+/* Desktop: Esconder o header completamente */
+@media (min-width: 960px) {
+    body:has(a[href*="#!/general"]) md-toolbar.md-tall:not(md-sidenav md-toolbar):not(md-dialog md-toolbar) {
+        display: none !important;
+    }
+}
+
+/* Mobile: Mostrar o header com as cores do tema para permitir navegação */
+@media (max-width: 959px) {
+    body:has(a[href*="#!/general"]) md-toolbar.md-tall:not(md-sidenav md-toolbar) {
+        display: flex !important;
+        flex-direction: column !important;
+        background-color: #ffffff !important;
+        color: #0f172a !important;
+        height: auto !important;
+        min-height: 64px !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+        z-index: 50 !important;
+        pointer-events: auto !important;
+    }
+    
+    body.tcl-dark-mode:has(a[href*="#!/general"]) md-toolbar.md-tall:not(md-sidenav md-toolbar) {
+        background-color: #0f172a !important;
+        color: #f8fafc !important;
+        border-bottom: 1px solid #1e293b !important;
+        box-shadow: none !important;
+    }
+    
+    body:has(a[href*="#!/general"]) md-toolbar.md-tall:not(md-sidenav md-toolbar) > .md-toolbar-tools {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    body:has(a[href*="#!/general"]) md-toolbar.md-tall:not(md-sidenav md-toolbar) .md-button md-icon {
+        color: #64748b !important;
+    }
+    body.tcl-dark-mode:has(a[href*="#!/general"]) md-toolbar.md-tall:not(md-sidenav md-toolbar) .md-button md-icon {
+        color: #94a3b8 !important;
+    }
+    
+    /* Botão de salvar no mobile */
+    body:has(a[href*="#!/general"]) md-toolbar.md-tall:not(md-sidenav md-toolbar) > button.md-fab {
+        position: fixed !important;
+        bottom: 24px !important;
+        right: 24px !important;
+        top: auto !important;
+        z-index: 100 !important;
+        pointer-events: auto !important;
+        display: flex !important;
+    }
+}
+
+/* ==========================================================================
+   Preferências - Conteúdo Principal (Layout Premium com seções)
+   ========================================================================== */
+
+/* Esconder md-tabs-wrapper APENAS na aba de Geral (que só tem 1 aba inútil) */
+body:has(a[href*="#!/general"]) md-tabs:has(#generalOptionsView-content) > md-tabs-wrapper {
+    display: none !important;
+}
+
+/* Exibir e estilizar md-tabs-wrapper no Calendário (que tem 3 abas) */
+body:has(a[href*="#!/general"]) md-tabs:has(#calendarOptionsView-content) > md-tabs-wrapper {
+    display: block !important;
+    background-color: #ffffff !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-tabs:has(#calendarOptionsView-content) > md-tabs-wrapper {
+    background-color: #0b111e !important;
+}
+
+/* Área de scroll do conteúdo */
+body:has(a[href*="#!/general"]) section[layout-fill] > md-content {
+    background-color: #f1f5f9 !important;
+    overflow-y: auto !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) section[layout-fill] > md-content {
+    background-color: #0b111e !important;
+}
+
+/* Caixa de conteúdo principal */
+body:has(a[href*="#!/general"]) md-content.md-inline-form {
+    background-color: #ffffff !important;
+    border-radius: 16px !important;
+    margin: 24px 24px 24px 24px !important;
+    padding: 40px 40px 120px 40px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+    position: relative !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-content.md-inline-form {
+    background-color: #0f172a !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4) !important;
+}
+
+/* Título "Geral" */
+body:has(a[href*="#!/general"]) md-content.md-inline-form > div.flex-100::before {
+    content: "Geral";
+    display: block;
+    font-size: 28px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 4px;
+    margin-left: 8px;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-content.md-inline-form > div.flex-100::before {
+    color: #f8fafc;
+}
+
+/* Subtítulo */
+body:has(a[href*="#!/general"]) md-content.md-inline-form > div.flex-100::after {
+    content: "Personalize as configurações e Preferências do sistema";
+    display: block;
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e2e8f0;
+    margin-left: 8px;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-content.md-inline-form > div.flex-100::after {
+    color: #64748b;
+    border-bottom-color: #1e293b;
+}
+
+/* Campo de Versão do SOGo - reposicionar no canto superior direito */
+body:has(a[href*="#!/general"]) md-content.md-inline-form md-input-container:has(input[id="input_17"]) {
+    position: absolute !important;
+    top: 40px !important;
+    right: 40px !important;
+    width: auto !important;
+    text-align: right !important;
+    margin: 0 !important;
+}
+body:has(a[href*="#!/general"]) md-content.md-inline-form md-input-container:has(input[id="input_17"]) label {
+    text-align: right !important;
+    font-size: 11px !important;
+    color: #94a3b8 !important;
+}
+body:has(a[href*="#!/general"]) md-content.md-inline-form md-input-container:has(input[id="input_17"]) input {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    color: #00cfb0 !important;
+    text-align: right !important;
+    padding: 0 !important;
+    height: auto !important;
+    pointer-events: none !important;
+}
+
+/* ── LABELS genéricos ── */
+body:has(a[href*="#!/general"]) md-input-container label {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.06em !important;
+    color: #94a3b8 !important;
+    margin-bottom: 4px !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-input-container label {
+    color: #475569 !important;
+}
+
+/* ── SELECTS ── */
+body:has(a[href*="#!/general"]) md-input-container md-select {
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    height: 44px !important;
+    padding: 0 12px !important;
+    box-shadow: none !important;
+    transition: border-color 0.2s !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-input-container md-select {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+}
+body:has(a[href*="#!/general"]) md-input-container md-select:focus,
+body:has(a[href*="#!/general"]) md-input-container md-select.md-open {
+    border-color: #00cfb0 !important;
+    box-shadow: 0 0 0 3px rgba(0, 207, 176, 0.15) !important;
+}
+
+body:has(a[href*="#!/general"]) md-input-container md-select .md-select-value {
+    font-size: 14px !important;
+    color: #0f172a !important;
+    border: none !important;
+    padding: 0 !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-input-container md-select .md-select-value {
+    color: #f8fafc !important;
+}
+
+body:has(a[href*="#!/general"]) md-input-container md-select .md-select-icon {
+    color: #64748b !important;
+}
+
+/* ── INPUTS de texto ── */
+body:has(a[href*="#!/general"]) md-input-container input.md-input {
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    height: 44px !important;
+    padding: 0 12px !important;
+    font-size: 14px !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-input-container input.md-input {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+/* ── AUTOCOMPLETE (Fuso Horário) ── */
+body:has(a[href*="#!/general"]) md-autocomplete md-autocomplete-wrap {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+/* ── CHECKBOXES ── */
+body:has(a[href*="#!/general"]) md-checkbox .md-icon {
+    border-color: #cbd5e1 !important;
+    border-radius: 4px !important;
+    background: #f8fafc !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-checkbox .md-icon {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+body:has(a[href*="#!/general"]) md-checkbox.md-checked .md-icon {
+    background-color: #00cfb0 !important;
+    border-color: #00cfb0 !important;
+}
+body:has(a[href*="#!/general"]) md-checkbox .md-label {
+    font-size: 14px !important;
+    color: #0f172a !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-checkbox .md-label {
+    color: #f8fafc !important;
+}
+
+/* ── RADIO BUTTONS ── */
+body:has(a[href*="#!/general"]) md-radio-button .md-on {
+    background-color: #00cfb0 !important;
+}
+body:has(a[href*="#!/general"]) md-radio-button.md-checked .md-off {
+    border-color: #00cfb0 !important;
+}
+body:has(a[href*="#!/general"]) md-radio-button .md-label {
+    font-size: 14px !important;
+    color: #0f172a !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-radio-button .md-label {
+    color: #f8fafc !important;
+}
+
+/* ── BOTÃO SALVAR ── */
+body:has(a[href*="#!/general"]) button.md-fab[ng-click*="save"] {
+    position: fixed !important;
+    bottom: 32px !important;
+    right: 32px !important;
+    width: auto !important;
+    min-width: 160px !important;
+    height: 48px !important;
+    border-radius: 12px !important;
+    padding: 0 24px !important;
+    background-color: #00cfb0 !important;
+    color: #0f172a !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 14px rgba(0, 207, 176, 0.4) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 100 !important;
+    pointer-events: auto !important;
+    letter-spacing: 0.01em !important;
+    transition: box-shadow 0.2s, transform 0.1s !important;
+}
+body:has(a[href*="#!/general"]) button.md-fab[ng-click*="save"]:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(0, 207, 176, 0.5) !important;
+    transform: translateY(-1px) !important;
+}
+body:has(a[href*="#!/general"]) button.md-fab[ng-click*="save"]::after {
+    content: "Salvar alterações";
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+}
+body:has(a[href*="#!/general"]) button.md-fab[ng-click*="save"] md-icon {
+    display: none !important;
+}
+body:has(a[href*="#!/general"]) button.md-fab[ng-click*="save"]:disabled {
+    background-color: #e2e8f0 !important;
+    color: #94a3b8 !important;
+    box-shadow: none !important;
+    cursor: not-allowed !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) button.md-fab[ng-click*="save"]:disabled {
+    background-color: #1e293b !important;
+    color: #475569 !important;
+}
+
+/* ==========================================================================
+   Preferências - Títulos de Seção, HR e Fundo Branco
+   ========================================================================== */
+
+/* Fundo totalmente branco, sem card */
+body:has(a[href*="#!/general"]) section[layout-fill] > md-content {
+    background-color: #ffffff !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) section[layout-fill] > md-content {
+    background-color: #0b111e !important;
+}
+
+body:has(a[href*="#!/general"]) md-content.md-inline-form {
+    background-color: #ffffff !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    padding: 48px 56px 120px 56px !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-content.md-inline-form {
+    background-color: #0b111e !important;
+}
+
+/* Títulos de seção injetados via JS */
+.tcl-pref-section-title {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #0f172a !important;
+    margin: 24px 8px 16px 8px !important;
+    padding: 0 !important;
+    letter-spacing: -0.01em !important;
+}
+body.tcl-dark-mode .tcl-pref-section-title {
+    color: #f8fafc !important;
+}
+
+/* Linha divisória entre seções */
+.tcl-pref-hr {
+    border: none !important;
+    border-top: 1px solid #e2e8f0 !important;
+    margin: 28px 0 0 0 !important;
+    display: block !important;
+}
+body.tcl-dark-mode .tcl-pref-hr {
+    border-top-color: #1e293b !important;
+}
+
+/* Selects com texto centralizado verticalmente */
+body:has(a[href*="#!/general"]) md-input-container md-select .md-select-value {
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+}
+
+/* Selects e inputs com valores centralizados */
+body:has(a[href*="#!/general"]) md-input-container md-select {
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Ocultar campo "Versão do SOGo" e reposicionamento */
+body:has(a[href*="#!/general"]) md-input-container:has(input[id="input_17"]) {
+    display: none !important;
+}
+
+/* Título "Geral" + subtítulo sem referenciar versão */
+body:has(a[href*="#!/general"]) md-content.md-inline-form > div.flex-100::before {
+    padding-right: 0 !important;
+}
+
+/* Rodapé do formulário de preferências */
+.tcl-pref-footer {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    margin-top: 40px !important;
+    padding-top: 24px !important;
+    border-top: 1px solid #e2e8f0 !important;
+}
+body.tcl-dark-mode .tcl-pref-footer {
+    border-top-color: #1e293b !important;
+}
+
+/* Botão "Salvar alterações" no rodapé */
+.tcl-pref-save-button {
+    background-color: #00cfb0 !important;
+    color: #0f172a !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 0 28px !important;
+    height: 48px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 14px rgba(0, 207, 176, 0.35) !important;
+    transition: box-shadow 0.2s, transform 0.1s !important;
+    letter-spacing: 0.01em !important;
+    font-family: inherit !important;
+}
+.tcl-pref-save-button:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(0, 207, 176, 0.5) !important;
+    transform: translateY(-1px) !important;
+}
+.tcl-pref-save-button.tcl-pref-save-disabled,
+.tcl-pref-save-button:disabled {
+    background-color: #e2e8f0 !important;
+    color: #94a3b8 !important;
+    box-shadow: none !important;
+    cursor: not-allowed !important;
+}
+body.tcl-dark-mode .tcl-pref-save-button.tcl-pref-save-disabled,
+body.tcl-dark-mode .tcl-pref-save-button:disabled {
+    background-color: #1e293b !important;
+    color: #475569 !important;
+}
+
+/* Remove subtítulo "Personalize..." e ajusta padding da área de conteúdo */
+body:has(a[href*="#!/general"]) md-content.md-inline-form > div.flex-100::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* Remove padding excessivo do md-padding nativo */
+body:has(a[href*="#!/general"]) md-content.md-inline-form.md-padding {
+    padding: 48px 56px 60px 56px !important;
+}
+
+/* Remove margin/padding extra dos md-input-container internos */
+body:has(a[href*="#!/general"]) md-content.md-inline-form md-input-container {
+    margin-bottom: 12px !important;
+    margin-top: 4px !important;
+}
+
+/* Reduz espaçamento entre linhas de campos */
+body:has(a[href*="#!/general"]) md-content.md-inline-form div[layout="row"],
+body:has(a[href*="#!/general"]) md-content.md-inline-form div[layout-xs="column"] {
+    margin-bottom: 0 !important;
+}
+
+/* Subtítulo injetado via JS abaixo do título "Geral" */
+.tcl-pref-subtitle {
+    font-size: 13px !important;
+    color: #64748b !important;
+    margin: 0 0 0 8px !important;
+    padding: 0 !important;
+    line-height: 1.5 !important;
+}
+body.tcl-dark-mode .tcl-pref-subtitle {
+    color: #475569 !important;
+}
+
+/* ==========================================================================
+   Preferências - Calendário (todas as abas: Geral, Categorias, Convites)
+   ========================================================================== */
+
+/* Fundo branco na área de conteúdo do calendário */
+body:has(a[href*="#!/general"]) #calendarOptionsView-content,
+body:has(a[href*="#!/general"]) md-tab-content:has(#calendarOptionsView-content) md-content,
+body:has(a[href*="#!/general"]) md-tab-content md-content.md-padding:not(.md-inline-form) {
+    background-color: #ffffff !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) #calendarOptionsView-content,
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-tab-content md-content.md-padding:not(.md-inline-form) {
+    background-color: #0b111e !important;
+}
+
+/* Padding do conteúdo de cada aba */
+body:has(a[href*="#!/general"]) #calendarOptionsView-content {
+    padding: 40px 56px 80px 56px !important;
+}
+body:has(a[href*="#!/general"]) #calendarOptionsView-content.md-padding {
+    padding: 40px 56px 80px 56px !important;
+}
+
+
+
+
+
+/* ── Estilo das Abas (Geral / Categorias / Convites) ── */
+body:has(a[href*="#!/general"]) md-tabs md-tabs-canvas {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-tabs md-tabs-canvas {
+    background-color: #0b111e !important;
+    border-bottom-color: #1e293b !important;
+}
+body:has(a[href*="#!/general"]) md-tabs md-tab-item {
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: #64748b !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    padding: 0 20px !important;
+    min-height: 44px !important;
+    opacity: 1 !important;
+}
+body:has(a[href*="#!/general"]) md-tabs md-tab-item.md-active {
+    color: #00cfb0 !important;
+    font-weight: 600 !important;
+}
+body:has(a[href*="#!/general"]) md-tabs md-ink-bar {
+    background-color: #00cfb0 !important;
+    height: 2px !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-tabs md-tab-item {
+    color: #475569 !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-tabs md-tab-item.md-active {
+    color: #00cfb0 !important;
+}
+
+/* ── Dias da Semana (grid tiles) ── */
+body:has(a[href*="#!/general"]) md-grid-list md-grid-tile.sg-icon-button {
+    border-radius: 6px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: background 0.15s, color 0.15s !important;
+    border: 1.5px solid #e2e8f0 !important;
+    background-color: #f8fafc !important;
+    color: #475569 !important;
+}
+body:has(a[href*="#!/general"]) md-grid-list md-grid-tile.sg-icon-button.md-accent.md-bg {
+    background-color: #00cfb0 !important;
+    border-color: #00cfb0 !important;
+    color: #0f172a !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-grid-list md-grid-tile.sg-icon-button {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+    color: #94a3b8 !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-grid-list md-grid-tile.sg-icon-button.md-accent.md-bg {
+    background-color: #00cfb0 !important;
+    border-color: #00cfb0 !important;
+    color: #0f172a !important;
+}
+body:has(a[href*="#!/general"]) .pseudo-input-container {
+    margin: 16px 0 12px 0 !important;
+    align-items: flex-start !important;
+    flex-direction: column !important;
+}
+body:has(a[href*="#!/general"]) .pseudo-input-label {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+    color: #64748b !important;
+    margin-bottom: 8px !important;
+}
+
+/* ── Aba Categorias - Layout Teclat Premium ── */
+body:has(a[href*="#!/general"]) md-tab-content md-content.md-padding {
+    padding: 40px 56px 80px 56px !important;
+    background-color: #ffffff !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-tab-content md-content.md-padding {
+    background-color: #0b111e !important;
+}
+
+/* Container do Grid de Categorias (Responsivo) */
+body:has(a[href*="#!/general"]) md-list.layout-wrap {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    gap: 16px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Item Individual da Categoria */
+body:has(a[href*="#!/general"]) md-list.layout-wrap md-list-item.md-no-proxy {
+    background-color: #f1f5f9 !important;
+    border-radius: 8px !important;
+    margin: 0 !important; /* Margem controlada pelo 'gap' do grid */
+    width: 100% !important;
+    max-width: none !important;
+    flex: none !important; /* Anula o flex interno do Angular */
+    padding: 6px 12px !important;
+    min-height: 52px !important;
+    display: flex !important;
+    align-items: center !important;
+    border: 1px solid #e2e8f0 !important;
+    box-sizing: border-box !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-list.layout-wrap md-list-item.md-no-proxy {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+/* Esconder md-secondary-container se ele aparecer para não quebrar o flex */
+body:has(a[href*="#!/general"]) md-list.layout-wrap md-list-item.md-no-proxy .md-secondary-container {
+    display: none !important;
+}
+
+/* 1. Botão de Remover (Lado Esquerdo, Traço "—") -> Ordem 1 */
+body:has(a[href*="#!/general"]) md-list.layout-wrap md-list-item.md-no-proxy button[ng-click*="Category"] {
+    order: 1 !important;
+    min-width: 24px !important;
+    width: 24px !important;
+    height: 24px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 4px !important;
+}
+body:has(a[href*="#!/general"]) md-list.layout-wrap md-list-item.md-no-proxy button[ng-click*="Category"] md-icon {
+    display: none !important; /* Esconde o ícone feio */
+}
+body:has(a[href*="#!/general"]) md-list.layout-wrap md-list-item.md-no-proxy button[ng-click*="Category"]::before {
+    content: "" !important;
+    display: block !important;
+    width: 14px !important;
+    height: 1.5px !important;
+    background-color: #0f172a !important; /* Traço preto do design */
+    border-radius: 2px !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-list.layout-wrap md-list-item.md-no-proxy button[ng-click*="Category"]::before {
+    background-color: #f8fafc !important;
+}
+
+/* 2. Campo de Texto (Meio) -> Ordem 2 */
+body:has(a[href*="#!/general"]) md-list.layout-wrap md-list-item.md-no-proxy md-input-container {
+    order: 2 !important;
+    flex-grow: 1 !important;
+    margin: 0 16px !important;
+    padding: 0 !important;
+    height: auto !important;
+}
+body:has(a[href*="#!/general"]) md-list.layout-wrap md-list-item.md-no-proxy md-input-container input {
+    border: none !important;
+    background: transparent !important;
+    color: #0f172a !important;
+    font-size: 14px !important;
+    height: 100% !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-list.layout-wrap md-list-item.md-no-proxy md-input-container input {
+    color: #f8fafc !important;
+}
+body:has(a[href*="#!/general"]) md-list.layout-wrap md-list-item.md-no-proxy md-input-container .md-errors-spacer {
+    display: none !important;
+}
+
+/* 3. Ícone de Cor (Lado Direito, Quadrado Branco) -> Ordem 3 */
+body:has(a[href*="#!/general"]) md-list.layout-wrap md-list-item.md-no-proxy sg-color-picker {
+    order: 3 !important;
+    background-color: #ffffff !important;
+    border-radius: 6px !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06) !important;
+    border: 1px solid #e2e8f0 !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-list.layout-wrap md-list-item.md-no-proxy sg-color-picker {
+    background-color: #0b111e !important;
+    border-color: #1e293b !important;
+}
+body:has(a[href*="#!/general"]) md-list.layout-wrap md-list-item.md-no-proxy sg-color-picker button {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+    display: block !important;
+    border-radius: 6px !important;
+}
+body:has(a[href*="#!/general"]) md-list.layout-wrap md-list-item.md-no-proxy sg-color-picker button md-icon {
+    font-size: 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    min-height: 18px !important;
+    min-width: 18px !important;
+    line-height: 18px !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Botões de categoria (Adicionar / Redefinir) */
+body:has(a[href*="#!/general"]) div[layout-align="end center"] > button.md-button {
+    border-radius: 8px !important;
+    border: 1px solid #e2e8f0 !important;
+    padding: 0 16px !important;
+    height: 38px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: #0f172a !important;
+    background-color: #f8fafc !important;
+    margin-left: 8px !important;
+}
+body:has(a[href*="#!/general"]) div[layout-align="end center"] > button.md-button:last-child {
+    background-color: #00cfb0 !important;
+    border-color: #00cfb0 !important;
+    color: #0f172a !important;
+    font-weight: 600 !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) div[layout-align="end center"] > button.md-button {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) div[layout-align="end center"] > button.md-button:last-child {
+    background-color: #00cfb0 !important;
+    color: #0f172a !important;
+}
+
+/* Botão de remover categoria (ícone) */
+body:has(a[href*="#!/general"]) md-list-item button.sg-icon-button md-icon {
+    color: #ef4444 !important;
+    font-size: 20px !important;
+}
+
+/* ── Botão Salvar na aba Calendário (position fixed sobrepõe toolbar hidden) ── */
+/* O toolbar está hidden, então usamos a mesma abordagem do General */
+body:has(a[href*="#!/general"]) md-tabs:has(#calendarOptionsView-content) ~ button.md-fab[ng-click*="save"],
+body:has(a[href*="#!/general"]) button.md-fab[ng-click*="save"]:not(md-sidenav button):not(md-dialog button) {
+    position: fixed !important;
+    bottom: 32px !important;
+    right: 32px !important;
+    width: auto !important;
+    height: 48px !important;
+    border-radius: 12px !important;
+    background-color: #00cfb0 !important;
+    color: #0f172a !important;
+    box-shadow: 0 4px 14px rgba(0, 207, 176, 0.35) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 9999 !important;
+    pointer-events: auto !important;
+    letter-spacing: 0.01em !important;
+    transition: box-shadow 0.2s, transform 0.1s !important;
+    padding: 0 28px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+}
+
+/* ==========================================================================
+   Estilização das Abas de Calendário e Botão Injetado
+   ========================================================================== */
+
+
+/* ── Estilo das Abas (Geral, Categorias, Convites) ── */
+body:has(a[href*="#!/general"]) md-tabs md-tabs-canvas {
+    border-bottom: none !important; /* Sem linha embaixo de tudo */
+    padding-left: 50px !important; /* Alinhamento com o design */
+}
+
+body:has(a[href*="#!/general"]) md-tabs md-pagination-wrapper {
+    width: auto !important;
+}
+
+body:has(a[href*="#!/general"]) md-tabs md-tab-item {
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    color: #0f172a !important; /* Azul escuro do Teclat Premium */
+    text-transform: none !important;
+    padding: 0 20px !important;
+    min-height: 48px !important;
+    max-width: none !important;
+}
+
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-tabs md-tab-item {
+    color: #e2e8f0 !important;
+}
+
+body:has(a[href*="#!/general"]) md-tabs md-tab-item.md-active {
+    color: #0f172a !important;
+    font-weight: 600 !important;
+}
+
+body.tcl-dark-mode:has(a[href*="#!/general"]) md-tabs md-tab-item.md-active {
+    color: #f8fafc !important;
+}
+
+body:has(a[href*="#!/general"]) md-tabs md-ink-bar {
+    background-color: #00cfb0 !important; /* Linha Ciano na aba ativa */
+    height: 3px !important;
+    bottom: 0 !important;
+}
+
+/* Remover o subtítulo duplicado nas outras abas via CSS */
+body:has(a[href*="#!/general"]) #calendarCategories-content::before,
+body:has(a[href*="#!/general"]) #calendarCategories-content::after,
+body:has(a[href*="#!/general"]) #calendarInvitationsTab-content::before,
+body:has(a[href*="#!/general"]) #calendarInvitationsTab-content::after {
+    display: none !important;
+}
+
+
+
+/* ==========================================================================
+   Título de Calendário Global (Acima das abas)
+   ========================================================================== */
+
+/* Garantir que o container principal tenha padding para o título */
+body:has(a[href*="#!/general"]) div[ui-view="module"]:has(#calendarOptionsView-content) {
+    padding: 40px 56px 0 56px !important;
+    background-color: #ffffff !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) div[ui-view="module"]:has(#calendarOptionsView-content) {
+    background-color: #0b111e !important;
+}
+
+
+
+/* ── Título "Calendário" ── */
+body:has(a[href*="#!/general"]) div[ui-view="module"]:has(#calendarOptionsView-content)::before {
+    content: "Calendário" !important;
+    display: block !important;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    letter-spacing: -0.02em !important;
+    margin: 0 0 4px 0 !important;
+    padding: 0 !important;
+    line-height: 1.2 !important;
+}
+
+/* ── Subtítulo (Anexado antes do wrapper de abas para manter a ordem) ── */
+body:has(a[href*="#!/general"]) div[ui-view="module"]:has(#calendarOptionsView-content) > md-tabs::before {
+    content: "Personalize as configurações e Preferências do sistema" !important;
+    display: block !important;
+    font-size: 13px !important;
+    color: #64748b !important;
+    margin: 0 0 24px 0 !important;
+    padding: 0 !important;
+    line-height: 1.5 !important;
+}
+
+body.tcl-dark-mode:has(a[href*="#!/general"]) div[ui-view="module"]:has(#calendarOptionsView-content)::before {
+    color: #f8fafc !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) div[ui-view="module"]:has(#calendarOptionsView-content) > md-tabs::before {
+    color: #94a3b8 !important;
+}
+
+/* Reduzir o padding top do conteúdo das abas, já que o título está fora agora */
+body:has(a[href*="#!/general"]) #calendarOptionsView-content,
+body:has(a[href*="#!/general"]) md-tab-content md-content.md-padding {
+    padding-top: 32px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* Alinhar as tabs mais para a esquerda e manter padding 0 para acompanhar o título */
+body:has(a[href*="#!/general"]) md-tabs md-tabs-canvas {
+    padding-left: 0 !important; 
+    margin-left: -16px !important;
+}
+
+/* Forçar abas a renderizarem ignorando o bug do max-width: 0px do Angular Material */
+body:has(a[href*="#!/general"]) md-tabs md-tab-item {
+    max-width: none !important;
+    min-width: 80px !important;
+    opacity: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+body:has(a[href*="#!/general"]) md-pagination-wrapper {
+    width: auto !important;
+}
+
+/* ==========================================================================
+   Título de Contatos Global
+   ========================================================================== */
+
+/* Padding do container principal */
+body:has(a[href*="#!/general"]) div[ui-view="module"]:has(#contactsCategoriesView-content) {
+    padding: 40px 56px 0 56px !important;
+    background-color: #ffffff !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) div[ui-view="module"]:has(#contactsCategoriesView-content) {
+    background-color: #0b111e !important;
+}
+
+/* ── Título "Contatos" ── */
+body:has(a[href*="#!/general"]) div[ui-view="module"]:has(#contactsCategoriesView-content)::before {
+    content: "Contatos" !important;
+    display: block !important;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    letter-spacing: -0.02em !important;
+    margin: 0 0 4px 0 !important;
+    padding: 0 !important;
+    line-height: 1.2 !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) div[ui-view="module"]:has(#contactsCategoriesView-content)::before {
+    color: #f8fafc !important;
+}
+
+/* ── Subtítulo ── */
+body:has(a[href*="#!/general"]) div[ui-view="module"]:has(#contactsCategoriesView-content) > md-tabs::before {
+    content: "Personalize as configurações e Preferências de Contatos" !important;
+    display: block !important;
+    font-size: 13px !important;
+    color: #64748b !important;
+    margin: 0 0 24px 0 !important;
+    padding: 0 !important;
+    line-height: 1.5 !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) div[ui-view="module"]:has(#contactsCategoriesView-content) > md-tabs::before {
+    color: #94a3b8 !important;
+}
+
+/* Reduzir padding top do conteúdo das abas */
+body:has(a[href*="#!/general"]) #contactsCategoriesView-content {
+    padding-top: 32px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* Esconder md-tabs-wrapper em Contatos, pois só tem 1 aba (Categorias) */
+body:has(a[href*="#!/general"]) md-tabs:has(#contactsCategoriesView-content) > md-tabs-wrapper {
+    display: none !important;
+}
+
+
+/* ==========================================================================
+   Título de Correio Global
+   ========================================================================== */
+
+/* Padding do container principal */
+body:has(a[href*="#!/general"]) div[ui-view="module"]:has(#mailGeneralView-content) {
+    padding: 40px 56px 0 56px !important;
+    background-color: #ffffff !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) div[ui-view="module"]:has(#mailGeneralView-content) {
+    background-color: #0b111e !important;
+}
+
+/* ── Título "Correio" ── */
+body:has(a[href*="#!/general"]) div[ui-view="module"]:has(#mailGeneralView-content)::before {
+    content: "Correio" !important;
+    display: block !important;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    letter-spacing: -0.02em !important;
+    margin: 0 0 4px 0 !important;
+    padding: 0 !important;
+    line-height: 1.2 !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) div[ui-view="module"]:has(#mailGeneralView-content)::before {
+    color: #f8fafc !important;
+}
+
+/* ── Subtítulo ── */
+body:has(a[href*="#!/general"]) div[ui-view="module"]:has(#mailGeneralView-content) > md-tabs::before {
+    content: "Personalize as configurações e Preferências de Correio" !important;
+    display: block !important;
+    font-size: 13px !important;
+    color: #64748b !important;
+    margin: 0 0 24px 0 !important;
+    padding: 0 !important;
+    line-height: 1.5 !important;
+}
+body.tcl-dark-mode:has(a[href*="#!/general"]) div[ui-view="module"]:has(#mailGeneralView-content) > md-tabs::before {
+    color: #94a3b8 !important;
+}
+
+/* Padronização dos espaçamentos internos para a aba de Correio */
+body:has(a[href*="#!/general"]) #mailGeneralView-content {
+    padding-top: 32px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* Afastar um pouco os blocos de opções (checkboxes e selects) para respirar melhor */
+body:has(a[href*="#!/general"]) #mailGeneralView-content > div {
+    margin-bottom: 24px !important;
+}
+
+/* Fundo branco transparente para todas as abas de Preferências */
+body:has(a[href*="#!/general"]) div[ui-view="module"] md-content {
+    background-color: transparent !important;
 }
