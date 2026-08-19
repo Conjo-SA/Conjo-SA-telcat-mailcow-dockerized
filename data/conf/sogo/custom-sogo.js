@@ -242,21 +242,20 @@
 
       footer.innerHTML = `
         <div class="tcl-footer-menu">
-          <!-- Popup do Menu -->
           <div class="tcl-menu-popup" id="tcl-menu-popup">
-            <div class="tcl-menu-popup-item" onclick="window.location.href='../Mail'">
+            <div class="tcl-menu-popup-item" onclick="window.location.href='/SOGo/so/${userEmail}/Mail'">
               <md-icon class="material-icons">email</md-icon>
               <span>Correio</span>
             </div>
-            <div class="tcl-menu-popup-item" onclick="window.location.href='../Calendar'">
+            <div class="tcl-menu-popup-item" onclick="window.location.href='/SOGo/so/${userEmail}/Calendar'">
               <md-icon class="material-icons">event</md-icon>
               <span>Calendário</span>
             </div>
-            <div class="tcl-menu-popup-item" onclick="window.location.href='../Contacts'">
+            <div class="tcl-menu-popup-item" onclick="window.location.href='/SOGo/so/${userEmail}/Contacts'">
               <md-icon class="material-icons">contacts</md-icon>
               <span>Contatos</span>
             </div>
-            <div class="tcl-menu-popup-item" onclick="window.location.href='https://mail.localhost:8443/SOGo/so/${userEmail}/Preferences#!/general'">
+            <div class="tcl-menu-popup-item" onclick="window.location.href='/SOGo/so/${userEmail}/Preferences#!/general'">
               <md-icon class="material-icons">build</md-icon>
               <span>Preferências</span>
             </div>
@@ -293,6 +292,56 @@
       sidenavContent.appendChild(footer);
     }
   }
+
+  // Inject top header into all mobile views dynamically
+  setInterval(function() {
+    if (window.innerWidth < 960) {
+      // Find the best container to inject the header
+      // It can be view-list, view-detail, preferences module, or the main content view itself
+      var container = document.querySelector('.view-list') || 
+                      document.querySelector('.view-detail') ||
+                      document.querySelector('div[ui-view="module"]') ||
+                      document.querySelector('md-content[ui-view="content"]');
+                      
+      if (container && !document.getElementById('tcl-mobile-calendar-header')) {
+        var headerHTML = `
+          <md-toolbar id="tcl-mobile-calendar-header" class="md-tall _md layout-align-space-between-start layout-row _md-toolbar-transitions" layout-align="space-between start" layout="row" style="flex: none; z-index: 50;">
+            <div layout="row" class="md-toolbar-tools sg-toolbar-group-1 layout-row">
+              <button class="md-icon-button hide-gt-md md-button md-ink-ripple tcl-item-menu" type="button" aria-label="Alternar Menu" onclick="var btn = document.querySelector('button[ng-click*=\\'toggleLeft()\\']'); if(btn){btn.click();} else { var sn = document.querySelector('md-sidenav'); if(sn) sn.classList.toggle('md-closed'); var bd = document.querySelector('md-backdrop'); if(bd) bd.classList.toggle('ng-hide'); }">
+                <md-icon class="material-icons" role="img" aria-hidden="true">menu</md-icon>
+              </button>
+            </div>
+            <div class="md-toolbar-tools sg-toolbar-group-last layout-align-end-center layout-row" layout-align="end center" layout="row">
+              <a class="md-icon-button md-button md-ink-ripple" href="Calendar">
+                <md-icon class="material-icons">event</md-icon>
+              </a>
+              <a class="md-icon-button md-button md-ink-ripple" href="Contacts">
+                <md-icon class="material-icons">contacts</md-icon>
+              </a>
+              <a class="md-icon-button md-button md-ink-ripple" href="Mail">
+                <md-icon class="material-icons">email</md-icon>
+              </a>
+              <a class="md-icon-button md-button md-ink-ripple" href="Preferences#!/general">
+                <md-icon class="material-icons">build</md-icon>
+              </a>
+              <a class="md-icon-button md-button md-ink-ripple" href="#" onclick="if(typeof mc_logout==='function'){mc_logout();}else{window.location.href='/SOGo/logoff';}">
+                <md-icon class="material-icons">settings_power</md-icon>
+              </a>
+            </div>
+          </md-toolbar>
+        `;
+        
+        var tempDiv = document.createElement('div');
+        tempDiv.innerHTML = headerHTML;
+        container.insertBefore(tempDiv.firstElementChild, container.firstChild);
+      }
+    } else {
+      var header = document.getElementById('tcl-mobile-calendar-header');
+      if (header && window.innerWidth >= 960) {
+        header.remove();
+      }
+    }
+  }, 500);
 
   function applyCustomAvatars() {
     // Retiramos o :not(.tcl-avatar-applied) para que o script sempre verifique
@@ -878,6 +927,8 @@ if (typeof CKEDITOR !== "undefined") {
 // ── Preferências: Botão Salvar em TODAS as abas ──────────────────────────────
 (function() {
     function injectUniversalSaveButton() {
+        if (window.location.href.indexOf('Preferences') === -1) return;
+
         // Encontra abas ativas (md-tab-content > div) OU painéis sem aba (md-content direto no module)
         var selectors = [
             'md-tab-content > div[md-tabs-template]', 
@@ -904,6 +955,10 @@ if (typeof CKEDITOR !== "undefined") {
             var container = content.querySelector('[role="tabpanel"]:not(md-tab-content)') || 
                             content.querySelector('md-content:not([ng-include]):not([role="listbox"])') || 
                             content;
+
+            var innerContainer = container.querySelector('div.layout-column.flex-100') || 
+                                 container.querySelector('div[layout="column"][flex="100"]') || 
+                                 container;
 
             // Criar rodapé com o botão
             var footer = document.createElement('div');
@@ -957,7 +1012,7 @@ if (typeof CKEDITOR !== "undefined") {
             }
 
             footer.appendChild(btn);
-            container.appendChild(footer);
+            innerContainer.appendChild(footer);
 
             setInterval(syncDisabledState, 500);
             syncDisabledState();
@@ -965,6 +1020,7 @@ if (typeof CKEDITOR !== "undefined") {
     }
 
     var prefSaveObserver = new MutationObserver(function() {
+        if (window.location.href.indexOf('Preferences') === -1) return;
         var hasContent = document.querySelector('md-tab-content > div[md-tabs-template]') || document.querySelector('div[ui-view="module"] > md-content');
         if (hasContent) {
             setTimeout(injectUniversalSaveButton, 300);
