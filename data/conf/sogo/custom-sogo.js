@@ -55,19 +55,27 @@
           e.stopPropagation();
           
           if (isMail) {
-            // Busca O BOTÃO EXATO que o usuário quer disparar no Mail
-            var composeBtn = document.querySelector('button[ng-click="mailbox.newMessage($event)"]');
+            // Procura o botão nativo do SOGo (por atributo ng-click)
+            var composeBtn = document.querySelector('[ng-click^="mailbox.newMessage"]');
             
-            if (composeBtn && window.angular) {
-              var scope = angular.element(composeBtn).scope();
-              if (scope && scope.mailbox && typeof scope.mailbox.newMessage === 'function') {
-                 scope.$apply(function() {
-                     scope.mailbox.newMessage(e);
-                 });
-                 return;
-              }
+            // Se não encontrar, procura dentro das ações do speed-dial
+            if (!composeBtn) {
+                var actions = document.querySelectorAll('md-fab-actions button');
+                for (var i = 0; i < actions.length; i++) {
+                    var icon = actions[i].querySelector('md-icon');
+                    if (icon && (icon.textContent.trim() === 'edit' || icon.textContent.trim() === 'mail')) {
+                        composeBtn = actions[i];
+                        break;
+                    }
+                }
             }
-            if (composeBtn) { composeBtn.click(); return; }
+
+            if (composeBtn) {
+                var clickEvt = new MouseEvent('click', { bubbles: true, cancelable: true, shiftKey: false, view: window });
+                composeBtn.dispatchEvent(clickEvt);
+                return;
+            }
+            // Fallback alterando o hash (pode não funcionar se já estiver no mesmo hash)
             window.location.hash = "/Mail/0/folder/INBOX/new";
           } else if (isCalendar) {
             // No Calendário, abre o menu customizado para escolher entre Evento e Tarefa
@@ -685,31 +693,24 @@ if (typeof CKEDITOR !== "undefined") {
       
       e.preventDefault();
       e.stopPropagation();
-      var appEl = document.querySelector('[ng-app]') || document.body;
-      var scope = angular.element(appEl).scope();
-      // O método newMessage no SOGo geralmente está no escopo do mailbox
-      var mailboxEl = document.querySelector('md-content[ui-view="content"]');
-      if (mailboxEl) {
-         var mbScope = angular.element(mailboxEl).scope();
-         if (mbScope && mbScope.mailbox && typeof mbScope.mailbox.newMessage === 'function') {
-             mbScope.mailbox.newMessage(e);
-             return;
-         }
-      }
-      
-      // Fallback: se não achar o método direto, procura o botão original
-      var fabs = document.querySelectorAll("button.md-fab, a.md-fab");
-      for (var i = 0; i < fabs.length; i++) {
-        var icon = fabs[i].querySelector("md-icon");
-        if (icon && icon.textContent.trim() === "edit") {
-          // Remove target=_blank para forçar abrir na mesma janela se for link
-          if (fabs[i].tagName.toLowerCase() === 'a') {
-             fabs[i].removeAttribute('target');
-             // Se for href para /new, talvez seja melhor não usar o fallback, mas vamos tentar
+      // Procura o botão nativo do SOGo
+      var composeBtn = document.querySelector('[ng-click^="mailbox.newMessage"]');
+      if (!composeBtn) {
+          var actions = document.querySelectorAll('md-fab-actions button');
+          for (var i = 0; i < actions.length; i++) {
+              var icon = actions[i].querySelector('md-icon');
+              if (icon && (icon.textContent.trim() === 'edit' || icon.textContent.trim() === 'mail')) {
+                  composeBtn = actions[i];
+                  break;
+              }
           }
-          fabs[i].click();
-          break;
-        }
+      }
+
+      if (composeBtn) {
+          var clickEvt = new MouseEvent('click', { bubbles: true, cancelable: true, shiftKey: false, view: window });
+          composeBtn.dispatchEvent(clickEvt);
+      } else {
+          window.location.hash = "/Mail/0/folder/INBOX/new";
       }
     }
   }, true);
