@@ -35,8 +35,9 @@
     var pathUrl = window.location.pathname + window.location.hash;
     var isMail = /\/Mail\b/.test(pathUrl);
     var isCalendar = /\/Calendar\b/.test(pathUrl);
+    var isContacts = /\/Contacts\b/.test(pathUrl);
 
-    if (isMail || isCalendar) {
+    if (isMail || isCalendar || isContacts) {
       var mainSidebar = document.querySelector("md-sidenav.md-sidenav-left md-content");
       var logoElement = document.getElementById("tcl-sidebar-logo");
       
@@ -88,16 +89,71 @@
                 popup.style.width = '200px'; // Largura fixa bonita para caber o texto
                 popup.classList.toggle('show');
             }
+          } else if (isContacts) {
+            // Em Contatos, abre o menu customizado para escolher entre Contato e Lista
+            var contactPopup = document.getElementById('tcl-contacts-popup');
+            var btnRef = document.getElementById('tcl-fake-compose');
+            if (contactPopup && btnRef) {
+                var rect = btnRef.getBoundingClientRect();
+                contactPopup.style.top = rect.top + 'px';
+                contactPopup.style.left = (rect.right + 16) + 'px';
+                contactPopup.style.width = '200px'; 
+                contactPopup.classList.toggle('show');
+            }
           }
         });
         
         mainSidebar.insertBefore(fakeBtn, logoElement.nextSibling);
 
-        // Se for calendário, cria o popup colado no botão (inserido no body para z-index não quebrar)
+        // Função universal extremamente agressiva para forçar clique em botões do Angular Material
+        if (!window.forceSogoClick) {
+            window.forceSogoClick = function(actionType) {
+                var btn = null;
+                // Busca o botão exato de criar cartão ou lista vasculhando todo o DOM
+                if (actionType === 'card') {
+                    btn = document.querySelector('[ng-click*="newCard"], [ui-sref*="newCard"], md-fab-actions button:nth-child(1)');
+                } else if (actionType === 'list') {
+                    btn = document.querySelector('[ng-click*="newList"], [ui-sref*="newList"], md-fab-actions button:nth-child(2)');
+                }
+
+                if(btn) {
+                    // Verifica se tem link nativo
+                    var href = btn.getAttribute('href');
+                    if(href && href !== '#' && href !== '') {
+                        window.location.href = href;
+                        return;
+                    }
+                    
+                    // Aciona o evento no Angular
+                    if(window.angular) {
+                        angular.element(btn).triggerHandler('click');
+                    }
+                    
+                    btn.removeAttribute('disabled');
+                    var evt = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
+                    btn.dispatchEvent(evt);
+                    btn.click();
+                } else {
+                    // Fallback extremo: Invoca o escopo do Angular diretamente
+                    if (window.angular) {
+                        var scope = angular.element(document.querySelector('md-content')).scope() || angular.element(document.body).scope();
+                        if (scope) {
+                            // SOGo injeta app no scope
+                            if (scope.app) {
+                                if (actionType === 'card' && scope.app.newCard) scope.app.newCard();
+                                else if (actionType === 'list' && scope.app.newList) scope.app.newList();
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        // Se for calendário, cria o popup colado no botão
         if (isCalendar && !document.getElementById('tcl-calendar-popup')) {
             var calPopup = document.createElement('div');
             calPopup.id = 'tcl-calendar-popup';
-            calPopup.className = 'tcl-calendar-popup'; // Classe única para não dar conflito
+            calPopup.className = 'tcl-calendar-popup'; 
             calPopup.innerHTML = `
               <div class="tcl-calendar-popup-item" onclick="var btn = document.querySelector('button[ng-click=&quot;list.newComponent($event, \\'appointment\\')&quot;]'); if(btn) { btn.click(); } document.getElementById('tcl-calendar-popup').classList.remove('show');">
                 <md-icon class="material-icons">event</md-icon>
@@ -108,29 +164,71 @@
                 <span>Nova Tarefa</span>
               </div>
             `;
-            // Insere no body para não ficar preso no overflow/z-index da sidebar
             document.body.appendChild(calPopup);
             
-            // Fechar ao clicar fora
             document.addEventListener('click', function(evt) {
                 if (!evt.target.closest('#tcl-fake-compose') && !evt.target.closest('#tcl-calendar-popup')) {
                     calPopup.classList.remove('show');
                 }
             });
         }
+        
+        // Se for contatos, cria o popup colado no botão
+        if (isContacts && !document.getElementById('tcl-contacts-popup')) {
+            var contPopup = document.createElement('div');
+            contPopup.id = 'tcl-contacts-popup';
+            contPopup.className = 'tcl-calendar-popup'; 
+            contPopup.innerHTML = `
+              <div class="tcl-calendar-popup-item" onclick="window.forceSogoClick('card'); document.getElementById('tcl-contacts-popup').classList.remove('show');">
+                <md-icon class="material-icons">person_add</md-icon>
+                <span>Criar um novo contato</span>
+              </div>
+              <div class="tcl-calendar-popup-item" onclick="window.forceSogoClick('list'); document.getElementById('tcl-contacts-popup').classList.remove('show');">
+                <md-icon class="material-icons">group_add</md-icon>
+                <span>Criar uma nova lista</span>
+              </div>
+            `;
+            document.body.appendChild(contPopup);
+            
+            document.addEventListener('click', function(evt) {
+                if (!evt.target.closest('#tcl-fake-compose') && !evt.target.closest('#tcl-contacts-popup')) {
+                    contPopup.classList.remove('show');
+                }
+            });
+        }
       }
       
-      // Esconder os botões flutuantes originais
+      // Ajuste dos ícones de "adicionar" na sidebar de contatos (trocar add_circle_outline por add)
+      if (isContacts && mainSidebar) {
+        var addIcons = mainSidebar.querySelectorAll('.sg-md-subheader--with-secondary-icon button md-icon');
+        for (var n = 0; n < addIcons.length; n++) {
+            if (addIcons[n].textContent.trim() === 'add_circle_outline') {
+                addIcons[n].textContent = 'add';
+            }
+        }
+      }
+      
+      // Esconder os botões flutuantes originais sem removê-los do fluxo de eventos (para o Angular não matar os filhos do Speed Dial)
       var fabs = document.querySelectorAll("button.md-fab, md-fab-speed-dial");
       for (var i = 0; i < fabs.length; i++) {
-        // No Mail queremos esconder o fab de "edit". No Calendar o md-fab-speed-dial inteiro
         if (isMail && fabs[i].tagName.toLowerCase() !== "md-fab-speed-dial") {
           var icon = fabs[i].querySelector("md-icon");
           if (icon && icon.textContent.trim() === "edit") {
-            fabs[i].style.display = "none";
+            fabs[i].style.opacity = "0";
+            fabs[i].style.position = "absolute";
+            fabs[i].style.zIndex = "-9999";
+            fabs[i].style.pointerEvents = "none";
           }
-        } else if (isCalendar && fabs[i].tagName.toLowerCase() === "md-fab-speed-dial") {
-          fabs[i].style.display = "none"; // Oculta o FAB nativo novamente
+        } else if ((isCalendar || isContacts) && fabs[i].tagName.toLowerCase() === "md-fab-speed-dial") {
+          fabs[i].style.opacity = "0";
+          fabs[i].style.position = "absolute";
+          fabs[i].style.zIndex = "-9999";
+          fabs[i].style.pointerEvents = "none";
+        } else if (isContacts && fabs[i].tagName.toLowerCase() === "button") {
+          fabs[i].style.opacity = "0";
+          fabs[i].style.position = "absolute";
+          fabs[i].style.zIndex = "-9999";
+          fabs[i].style.pointerEvents = "none";
         }
       }
     }
@@ -164,141 +262,142 @@
       }
     }
     
-    // Injeta o Rodapé Customizado (Menu, Config, Sair, Perfil) se não existir
-    var sidenavContent = document.querySelector("md-sidenav.md-sidenav-left md-content");
-    if (sidenavContent && !document.getElementById("tcl-custom-footer")) {
-      // Captura o nome/email do SOGo de forma robusta
-      var userName = "Usuário";
-      var userEmail = "";
-      
-      // 1. Tentar pegar da URL (Mais garantido e rápido em qualquer tela)
-      var pathParts = window.location.pathname.split('/');
-      var soIndex = pathParts.indexOf('so');
-      if (soIndex !== -1 && pathParts.length > soIndex + 1) {
-          userEmail = decodeURIComponent(pathParts[soIndex + 1]);
-          userName = userEmail.split('@')[0];
-      }
-      
-      // 2. Fallback Angular
-      if (!userEmail || userName === "Usuário") {
-        try {
-          var rootScope = window.angular ? angular.element(document.body).scope() : null;
-          if (rootScope && rootScope.app && rootScope.app.user) {
-            userEmail = rootScope.app.user.login || userEmail;
-            userName = rootScope.app.user.name || userName;
-          }
-        } catch(e) {}
-      }
-      
-      // 3. Fallback para DOM
-      if (!userEmail) {
-        var accountNode = document.querySelector(".tcl-hide-account .sg-no-wrap") || document.querySelector("[ng-bind='::account.name']") || document.querySelector("[ng-bind='::app.user.login']");
-        if (accountNode) userEmail = accountNode.textContent.trim();
-      }
-      if (userName === "Usuário" || userName === userEmail.split('@')[0]) {
-        var nameNode = document.querySelector(".md-toolbar-tools span[ng-bind='app.user.name']") || document.querySelector("[ng-bind='::app.user.name']");
-        if (nameNode) userName = nameNode.textContent.trim();
-        else if (userEmail) userName = userEmail.split('@')[0];
-      }
+    // Injeta o Rodapé Customizado (Menu, Config, Sair, Perfil) em todas as sidebars
+    var sidenavContents = document.querySelectorAll("md-sidenav.md-sidenav-left md-content");
+    sidenavContents.forEach(function(sidenavContent) {
+      if (!sidenavContent.querySelector(".tcl-custom-footer")) {
+        // Captura o nome/email do SOGo de forma robusta
+        var userName = "Usuário";
+        var userEmail = "";
+        
+        // 1. Tentar pegar da URL
+        var pathParts = window.location.pathname.split('/');
+        var soIndex = pathParts.indexOf('so');
+        if (soIndex !== -1 && pathParts.length > soIndex + 1) {
+            userEmail = decodeURIComponent(pathParts[soIndex + 1]);
+            userName = userEmail.split('@')[0];
+        }
+        
+        // 2. Fallback Angular
+        if (!userEmail || userName === "Usuário") {
+          try {
+            var rootScope = window.angular ? angular.element(document.body).scope() : null;
+            if (rootScope && rootScope.app && rootScope.app.user) {
+              userEmail = rootScope.app.user.login || userEmail;
+              userName = rootScope.app.user.name || userName;
+            }
+          } catch(e) {}
+        }
+        
+        // 3. Fallback para DOM
+        if (!userEmail) {
+          var accountNode = document.querySelector(".tcl-hide-account .sg-no-wrap") || document.querySelector("[ng-bind='::account.name']") || document.querySelector("[ng-bind='::app.user.login']");
+          if (accountNode) userEmail = accountNode.textContent.trim();
+        }
+        if (userName === "Usuário" || userName === userEmail.split('@')[0]) {
+          var nameNode = document.querySelector(".md-toolbar-tools span[ng-bind='app.user.name']") || document.querySelector("[ng-bind='::app.user.name']");
+          if (nameNode) userName = nameNode.textContent.trim();
+          else if (userEmail) userName = userEmail.split('@')[0];
+        }
 
-      var footer = document.createElement("div");
-      footer.id = "tcl-custom-footer";
-      footer.className = "tcl-custom-footer";
-      
-      if (!window.toggleTeclatDarkMode) {
-        window.toggleTeclatDarkMode = function() {
-          var isDark = document.body.classList.toggle('tcl-dark-mode');
-          localStorage.setItem('tcl-dark-mode', isDark ? '1' : '0');
-          var icon = document.getElementById('tcl-darkmode-icon');
-          var text = document.getElementById('tcl-darkmode-text');
-          if (isDark) {
-            if (icon) icon.textContent = 'light_mode';
-            if (text) text.textContent = 'Modo Claro';
-          } else {
-            if (icon) icon.textContent = 'dark_mode';
-            if (text) text.textContent = 'Modo Escuro';
-          }
-        };
-      }
-      
-      if (localStorage.getItem('tcl-dark-mode') === '1') {
-        document.body.classList.add('tcl-dark-mode');
-      }
+        var footer = document.createElement("div");
+        footer.className = "tcl-custom-footer";
+        
+        if (!window.toggleTeclatDarkMode) {
+          window.toggleTeclatDarkMode = function() {
+            var isDark = document.body.classList.toggle('tcl-dark-mode');
+            localStorage.setItem('tcl-dark-mode', isDark ? '1' : '0');
+            var icons = document.querySelectorAll('.tcl-darkmode-icon');
+            var texts = document.querySelectorAll('.tcl-darkmode-text');
+            for (var i = 0; i < icons.length; i++) {
+              icons[i].textContent = isDark ? 'wb_sunny' : 'brightness_2';
+            }
+            for (var j = 0; j < texts.length; j++) {
+              texts[j].textContent = isDark ? 'Modo Claro' : 'Modo Escuro';
+            }
+          };
+        }
+        
+        if (localStorage.getItem('tcl-dark-mode') === '1') {
+          document.body.classList.add('tcl-dark-mode');
+        }
 
-      var avatarSrc = "https://ui-avatars.com/api/?name=" + encodeURIComponent(userName) + "&background=00cfb0&color=fff";
-      var isMailPage = (window.location.pathname + window.location.hash).indexOf('/Mail') !== -1;
-      
-      var popupHtml = isMailPage ? `
-          <!-- Popup do Usuário -->
-          <div class="tcl-user-popup" id="tcl-user-popup">
-            <div class="tcl-user-popup-item" onclick="var btn = document.querySelector('button[ng-click=&quot;app.delegate(account)&quot;]'); if(btn) { btn.click(); } document.getElementById('tcl-user-popup').classList.remove('show');">
-              <span>Delegação</span>
+        var avatarSrc = "https://ui-avatars.com/api/?name=" + encodeURIComponent(userName) + "&background=00cfb0&color=fff";
+        var isMailPage = (window.location.pathname + window.location.hash).indexOf('/Mail') !== -1;
+        var uniqueId = Math.random().toString(36).substr(2, 9);
+        
+        var popupHtml = `
+            <!-- Popup do Usuário -->
+            <div class="tcl-user-popup" id="tcl-user-popup-${uniqueId}">
+              <div class="tcl-user-popup-item" onclick="var btn = document.querySelector('button[ng-click=&quot;app.delegate(account)&quot;]'); if(btn) { btn.click(); } document.getElementById('tcl-user-popup-${uniqueId}').classList.remove('show');">
+                <span>Delegação</span>
+              </div>
+              <div class="tcl-user-popup-item" onclick="var btn = document.querySelector('button[ng-click=&quot;app.newFolder(account)&quot;]'); if(btn) { btn.click(); } document.getElementById('tcl-user-popup-${uniqueId}').classList.remove('show');">
+                <span>Nova pasta</span>
+              </div>
+              <div class="tcl-user-popup-item" onclick="var btn = document.querySelector('button[ng-click=&quot;app.showCleanMailboxPanel(null, account)&quot;]'); if(btn) { btn.click(); } document.getElementById('tcl-user-popup-${uniqueId}').classList.remove('show');">
+                <span>Limpar caixa de correio</span>
+              </div>
+              <div class="tcl-user-popup-item" onclick="var btn = document.querySelector('button[ng-click=&quot;app.showAdvancedSearch()&quot;]'); if(btn) { btn.click(); } document.getElementById('tcl-user-popup-${uniqueId}').classList.remove('show');">
+                <span>Procurar</span>
+              </div>
             </div>
-            <div class="tcl-user-popup-item" onclick="var btn = document.querySelector('button[ng-click=&quot;app.newFolder(account)&quot;]'); if(btn) { btn.click(); } document.getElementById('tcl-user-popup').classList.remove('show');">
-              <span>Nova pasta</span>
-            </div>
-            <div class="tcl-user-popup-item" onclick="var btn = document.querySelector('button[ng-click=&quot;app.showCleanMailboxPanel(null, account)&quot;]'); if(btn) { btn.click(); } document.getElementById('tcl-user-popup').classList.remove('show');">
-              <span>Limpar caixa de correio</span>
-            </div>
-            <div class="tcl-user-popup-item" onclick="var btn = document.querySelector('button[ng-click=&quot;app.showAdvancedSearch()&quot;]'); if(btn) { btn.click(); } document.getElementById('tcl-user-popup').classList.remove('show');">
-              <span>Procurar</span>
-            </div>
-          </div>
-      ` : '';
-      
-      var moreIconHtml = isMailPage ? `<md-icon class="material-icons tcl-user-more" onclick="document.getElementById('tcl-user-popup').classList.toggle('show')">more_vert</md-icon>` : '';
+        `;
+        
+        var moreIconHtml = `<md-icon class="material-icons tcl-user-more" onclick="document.getElementById('tcl-user-popup-${uniqueId}').classList.toggle('show')">more_vert</md-icon>`;
 
-      footer.innerHTML = `
-        <div class="tcl-footer-menu">
-          <div class="tcl-menu-popup" id="tcl-menu-popup">
-            <div class="tcl-menu-popup-item" onclick="window.location.href='/SOGo/so/${userEmail}/Mail'">
-              <md-icon class="material-icons">email</md-icon>
-              <span>Correio</span>
+        footer.innerHTML = `
+          <div class="tcl-footer-menu">
+            <div class="tcl-menu-popup" id="tcl-menu-popup-${uniqueId}">
+              <div class="tcl-menu-popup-item" onclick="window.location.href='/SOGo/so/${userEmail}/Mail'">
+                <md-icon class="material-icons">email</md-icon>
+                <span>Correio</span>
+              </div>
+              <div class="tcl-menu-popup-item" onclick="window.location.href='/SOGo/so/${userEmail}/Calendar'">
+                <md-icon class="material-icons">event</md-icon>
+                <span>Calendário</span>
+              </div>
+              <div class="tcl-menu-popup-item" onclick="window.location.href='/SOGo/so/${userEmail}/Contacts'">
+                <md-icon class="material-icons">contacts</md-icon>
+                <span>Contatos</span>
+              </div>
+              <div class="tcl-menu-popup-item" onclick="window.location.href='/SOGo/so/${userEmail}/Preferences#!/general'">
+                <md-icon class="material-icons">build</md-icon>
+                <span>Preferências</span>
+              </div>
             </div>
-            <div class="tcl-menu-popup-item" onclick="window.location.href='/SOGo/so/${userEmail}/Calendar'">
-              <md-icon class="material-icons">event</md-icon>
-              <span>Calendário</span>
+            
+            <div class="tcl-footer-item" onclick="document.getElementById('tcl-menu-popup-${uniqueId}').classList.toggle('show')">
+              <md-icon class="material-icons">apps</md-icon>
+              <span>Menu</span>
             </div>
-            <div class="tcl-menu-popup-item" onclick="window.location.href='/SOGo/so/${userEmail}/Contacts'">
-              <md-icon class="material-icons">contacts</md-icon>
-              <span>Contatos</span>
+            <div class="tcl-footer-item" onclick="window.toggleTeclatDarkMode()">
+              <md-icon class="material-icons tcl-darkmode-icon">` + (document.body.classList.contains('tcl-dark-mode') ? 'wb_sunny' : 'brightness_2') + `</md-icon>
+              <span class="tcl-darkmode-text">` + (document.body.classList.contains('tcl-dark-mode') ? 'Modo Claro' : 'Modo Escuro') + `</span>
             </div>
-            <div class="tcl-menu-popup-item" onclick="window.location.href='/SOGo/so/${userEmail}/Preferences#!/general'">
-              <md-icon class="material-icons">build</md-icon>
-              <span>Preferências</span>
+            <div class="tcl-footer-item" onclick="window.location.href='/SOGo/Preferences'">
+              <md-icon class="material-icons">settings</md-icon>
+              <span>Configurações</span>
+            </div>
+            <div class="tcl-footer-item tcl-item-sair" onclick="if(typeof mc_logout === 'function') mc_logout(); else window.location.href='/SOGo/logoff';">
+              <md-icon class="material-icons">settings_power</md-icon>
+              <span>Sair</span>
             </div>
           </div>
-          
-          <div class="tcl-footer-item" onclick="document.getElementById('tcl-menu-popup').classList.toggle('show')">
-            <md-icon class="material-icons">apps</md-icon>
-            <span>Menu</span>
+          <div class="tcl-user-block">
+            ` + popupHtml + `
+            <img class="tcl-user-avatar" src="` + avatarSrc + `" alt="Avatar" />
+            <div class="tcl-user-info">
+              <div class="tcl-user-name">` + userName + `</div>
+              <div class="tcl-user-email">` + userEmail + `</div>
+            </div>
+            ` + moreIconHtml + `
           </div>
-          <div class="tcl-footer-item" onclick="window.toggleTeclatDarkMode()">
-            <md-icon class="material-icons" id="tcl-darkmode-icon">` + (document.body.classList.contains('tcl-dark-mode') ? 'light_mode' : 'dark_mode') + `</md-icon>
-            <span id="tcl-darkmode-text">` + (document.body.classList.contains('tcl-dark-mode') ? 'Modo Claro' : 'Modo Escuro') + `</span>
-          </div>
-          <div class="tcl-footer-item" onclick="window.location.href='/SOGo/Preferences'">
-            <md-icon class="material-icons">settings</md-icon>
-            <span>Configurações</span>
-          </div>
-          <div class="tcl-footer-item tcl-item-sair" onclick="if(typeof mc_logout === 'function') mc_logout(); else window.location.href='/SOGo/logoff';">
-            <md-icon class="material-icons">settings_power</md-icon>
-            <span>Sair</span>
-          </div>
-        </div>
-        <div class="tcl-user-block">
-          ` + popupHtml + `
-          <img class="tcl-user-avatar" src="` + avatarSrc + `" alt="Avatar" />
-          <div class="tcl-user-info">
-            <div class="tcl-user-name">` + userName + `</div>
-            <div class="tcl-user-email">` + userEmail + `</div>
-          </div>
-          ` + moreIconHtml + `
-        </div>
-      `;
-      
-      sidenavContent.appendChild(footer);
-    }
+        `;
+        
+        sidenavContent.appendChild(footer);
+      }
+    });
   }
 
   // Inject top header into all mobile views dynamically
@@ -437,6 +536,97 @@
     });
   }
 
+  // Nova Função: Avatar na tela de escrever novo email (compose)
+  function applyComposeAvatar(node) {
+    const root = node && node.nodeType === 1 ? node : document;
+    
+    root.querySelectorAll('sg-avatar-image[sg-email="editor.message.editable.from"]').forEach(avatarContainer => {
+      let name = "Usuário";
+      
+      const selectNode = avatarContainer.nextElementSibling;
+      let rawText = "";
+      let inputNode = null;
+      let mdText = null;
+
+      if (selectNode) {
+        if (selectNode.tagName === 'MD-SELECT') {
+          mdText = selectNode.querySelector('.md-text');
+          if (mdText) rawText = mdText.textContent.trim();
+        } else if (selectNode.tagName === 'MD-AUTOCOMPLETE') {
+          inputNode = selectNode.querySelector('input');
+          if (inputNode) rawText = inputNode.value.trim();
+        }
+      }
+
+      let angularUserName = "";
+      let angularUserEmail = "";
+      try {
+        const rootScope = window.angular ? angular.element(document.body).scope() : null;
+        if (rootScope && rootScope.app && rootScope.app.user) {
+          angularUserName = rootScope.app.user.name || "";
+          angularUserEmail = rootScope.app.user.login || "";
+        }
+      } catch(e) {}
+
+      if (rawText) {
+        let extractedEmail = "";
+        if (rawText.includes('<') && rawText.includes('>')) {
+           extractedEmail = rawText.split('<')[1].split('>')[0].trim();
+        } else if (rawText.includes('@')) {
+           extractedEmail = rawText;
+        }
+
+        const namePart = rawText.split('<')[0].trim();
+        if (namePart === extractedEmail || !namePart) {
+           name = angularUserName || angularUserEmail.split('@')[0] || "Usuário";
+        } else {
+           name = namePart;
+        }
+
+        const displayEmail = extractedEmail || angularUserEmail;
+        const displayName = name !== "Usuário" ? name : angularUserName;
+        if (displayName && displayEmail && displayEmail.includes('@')) {
+           const formattedText = displayName + " <" + displayEmail + ">";
+           if (mdText && mdText.textContent.trim() !== formattedText) {
+               mdText.textContent = formattedText;
+           } else if (inputNode && inputNode.value !== formattedText) {
+               inputNode.value = formattedText;
+           }
+        }
+      } else {
+         name = angularUserName || angularUserEmail.split('@')[0] || "Usuário";
+      }
+      
+      const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0ea5e9&color=fff&rounded=true&size=40`;
+      
+      let tclImg = avatarContainer.querySelector('img.tcl-custom-avatar');
+      if (!tclImg) {
+        tclImg = document.createElement('img');
+        tclImg.className = 'tcl-custom-avatar';
+        tclImg.style.borderRadius = '50%';
+        tclImg.style.display = 'block';
+        tclImg.style.width = '40px';
+        tclImg.style.height = '40px';
+        
+        // Hide default Material icons and native image
+        const mdIcons = avatarContainer.querySelectorAll('md-icon');
+        mdIcons.forEach(icon => {
+           icon.style.display = 'none';
+        });
+        const nativeImg = avatarContainer.querySelector('img:not(.tcl-custom-avatar)');
+        if (nativeImg) {
+            nativeImg.style.display = 'none';
+        }
+        
+        avatarContainer.appendChild(tclImg);
+      }
+      
+      if (tclImg.src !== avatarUrl) {
+        tclImg.src = avatarUrl;
+      }
+    });
+  }
+
   // Nova Função: Cria e sincroniza a Data Principal e as setas dentro do Header do Calendário
   function customizeCalendarHeader(root) {
     var isCalendar = /\/Calendar\b/.test(window.location.pathname + window.location.hash);
@@ -564,6 +754,7 @@
     customizeSidebar(document);
     applyCustomAvatars();
     applyViewerAvatar(document);
+    applyComposeAvatar(document);
     customizeCalendarHeader(document);
     checkCurrentFolder();
     
@@ -579,6 +770,7 @@
             customizeSidebar(added[j]);
             applyCustomAvatars();
             applyViewerAvatar(added[j]);
+            applyComposeAvatar(added[j]);
             customizeCalendarHeader(added[j]);
           }
         }
@@ -1032,3 +1224,206 @@ if (typeof CKEDITOR !== "undefined") {
     setTimeout(injectUniversalSaveButton, 500);
 })();
 // ─────────────────────────────────────────────────────────────────────────────
+
+// ─── Rodapé do Formulário de Contato (Criar/Editar) ─────────────────────────
+(function() {
+    var isContacts = /\/Contacts\b/.test(window.location.pathname + window.location.hash);
+    if (!isContacts) return;
+
+    function injectContactFooter() {
+        var detailView = document.getElementById('detailView');
+        if (!detailView) return;
+
+        // Verifica se o formulário de contato está ativo
+        var form = detailView.querySelector('form[name="contactForm"]');
+        if (!form) return;
+
+        // Evita injetar duplicado
+        if (document.getElementById('tcl-contact-footer')) return;
+
+        // Busca os botões nativos no toolbar
+        var btnCancel = document.querySelector('#detailView button[aria-label="Cancelar"]');
+        var btnReset  = document.querySelector('#detailView button[aria-label="Limpar"]');
+        var btnSave   = document.querySelector('#detailView button[aria-label="Salvar"]');
+
+        if (!btnCancel && !btnSave) return; // toolbar ainda não renderizou
+
+        // Cria o rodapé
+        var footer = document.createElement('div');
+        footer.id = 'tcl-contact-footer';
+        footer.className = 'tcl-contact-footer';
+
+        // Botão Restaurar (mapeia para Limpar/Undo)
+        if (btnReset) {
+            var bReset = document.createElement('button');
+            bReset.type = 'button';
+            bReset.textContent = 'Restaurar';
+            bReset.onclick = function() { btnReset.click(); };
+            footer.appendChild(bReset);
+        }
+
+        // Botão Cancelar
+        if (btnCancel) {
+            var bCancel = document.createElement('button');
+            bCancel.type = 'button';
+            bCancel.textContent = 'Cancelar';
+            bCancel.onclick = function() { btnCancel.click(); };
+            footer.appendChild(bCancel);
+        }
+
+        // Botão Salvar (teal, reflete estado disabled)
+        if (btnSave) {
+            var bSave = document.createElement('button');
+            bSave.type = 'button';
+            bSave.className = 'tcl-btn-save';
+            bSave.textContent = 'Salvar';
+            bSave.onclick = function() { if (!bSave.disabled) { btnSave.click(); } };
+            footer.appendChild(bSave);
+
+            // Sincroniza o estado disabled com o botão nativo
+            var syncSave = function() {
+                bSave.disabled = btnSave.disabled || btnSave.hasAttribute('disabled');
+            };
+            syncSave();
+            var saveObserver = new MutationObserver(syncSave);
+            saveObserver.observe(btnSave, { attributes: true, attributeFilter: ['disabled'] });
+        }
+
+        // Garante que o detailView seja relativo para o posicionamento absolute do rodapé
+        detailView.style.position = 'relative';
+        detailView.appendChild(footer);
+    }
+
+    // Observa o DOM esperando o formulário aparecer
+    var contactFormObserver = new MutationObserver(function() {
+        if (!document.getElementById('tcl-contact-footer')) {
+            injectContactFooter();
+        }
+    });
+
+    contactFormObserver.observe(document.body, { childList: true, subtree: true });
+    setTimeout(injectContactFooter, 800);
+})();
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ─── Avatar e Formatação de Endereço na Tela de Detalhes do Contato ───────
+(function() {
+    function injectContactViewFeatures() {
+        var detailView = document.getElementById('detailView');
+        if (!detailView) return;
+
+        // O avatar volta a ser apenas o ícone padrão do SOGo transparente para seguir o design
+
+        // 2. Quebrar o Endereço em 5 caixas separadas como no design (se houver endereço)
+        var addressContainers = detailView.querySelectorAll('.msg-body > div[ng-show="editor.card.addresses"] .pseudo-input-container');
+        
+        addressContainers.forEach(function(container) {
+            if (container.querySelector('.tcl-rebuilt-address')) return;
+            
+            // Pega o escopo do Angular diretamente do container do ng-repeat
+            var scope = window.angular ? angular.element(container).scope() : null;
+            if (!scope || !scope.address) {
+                // Tenta no isolateScope caso seja isolado
+                var sgAddress = container.querySelector('div[sg-address]');
+                if (sgAddress) {
+                    var isoScope = angular.element(sgAddress).isolateScope();
+                    if (isoScope && isoScope.address) scope = isoScope;
+                }
+            }
+            if (!scope || !scope.address) return;
+            var address = scope.address;
+            
+            // Esconde os elementos originais
+            var originalField = container.querySelector('.pseudo-input-field');
+            if (originalField) originalField.style.display = 'none';
+            var originalLabel = container.querySelector('.pseudo-input-label');
+            if (originalLabel) originalLabel.style.display = 'none';
+            
+            // Cria a nova estrutura replicando o design (2 colunas)
+            var wrapper = document.createElement('div');
+            wrapper.className = 'tcl-rebuilt-address';
+            wrapper.style.display = 'grid';
+            wrapper.style.gridTemplateColumns = '1fr 1fr';
+            wrapper.style.gap = '24px';
+            wrapper.style.width = '100%';
+            
+            function createField(labelText, value, span2) {
+                var box = document.createElement('div');
+                box.className = 'pseudo-input-container';
+                if (span2) box.style.gridColumn = '1 / -1';
+                
+                if (labelText) {
+                    var lbl = document.createElement('label');
+                    lbl.className = 'pseudo-input-label';
+                    lbl.textContent = labelText;
+                    box.appendChild(lbl);
+                } else {
+                    // Create a spacer so the box aligns correctly with labeled boxes
+                    var spacer = document.createElement('div');
+                    spacer.className = 'pseudo-input-label';
+                    spacer.innerHTML = '&nbsp;';
+                    box.appendChild(spacer);
+                }
+                
+                var fld = document.createElement('div');
+                fld.className = 'pseudo-input-field';
+                fld.style.cursor = 'not-allowed';
+                fld.textContent = value || '';
+                
+                box.appendChild(fld);
+                return box;
+            }
+            
+            var typeLabel = address.type ? address.type.charAt(0).toUpperCase() + address.type.slice(1) : '';
+            var addressTitle = typeLabel ? 'Endereço (' + typeLabel + ')' : 'Endereço';
+            
+            wrapper.appendChild(createField(addressTitle, address.street, true));
+            wrapper.appendChild(createField('', address.locality, false));
+            wrapper.appendChild(createField('', address.region, false));
+            wrapper.appendChild(createField('', address.country, false));
+            wrapper.appendChild(createField('', address.postalcode, false));
+            
+            container.appendChild(wrapper);
+        });
+    }
+
+    var observer = new MutationObserver(function() {
+        if (document.getElementById('detailView')) {
+            injectContactViewFeatures();
+        }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+    setTimeout(injectContactViewFeatures, 500);
+})();
+
+// ─── Auto-abrir Edição ao Clicar no Contato ──────────────────────────────
+(function() {
+    // Detecta o clique na lista de contatos
+    document.addEventListener('click', function(e) {
+        if (window.location.href.indexOf('Contacts') === -1) return;
+        
+        var btn = e.target.closest('button[ng-click*="selectCard"], md-list-item');
+        if (btn) {
+            // Em vez de depender de escopos do Angular (que estão bloqueados em produção),
+            // ou de eventos hashchange (que o Angular cancela),
+            // nós vigiamos a URL a cada milissegundo.
+            var maxTries = 40; // Tenta por 2 segundos
+            var tries = 0;
+            var watchUrl = setInterval(function() {
+                tries++;
+                var currentHash = window.location.hash;
+                
+                // Assim que o SOGo colocar .vcf na URL, nós sequestramos e botamos /edit
+                if (currentHash.match(/\.vcf$/)) {
+                    clearInterval(watchUrl);
+                    // window.location.replace não cria histórico fantasma e engata a rota
+                    window.location.replace(window.location.href + '/edit');
+                }
+                
+                if (tries > maxTries) {
+                    clearInterval(watchUrl);
+                }
+            }, 50);
+        }
+    }, true);
+})();
