@@ -153,17 +153,17 @@ md-sidenav md-list-item.selected::before,
 }
 
 /* Icones customizados usando máscara CSS (Imune a updates do Angular) */
-md-sidenav md-list-item md-icon:first-of-type {
+md-sidenav md-list-item p.sg-item-name md-icon {
   transition: all 0.2s;
 }
 
-md-sidenav md-list-item.tcl-item-entrada md-icon:first-of-type { font-size: 0 !important; background-color: #ffffff; -webkit-mask: url("/SOGo.woa/WebServerResources/assets/entrada-logo.svg") no-repeat center / contain; mask: url("/SOGo.woa/WebServerResources/assets/entrada-logo.svg") no-repeat center / contain; }
-md-sidenav md-list-item.tcl-item-rascunho md-icon:first-of-type { font-size: 0 !important; background-color: #ffffff; -webkit-mask: url("/SOGo.woa/WebServerResources/assets/rascunhos.svg") no-repeat center / contain; mask: url("/SOGo.woa/WebServerResources/assets/rascunhos.svg") no-repeat center / contain; }
-md-sidenav md-list-item.tcl-item-enviado md-icon:first-of-type { font-size: 0 !important; background-color: #ffffff; -webkit-mask: url("/SOGo.woa/WebServerResources/assets/enviados.svg") no-repeat center / contain; mask: url("/SOGo.woa/WebServerResources/assets/enviados.svg") no-repeat center / contain; }
-md-sidenav md-list-item.tcl-item-lixeira md-icon:first-of-type { font-size: 0 !important; background-color: #ffffff; -webkit-mask: url("/SOGo.woa/WebServerResources/assets/lixeira.svg") no-repeat center / contain; mask: url("/SOGo.woa/WebServerResources/assets/lixeira.svg") no-repeat center / contain; }
-md-sidenav md-list-item.tcl-item-arquivado md-icon:first-of-type { font-size: 0 !important; background-color: #ffffff; -webkit-mask: url("/SOGo.woa/WebServerResources/assets/arquivados.svg") no-repeat center / contain; mask: url("/SOGo.woa/WebServerResources/assets/arquivados.svg") no-repeat center / contain; }
-md-sidenav md-list-item.tcl-item-modelo md-icon:first-of-type { font-size: 0 !important; background-color: #ffffff; -webkit-mask: url("/SOGo.woa/WebServerResources/assets/modelos.svg") no-repeat center / contain; mask: url("/SOGo.woa/WebServerResources/assets/modelos.svg") no-repeat center / contain; }
-md-sidenav md-list-item.tcl-item-lixo md-icon:first-of-type { font-size: 0 !important; background-color: #ffffff; -webkit-mask: url("/SOGo.woa/WebServerResources/assets/negative.svg") no-repeat center / contain; mask: url("/SOGo.woa/WebServerResources/assets/negative.svg") no-repeat center / contain; }
+md-sidenav md-list-item.tcl-item-entrada p.sg-item-name md-icon { font-size: 0 !important; background-color: #ffffff; -webkit-mask: url("/SOGo.woa/WebServerResources/assets/entrada-logo.svg") no-repeat center / contain; mask: url("/SOGo.woa/WebServerResources/assets/entrada-logo.svg") no-repeat center / contain; }
+md-sidenav md-list-item.tcl-item-rascunho p.sg-item-name md-icon { font-size: 0 !important; background-color: #ffffff; -webkit-mask: url("/SOGo.woa/WebServerResources/assets/rascunhos.svg") no-repeat center / contain; mask: url("/SOGo.woa/WebServerResources/assets/rascunhos.svg") no-repeat center / contain; }
+md-sidenav md-list-item.tcl-item-enviado p.sg-item-name md-icon { font-size: 0 !important; background-color: #ffffff; -webkit-mask: url("/SOGo.woa/WebServerResources/assets/enviados.svg") no-repeat center / contain; mask: url("/SOGo.woa/WebServerResources/assets/enviados.svg") no-repeat center / contain; }
+md-sidenav md-list-item.tcl-item-lixeira p.sg-item-name md-icon { font-size: 0 !important; background-color: #ffffff; -webkit-mask: url("/SOGo.woa/WebServerResources/assets/lixeira.svg") no-repeat center / contain; mask: url("/SOGo.woa/WebServerResources/assets/lixeira.svg") no-repeat center / contain; }
+md-sidenav md-list-item.tcl-item-arquivado p.sg-item-name md-icon { font-size: 0 !important; background-color: #ffffff; -webkit-mask: url("/SOGo.woa/WebServerResources/assets/arquivados.svg") no-repeat center / contain; mask: url("/SOGo.woa/WebServerResources/assets/arquivados.svg") no-repeat center / contain; }
+md-sidenav md-list-item.tcl-item-modelo p.sg-item-name md-icon { font-size: 0 !important; background-color: #ffffff; -webkit-mask: url("/SOGo.woa/WebServerResources/assets/modelos.svg") no-repeat center / contain; mask: url("/SOGo.woa/WebServerResources/assets/modelos.svg") no-repeat center / contain; }
+md-sidenav md-list-item.tcl-item-lixo p.sg-item-name md-icon { font-size: 0 !important; background-color: #ffffff; -webkit-mask: url("/SOGo.woa/WebServerResources/assets/negative.svg") no-repeat center / contain; mask: url("/SOGo.woa/WebServerResources/assets/negative.svg") no-repeat center / contain; }
 
 /* Renomeação dos itens (Sobrescrevendo o Angular via CSS corretamente) */
 md-sidenav md-list-item.tcl-item-entrada p.sg-item-name span:not(.sg-counter-badge),
@@ -1322,8 +1322,12 @@ md-dialog.tcl-mail-modal sg-avatar-image {
 
 /* Oculta os ícones nativos do avatar (person / not_interested) e a imagem nativa */
 md-dialog.tcl-mail-modal sg-avatar-image .sg-icon-badge-container md-icon,
-md-dialog.tcl-mail-modal sg-avatar-image .sg-icon-badge-container img {
+md-dialog.tcl-mail-modal sg-avatar-image .sg-icon-badge-container img:not(.tcl-custom-avatar) {
   display: none !important;
+}
+
+md-dialog.tcl-mail-modal sg-avatar-image .sg-icon-badge-container img.tcl-custom-avatar {
+  display: block !important;
 }
 
 /* Injeta a imagem do UI Avatars via CSS como background */
@@ -1331,11 +1335,11 @@ md-dialog.tcl-mail-modal sg-avatar-image .sg-icon-badge-container {
   width: 40px !important;
   height: 40px !important;
   border-radius: 50% !important;
-  background-image: url("https://ui-avatars.com/api/?name=guilherme%20parente&background=2563eb&color=fff&rounded=true&size=58") !important;
-  background-size: cover !important;
-  background-position: center !important;
-  display: block !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
 }
+/* Ocultamos o background fixo, a imagem será inserida via JS (img.tcl-custom-avatar) */
 
 /* 3. Input Cinza do Remetente e Toolbar */
 md-dialog.tcl-mail-modal > form > md-toolbar .md-toolbar-tools {
@@ -1823,6 +1827,31 @@ body.tcl-dark-mode md-menu-content md-menu-item a:focus {
   background-color: #1e293b !important;
 }
 
+/* Select Menus (Dropdowns de seleção) no Dark Mode */
+body.tcl-dark-mode .md-select-menu-container md-select-menu,
+body.tcl-dark-mode .md-select-menu-container md-content {
+  background-color: #0a0f1e !important;
+}
+
+body.tcl-dark-mode .md-select-menu-container md-option {
+  color: #f8fafc !important;
+}
+
+body.tcl-dark-mode .md-select-menu-container md-option .md-text {
+  color: #f8fafc !important;
+}
+
+body.tcl-dark-mode .md-select-menu-container md-option:hover,
+body.tcl-dark-mode .md-select-menu-container md-option:focus,
+body.tcl-dark-mode .md-select-menu-container md-option.md-focused {
+  background-color: #1e293b !important;
+}
+
+body.tcl-dark-mode .md-select-menu-container md-option[selected],
+body.tcl-dark-mode .md-select-menu-container md-option[selected] .md-text {
+  color: #4da3ff !important;
+}
+
 /* ==========================================================================
    Popup Customizado de Usuário (.tcl-user-popup)
    ========================================================================== */
@@ -2271,6 +2300,70 @@ body.tcl-dark-mode md-dialog:has(.advanced-search) .advanced-search md-chips {
   color: #ffffff !important;
 }
 
+/* Transparência dos containers internos do md-chips para herdar a cor do fundo */
+md-dialog:has(.advanced-search) .advanced-search md-chips md-chips-wrap,
+md-dialog:has(.advanced-search) .advanced-search md-chips md-autocomplete-wrap {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+md-dialog:has(.advanced-search) .advanced-search md-chips input {
+  color: #101223 !important;
+  background-color: transparent !important;
+  border: none !important;
+}
+
+body.tcl-dark-mode md-dialog:has(.advanced-search) .advanced-search md-chips input {
+  color: #ffffff !important;
+}
+
+md-dialog:has(.advanced-search) .advanced-search md-chips input::placeholder {
+  color: #666666 !important;
+}
+
+body.tcl-dark-mode md-dialog:has(.advanced-search) .advanced-search md-chips input::placeholder {
+  color: #cccccc !important;
+}
+
+/* Tornar todos os ícones em branco no Dark Mode */
+body.tcl-dark-mode md-dialog:has(.advanced-search) md-icon,
+body.tcl-dark-mode md-dialog:has(.advanced-search) .md-select-icon,
+body.tcl-dark-mode md-dialog:has(.advanced-search) .md-datepicker-expand-triangle,
+body.tcl-dark-mode md-dialog:has(.advanced-search) .md-datepicker-triangle-button md-icon {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+body.tcl-dark-mode md-dialog:has(.advanced-search) .md-select-icon,
+body.tcl-dark-mode md-dialog:has(.advanced-search) .md-datepicker-expand-triangle {
+  border-top-color: #ffffff !important;
+}
+
+/* Estilo das Tags (Chips) selecionadas */
+md-dialog:has(.advanced-search) .advanced-search md-chip {
+  background-color: #ffffff !important;
+  color: #101223 !important;
+  border: 1px solid rgba(0,0,0,0.1) !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
+}
+
+md-dialog:has(.advanced-search) .advanced-search md-chip .md-chip-content {
+  color: #101223 !important;
+}
+
+body.tcl-dark-mode md-dialog:has(.advanced-search) .advanced-search md-chip {
+  background-color: #2a3045 !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+}
+
+body.tcl-dark-mode md-dialog:has(.advanced-search) .advanced-search md-chip .md-chip-content {
+  color: #ffffff !important;
+}
+
+
 /* Remover sublinhado do Material nos inputs e selects */
 md-dialog:has(.advanced-search) .advanced-search md-input-container .md-errors-spacer,
 md-dialog:has(.advanced-search) .advanced-search md-input-container::after,
@@ -2331,6 +2424,10 @@ md-dialog:has(.advanced-search) .search-inline {
   flex-wrap: wrap !important;
   margin: 8px 0 !important;
 }
+
+md-dialog:has(.advanced-search) .advanced-search-in {
+  /* Removido o margin-top daqui a pedido do usuário */
+}
 md-dialog:has(.advanced-search) .search-right-space {
   margin-right: 0 !important;
 }
@@ -2338,8 +2435,10 @@ md-dialog:has(.advanced-search) .search-right-space {
 md-dialog:has(.advanced-search) .pseudo-input-label {
   color: #101223 !important;
   font-weight: 600 !important;
+  margin-top: 16px !important; /* Espaçamento pra cima no texto */
   margin-bottom: 8px !important;
   display: block !important;
+  white-space: nowrap !important; /* Evita que o texto fique quebrado */
 }
 body.tcl-dark-mode md-dialog:has(.advanced-search) .pseudo-input-label {
   color: #ffffff !important;
@@ -2565,9 +2664,15 @@ body.tcl-dark-mode #detailView md-card > md-card-actions button[aria-label="Hoje
 #detailView md-card > md-card-actions a[aria-label="Mês"]::after { content: "Mês"; }
 #detailView md-card > md-card-actions a[aria-label="Visão Diária Multicolunas"]::after { content: "Multi-coluna"; }
 
-#detailView md-card > md-card-actions a[aria-label]:not(.md-icon-button) {
+#detailView md-card > md-card-actions a[aria-label="Dia"],
+#detailView md-card > md-card-actions a[aria-label="Semana"],
+#detailView md-card > md-card-actions a[aria-label="Mês"],
+#detailView md-card > md-card-actions a[aria-label="Visão Diária Multicolunas"] {
   min-width: 60px !important;
+  width: auto !important;
   padding: 0 12px !important;
+  border-radius: 8px !important;
+  overflow: visible !important;
 }
 
 /* Active state for view buttons (SOGo desabilita o botão ativo) */
@@ -2706,32 +2811,19 @@ md-sidenav md-content section .sg-md-subheader--with-secondary-icon button.md-bu
   background-color: transparent !important;
 }
 
-/* Alterar ícone de + (add_circle_outline) para apenas um + e uma setinha para baixo */
+/* Troca o ícone 'add_circle_outline' por 'add' (sem a borda circular) nos botões da sidebar */
 md-sidenav md-content section .sg-md-subheader--with-secondary-icon button md-icon {
-  visibility: hidden !important;
-  position: relative !important;
-  margin: 0 !important;
-  width: auto !important;
-  height: auto !important;
-  min-width: unset !important;
-  min-height: unset !important;
+  font-size: 0 !important;
+  letter-spacing: -999px !important;
 }
 
 md-sidenav md-content section .sg-md-subheader--with-secondary-icon button md-icon::after {
-  content: "+";
-  visibility: visible;
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #ffffff;
-  font-size: 20px;
-  line-height: 1;
-}
-
-md-sidenav md-content section:nth-of-type(1) .sg-md-subheader--with-secondary-icon button md-icon::after {
-  content: "v"; /* Seta para baixo minimalista */
-  font-size: 14px;
+  content: 'add' !important;
+  font-family: 'Material Icons' !important;
+  font-size: 24px !important;
+  letter-spacing: normal !important;
+  display: inline-block !important;
+  line-height: 1 !important;
 }
 
 /* Layout dos itens de Calendário */
@@ -2905,12 +2997,12 @@ md-toolbar.daysView[sg-view="dayview"] {
 
 .tcl-calendar-date-text-wrapper .sg-date-group {
     display: grid !important;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: auto auto;
     grid-template-areas: 
-       "day day day"
-       "month de year";
+       "day day"
+       "month year";
     align-items: baseline;
-    column-gap: 4px;
+    column-gap: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
 }
@@ -3021,6 +3113,20 @@ body[ng-app="SOGo.SchedulerUI"] .clickableHourCell {
 /* Remover fundo cinza de horas fora do expediente (madrugada/noite) para ficar tudo branco */
 body[ng-app="SOGo.SchedulerUI"] .clickableHourCell.outOfDay {
     background-color: transparent !important;
+}
+
+/* Divisórias verticais para separar os dias na grade (visão semana/multi-dias) */
+body[ng-app="SOGo.SchedulerUI"] .allDaysView .days .day,
+body[ng-app="SOGo.SchedulerUI"] .daysView .days .day,
+body[ng-app="SOGo.SchedulerUI"] .days.dayLabels .day {
+    border-right: 1px solid #e0e7ff !important;
+    box-sizing: border-box;
+}
+
+body[ng-app="SOGo.SchedulerUI"] .allDaysView .days .day:last-child,
+body[ng-app="SOGo.SchedulerUI"] .daysView .days .day:last-child,
+body[ng-app="SOGo.SchedulerUI"] .days.dayLabels .day:last-child {
+    border-right: none !important;
 }
 
 /* Estilo da coluna de Horas (ex: 00:00) */
@@ -3236,6 +3342,19 @@ body.tcl-dark-mode[ng-app="SOGo.SchedulerUI"] .calendarView .hour {
 
 body.tcl-dark-mode[ng-app="SOGo.SchedulerUI"] .clickableHourCell {
     border-bottom: 1px solid #1a1b35 !important;
+}
+
+/* Divisórias verticais no Dark Mode */
+body.tcl-dark-mode[ng-app="SOGo.SchedulerUI"] .allDaysView .days .day,
+body.tcl-dark-mode[ng-app="SOGo.SchedulerUI"] .daysView .days .day,
+body.tcl-dark-mode[ng-app="SOGo.SchedulerUI"] .days.dayLabels .day {
+    border-right: 1px solid #1a1b35 !important;
+}
+
+body.tcl-dark-mode[ng-app="SOGo.SchedulerUI"] .allDaysView .days .day:last-child,
+body.tcl-dark-mode[ng-app="SOGo.SchedulerUI"] .daysView .days .day:last-child,
+body.tcl-dark-mode[ng-app="SOGo.SchedulerUI"] .days.dayLabels .day:last-child {
+    border-right: none !important;
 }
 
 /* ==========================================================================
@@ -3674,13 +3793,17 @@ body[ng-app="SOGo.SchedulerUI"] .days.dayLabels:has(.sg-md-display-4) {
 /* Itens Light Mode */
 .tcl-calendar-popup .tcl-calendar-popup-item {
     color: #111522 !important;
-    padding: 14px 16px !important;
+    padding: 12px 14px !important;
     margin: 0 !important;
     border-radius: 8px !important; /* Bordas arredondadas nos itens também */
     cursor: pointer !important;
     transition: background-color 0.2s ease, transform 0.1s ease !important;
-    font-size: 15px !important;
+    font-size: 14px !important;
     font-weight: 500 !important;
+    white-space: nowrap !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
 }
 .tcl-calendar-popup .tcl-calendar-popup-item:active {
     transform: scale(0.98) !important; /* Efeitinho de clique macio */
@@ -5720,16 +5843,52 @@ md-dialog:has(md-icon[aria-label="folder_shared"].sg-icon-toolbar-bg) md-dialog-
     height: 44px !important;
     padding: 0 16px !important;
     align-items: center !important;
-    margin-bottom: 24px !important;
+    margin-bottom: 64px !important; /* Aumentado para caber o botão Cancelar abaixo */
+    position: relative !important; /* Âncora para o botão de cancelar absoluto */
 }
 body.tcl-dark-mode md-dialog:has(md-icon[aria-label="folder_shared"].sg-icon-toolbar-bg) md-dialog-content > .layout-row:first-child {
     background-color: #161b2c !important;
 }
-md-dialog:has(md-icon[aria-label="folder_shared"].sg-icon-toolbar-bg) md-dialog-content > .layout-row:first-child md-icon {
+md-dialog:has(md-icon[aria-label="folder_shared"].sg-icon-toolbar-bg) md-dialog-content > .layout-row:first-child > md-icon {
     color: #0f172a !important;
     margin-right: 12px !important;
 }
-body.tcl-dark-mode md-dialog:has(md-icon[aria-label="folder_shared"].sg-icon-toolbar-bg) md-dialog-content > .layout-row:first-child md-icon {
+body.tcl-dark-mode md-dialog:has(md-icon[aria-label="folder_shared"].sg-icon-toolbar-bg) md-dialog-content > .layout-row:first-child > md-icon {
+    color: #f8fafc !important;
+}
+
+/* Estilo e posição do botão de cancelar (X ou texto) do autocomplete */
+md-dialog:has(md-icon[aria-label="folder_shared"].sg-icon-toolbar-bg) md-dialog-content > .layout-row:first-child md-autocomplete button {
+    position: absolute !important;
+    top: 56px !important;
+    right: 0 !important; /* Alinhado à direita */
+    left: auto !important; /* IGNORA A ESQUERDA QUE O SOGO FORÇA */
+    bottom: auto !important;
+    transform: none !important; /* PREVINE QUALQUER TRANSLATE DA ESQUERDA */
+    background-color: #f1f5f9 !important;
+    border-radius: 8px !important;
+    color: #0f172a !important;
+    width: 100px !important;
+    height: 40px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    text-transform: none !important;
+    z-index: 100 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: none !important;
+}
+body.tcl-dark-mode md-dialog:has(md-icon[aria-label="folder_shared"].sg-icon-toolbar-bg) md-dialog-content > .layout-row:first-child md-autocomplete button {
+    background-color: #1e293b !important;
+    color: #f8fafc !important;
+}
+md-dialog:has(md-icon[aria-label="folder_shared"].sg-icon-toolbar-bg) md-dialog-content > .layout-row:first-child md-autocomplete button md-icon {
+    color: #0f172a !important;
+}
+body.tcl-dark-mode md-dialog:has(md-icon[aria-label="folder_shared"].sg-icon-toolbar-bg) md-dialog-content > .layout-row:first-child md-autocomplete button md-icon {
     color: #f8fafc !important;
 }
 md-dialog:has(md-icon[aria-label="folder_shared"].sg-icon-toolbar-bg) md-dialog-content > .layout-row:first-child md-autocomplete,
@@ -5739,12 +5898,15 @@ md-dialog:has(md-icon[aria-label="folder_shared"].sg-icon-toolbar-bg) md-dialog-
     margin: 0 !important;
     height: 100% !important;
     box-shadow: none !important;
+    background: transparent !important;
+    border: none !important;
+    position: static !important; /* VITAL: Garante que o container interno não prenda o botão na esquerda */
 }
 md-dialog:has(md-icon[aria-label="folder_shared"].sg-icon-toolbar-bg) md-dialog-content > .layout-row:first-child md-autocomplete input {
     border: none !important;
     background: transparent !important;
     color: #0f172a !important;
-    padding: 0 !important;
+    padding: 0 40px 0 0 !important; /* Espaço para o botão de cancelar (X) */
     height: 44px !important;
     line-height: 44px !important;
 }
@@ -5767,6 +5929,7 @@ md-dialog:has(md-icon[aria-label="folder_shared"].sg-icon-toolbar-bg) md-card {
     margin: 0 0 8px 0 !important;
     padding: 0 !important;
     border-radius: 0 !important;
+    border: none !important;
 }
 md-dialog:has(md-icon[aria-label="folder_shared"].sg-icon-toolbar-bg) md-card a.tcl-item-user {
     padding: 8px 0 !important;
@@ -7307,4 +7470,429 @@ body.tcl-dark-mode #tcl-mobile-calendar-header .md-button.md-icon-button md-icon
 }
 body.tcl-dark-mode #tcl-mobile-calendar-header .md-button.md-icon-button:hover {
     background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* ==========================================================================
+   Correção: Remover completamente a lateral (All Days) do Calendário
+   ========================================================================== */
+.allDaysView--sidenav {
+    display: none !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.allDaysView--sidenav button {
+    display: none !important;
+}
+
+/* ==========================================================================
+   Estilo Premium para Modais de Prompt (Novo Calendário, etc)
+   ========================================================================== */
+md-dialog.md-prompt-dialog {
+    border-radius: 20px !important;
+    background-color: #ffffff !important;
+    padding: 24px !important;
+    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.1) !important;
+}
+
+body.tcl-dark-mode md-dialog.md-prompt-dialog {
+    background-color: #1e293b !important;
+}
+
+md-dialog.md-prompt-dialog .md-dialog-content {
+    padding: 0 !important;
+}
+
+md-dialog.md-prompt-dialog h2 {
+    color: #111827 !important;
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    margin-bottom: 24px !important;
+}
+
+body.tcl-dark-mode md-dialog.md-prompt-dialog h2 {
+    color: #f1f5f9 !important;
+}
+
+/* Input do modal */
+md-dialog.md-prompt-dialog md-input-container {
+    background-color: #f3f4f6 !important;
+    border-radius: 8px !important;
+    padding: 8px 16px !important;
+    margin: 0 !important;
+}
+
+body.tcl-dark-mode md-dialog.md-prompt-dialog md-input-container {
+    background-color: #334155 !important;
+}
+
+md-dialog.md-prompt-dialog md-input-container label {
+    display: block !important;
+    color: #111827 !important;
+    font-weight: 600 !important;
+    margin-bottom: 8px !important;
+    transform: none !important;
+    position: relative !important;
+    top: 0 !important;
+    font-size: 14px !important;
+}
+
+body.tcl-dark-mode md-dialog.md-prompt-dialog md-input-container label {
+    color: #cbd5e1 !important;
+}
+
+md-dialog.md-prompt-dialog md-input-container input {
+    border: none !important;
+    color: #111827 !important;
+    padding: 8px 0 !important;
+}
+
+body.tcl-dark-mode md-dialog.md-prompt-dialog md-input-container input {
+    color: #f8fafc !important;
+}
+
+md-dialog.md-prompt-dialog md-input-container::after,
+md-dialog.md-prompt-dialog md-input-container::before {
+    display: none !important;
+}
+
+md-dialog.md-prompt-dialog .md-errors-spacer {
+    display: none !important;
+}
+
+/* Botoes */
+md-dialog.md-prompt-dialog md-dialog-actions {
+    padding: 24px 0 0 0 !important;
+    border-top: none !important;
+    justify-content: flex-end !important;
+}
+
+md-dialog.md-prompt-dialog md-dialog-actions button {
+    border-radius: 8px !important;
+    text-transform: none !important;
+    font-weight: 600 !important;
+    padding: 8px 24px !important;
+    margin-left: 12px !important;
+    min-width: 100px !important;
+}
+
+md-dialog.md-prompt-dialog md-dialog-actions button:nth-child(1) {
+    background-color: #f3f4f6 !important;
+    color: #111827 !important;
+}
+
+body.tcl-dark-mode md-dialog.md-prompt-dialog md-dialog-actions button:nth-child(1) {
+    background-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+md-dialog.md-prompt-dialog md-dialog-actions button:nth-child(2) {
+    background-color: #00FFCB !important;
+    color: #000000 !important;
+}
+
+/* Espaçamento entre o dia e o nome do mês nos blocos do calendário */
+.sg-calendar-tile-header span {
+    margin-right: 6px !important;
+}
+
+/* ==========================================================================
+   Estilo Premium para Modal de Apagar / Limpar Pasta (Archive)
+   ========================================================================== */
+md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) {
+    border-radius: 20px !important;
+    background-color: #ffffff !important;
+    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.1) !important;
+}
+
+body.tcl-dark-mode md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) {
+    background-color: #1e293b !important;
+}
+
+/* Toolbar */
+md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-toolbar {
+    background-color: transparent !important;
+    color: #111827 !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+body.tcl-dark-mode md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-toolbar {
+    color: #f1f5f9 !important;
+    border-bottom: 1px solid #334155 !important;
+}
+md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-toolbar md-icon,
+md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-toolbar .pseudo-input-container {
+    color: #111827 !important;
+}
+body.tcl-dark-mode md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-toolbar md-icon,
+body.tcl-dark-mode md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-toolbar .pseudo-input-container {
+    color: #f1f5f9 !important;
+}
+
+/* Content */
+md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-dialog-content {
+    padding: 24px !important;
+}
+md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) h4 {
+    color: #111827 !important;
+    font-weight: 600 !important;
+    margin-top: 0 !important;
+    margin-bottom: 24px !important;
+}
+body.tcl-dark-mode md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) h4 {
+    color: #f1f5f9 !important;
+}
+
+/* Checkboxes and selects */
+md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-checkbox .md-label {
+    color: #475569 !important;
+}
+body.tcl-dark-mode md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-checkbox .md-label {
+    color: #cbd5e1 !important;
+}
+md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-input-container {
+    background-color: #f3f4f6 !important;
+    border-radius: 8px !important;
+    padding: 8px 16px !important;
+    margin-bottom: 16px !important;
+}
+body.tcl-dark-mode md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-input-container {
+    background-color: #334155 !important;
+}
+
+/* Fix input container lines */
+md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-input-container::after,
+md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-input-container::before {
+    display: none !important;
+}
+
+md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-input-container label {
+    color: #111827 !important;
+    transform: none !important;
+    position: relative !important;
+    margin-bottom: 8px !important;
+    display: block !important;
+    font-weight: 600 !important;
+}
+body.tcl-dark-mode md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-input-container label {
+    color: #cbd5e1 !important;
+}
+
+md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-select .md-select-value {
+    border-bottom: none !important;
+    color: #111827 !important;
+    padding-bottom: 0 !important;
+}
+body.tcl-dark-mode md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-select .md-select-value {
+    color: #f8fafc !important;
+}
+
+/* Warning text */
+md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) .clean-mailbox-warn {
+    color: #ef4444 !important;
+    font-weight: 500 !important;
+}
+
+/* Actions */
+md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-dialog-actions {
+    padding: 16px 24px 24px 24px !important;
+    border-top: none !important;
+}
+md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-dialog-actions button {
+    border-radius: 8px !important;
+    text-transform: none !important;
+    font-weight: 600 !important;
+    padding: 8px 24px !important;
+}
+md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-dialog-actions button.md-warn {
+    background-color: #f3f4f6 !important;
+    color: #111827 !important;
+}
+body.tcl-dark-mode md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-dialog-actions button.md-warn {
+    background-color: #334155 !important;
+    color: #f8fafc !important;
+}
+md-dialog:has(md-icon[aria-label="delete"].sg-icon-toolbar-bg) md-dialog-actions button.md-primary {
+    background-color: #00FFCB !important;
+    color: #000000 !important;
+}
+
+/* ==========================================================================
+   Estilo Premium para Modal de Inscrição / Pesquisar Usuário (searchForm)
+   ========================================================================== */
+md-dialog:has(form[name="searchForm"]) {
+    border-radius: 20px !important;
+    background-color: #ffffff !important;
+    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.1) !important;
+}
+
+body.tcl-dark-mode md-dialog:has(form[name="searchForm"]) {
+    background-color: #1e293b !important;
+}
+
+/* Toolbar */
+md-dialog:has(form[name="searchForm"]) md-toolbar {
+    background-color: transparent !important;
+    color: #111827 !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+body.tcl-dark-mode md-dialog:has(form[name="searchForm"]) md-toolbar {
+    color: #f1f5f9 !important;
+    border-bottom: 1px solid #334155 !important;
+}
+md-dialog:has(form[name="searchForm"]) md-toolbar .sg-md-title,
+md-dialog:has(form[name="searchForm"]) md-toolbar md-icon {
+    color: #111827 !important;
+}
+body.tcl-dark-mode md-dialog:has(form[name="searchForm"]) md-toolbar .sg-md-title,
+body.tcl-dark-mode md-dialog:has(form[name="searchForm"]) md-toolbar md-icon {
+    color: #f1f5f9 !important;
+}
+
+/* Content */
+md-dialog:has(form[name="searchForm"]) md-dialog-content {
+    padding: 24px !important;
+}
+
+/* Search Input */
+md-dialog:has(form[name="searchForm"]) md-input-container {
+    background-color: #f3f4f6 !important;
+    border-radius: 8px !important;
+    padding: 8px 16px 8px 48px !important;
+    margin: 0 !important;
+}
+body.tcl-dark-mode md-dialog:has(form[name="searchForm"]) md-input-container {
+    background-color: #334155 !important;
+}
+
+md-dialog:has(form[name="searchForm"]) md-input-container::after,
+md-dialog:has(form[name="searchForm"]) md-input-container::before {
+    display: none !important;
+}
+
+md-dialog:has(form[name="searchForm"]) md-input-container label {
+    color: #64748b !important;
+    transform: translateY(-50%) !important;
+    position: absolute !important;
+    margin-bottom: 0 !important;
+    display: block !important;
+    font-weight: 500 !important;
+    top: 50% !important;
+    left: 48px !important;
+    width: auto !important;
+    pointer-events: none !important;
+}
+body.tcl-dark-mode md-dialog:has(form[name="searchForm"]) md-input-container label {
+    color: #94a3b8 !important;
+}
+
+/* Esconder o label (simulando placeholder nativo) */
+md-dialog:has(form[name="searchForm"]) md-input-container.md-input-focused label,
+md-dialog:has(form[name="searchForm"]) md-input-container.md-input-has-value label {
+    display: none !important;
+}
+
+md-dialog:has(form[name="searchForm"]) md-input-container input {
+    border: none !important;
+    color: #111827 !important;
+    padding: 8px 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+}
+body.tcl-dark-mode md-dialog:has(form[name="searchForm"]) md-input-container input {
+    color: #f8fafc !important;
+}
+
+/* Search Icon */
+md-dialog:has(form[name="searchForm"]) md-input-container > md-icon {
+    color: #64748b !important;
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    margin: 0 !important;
+    left: 12px !important;
+}
+body.tcl-dark-mode md-dialog:has(form[name="searchForm"]) md-input-container > md-icon {
+    color: #94a3b8 !important;
+}
+
+md-dialog:has(form[name="searchForm"]) md-input-container .md-errors-spacer {
+    display: none !important;
+}
+
+/* User List (Results) */
+md-dialog:has(form[name="searchForm"]) md-list {
+    padding: 0 !important;
+    margin-top: 16px !important;
+}
+md-dialog:has(form[name="searchForm"]) md-list-item {
+    border-radius: 8px !important;
+    margin-bottom: 4px !important;
+    transition: background-color 0.2s !important;
+    padding: 0 8px !important;
+}
+md-dialog:has(form[name="searchForm"]) md-list-item:hover {
+    background-color: #f3f4f6 !important;
+}
+body.tcl-dark-mode md-dialog:has(form[name="searchForm"]) md-list-item:hover {
+    background-color: #334155 !important;
+}
+md-dialog:has(form[name="searchForm"]) md-list-item .md-list-item-inner,
+md-dialog:has(form[name="searchForm"]) md-list-item .md-list-item-text {
+    color: #111827 !important;
+}
+body.tcl-dark-mode md-dialog:has(form[name="searchForm"]) md-list-item .md-list-item-inner,
+body.tcl-dark-mode md-dialog:has(form[name="searchForm"]) md-list-item .md-list-item-text {
+    color: #f1f5f9 !important;
+}
+
+/* ----- Preferências: Selects e Radio Buttons ----- */
+
+/* Selects */
+md-content.md-inline-form md-input-container md-select {
+    background-color: #f1f5f9 !important;
+    border-radius: 8px !important;
+    padding: 0 12px !important;
+    height: 44px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+}
+md-content.md-inline-form md-input-container md-select md-select-value {
+    border-bottom: none !important;
+    padding: 0 !important;
+    width: 100% !important;
+}
+body.tcl-dark-mode md-content.md-inline-form md-input-container md-select {
+    background-color: #1e293b !important;
+}
+/* Fundo da tela de preferências inteira no dark mode */
+body.tcl-dark-mode md-content.md-inline-form {
+    background-color: #040418 !important;
+}
+body.tcl-dark-mode md-content.md-inline-form md-input-container md-select .md-text,
+body.tcl-dark-mode md-content.md-inline-form md-input-container md-select .md-select-icon {
+    color: #f8fafc !important;
+}
+
+/* Remover linhas inferiores dos md-input-container de selects */
+md-content.md-inline-form md-input-container:has(md-select)::before,
+md-content.md-inline-form md-input-container:has(md-select)::after,
+md-content.md-inline-form md-input-container:has(md-select) .md-errors-spacer {
+    display: none !important;
+}
+
+/* Radio Buttons (Nível de Animação etc) no Dark Mode */
+body.tcl-dark-mode md-radio-button .md-off {
+    border-color: #f8fafc !important;
+}
+body.tcl-dark-mode md-radio-button.md-checked .md-off {
+    border-color: #4da3ff !important; /* Cor de destaque para marcado */
+}
+body.tcl-dark-mode md-radio-button.md-checked .md-on {
+    background-color: #4da3ff !important;
+}
+body.tcl-dark-mode md-radio-button .md-label {
+    color: #f8fafc !important;
 }
