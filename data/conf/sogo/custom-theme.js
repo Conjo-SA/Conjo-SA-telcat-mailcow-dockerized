@@ -9,7 +9,7 @@
  * complementado pelo custom-gmail.css (overrides estruturais), injetado
  * pelo custom-sogo.js.
  */
-(function() {
+(function () {
   'use strict';
   angular.module('SOGo.Common')
     .config(configure);
