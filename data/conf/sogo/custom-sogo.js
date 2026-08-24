@@ -1320,37 +1320,77 @@ if (typeof CKEDITOR !== "undefined") {
         addressContainers.forEach(function(container) {
             if (container.querySelector('.tcl-rebuilt-address')) return;
             
-            // Pega o escopo do Angular diretamente do container do ng-repeat
             var scope = window.angular ? angular.element(container).scope() : null;
-            if (!scope || !scope.address) {
-                // Tenta no isolateScope caso seja isolado
+            var address = null;
+            if (scope && scope.address) {
+                address = scope.address;
+            } else {
                 var sgAddress = container.querySelector('div[sg-address]');
-                if (sgAddress) {
+                if (sgAddress && window.angular) {
                     var isoScope = angular.element(sgAddress).isolateScope();
-                    if (isoScope && isoScope.address) scope = isoScope;
+                    if (isoScope && isoScope.address) address = isoScope.address;
                 }
             }
-            if (!scope || !scope.address) return;
-            var address = scope.address;
             
-            // Esconde os elementos originais
+            // Fallback para produção onde o Angular Scope ($compileProvider.debugInfoEnabled) está desativado
+            if (!address) {
+                var addrNode = container.querySelector('address');
+                if (addrNode) {
+                    var lines = addrNode.innerHTML.split(/<br\s*\/?>/i);
+                    address = {
+                        postoffice: '',
+                        extended: '',
+                        street: '',
+                        locality: '',
+                        region: '',
+                        country: '',
+                        postalcode: '',
+                        type: ''
+                    };
+                    
+                    // Ajuste heurístico
+                    if (lines.length === 5) {
+                        address.street = (lines[0] || '').trim();
+                        address.extended = (lines[1] || '').trim();
+                        var cityRegion = (lines[2] || '').split(',');
+                        address.locality = (cityRegion[0] || '').trim();
+                        address.region = (cityRegion[1] || '').trim();
+                        address.country = (lines[3] || '').trim();
+                        address.postalcode = (lines[4] || '').trim();
+                    } else if (lines.length === 4) {
+                        address.street = (lines[0] || '').trim();
+                        var cityRegion = (lines[1] || '').split(',');
+                        address.locality = (cityRegion[0] || '').trim();
+                        address.region = (cityRegion[1] || '').trim();
+                        address.country = (lines[2] || '').trim();
+                        address.postalcode = (lines[3] || '').trim();
+                    } else {
+                        address.street = lines.join(', ').trim();
+                    }
+                }
+            }
+
+            if (!address) return;
+            
+            // Esconde os elementos originais forçando com !important para sobrepor o CSS
             var originalField = container.querySelector('.pseudo-input-field');
-            if (originalField) originalField.style.display = 'none';
+            if (originalField) originalField.style.setProperty('display', 'none', 'important');
             var originalLabel = container.querySelector('.pseudo-input-label');
-            if (originalLabel) originalLabel.style.display = 'none';
+            if (originalLabel) originalLabel.style.setProperty('display', 'none', 'important');
             
-            // Cria a nova estrutura replicando o design (2 colunas)
+            // Cria a nova estrutura replicando o design (2 colunas via flex)
             var wrapper = document.createElement('div');
             wrapper.className = 'tcl-rebuilt-address';
-            wrapper.style.display = 'grid';
-            wrapper.style.gridTemplateColumns = '1fr 1fr';
+            wrapper.style.display = 'flex';
+            wrapper.style.flexWrap = 'wrap';
             wrapper.style.gap = '24px';
             wrapper.style.width = '100%';
             
             function createField(labelText, value, span2) {
                 var box = document.createElement('div');
                 box.className = 'pseudo-input-container';
-                if (span2) box.style.gridColumn = '1 / -1';
+                box.style.flex = span2 ? '1 1 100%' : '1 1 calc(50% - 12px)';
+                box.style.minWidth = '0';
                 
                 if (labelText) {
                     var lbl = document.createElement('label');
@@ -1375,16 +1415,66 @@ if (typeof CKEDITOR !== "undefined") {
             }
             
             var typeLabel = address.type ? address.type.charAt(0).toUpperCase() + address.type.slice(1) : '';
-            var addressTitle = typeLabel ? 'Endereço (' + typeLabel + ')' : 'Endereço';
+            var addressTitle = typeLabel ? 'Rua (' + typeLabel + ')' : 'Rua';
             
-            wrapper.appendChild(createField(addressTitle, address.street, true));
-            wrapper.appendChild(createField('', address.locality, false));
-            wrapper.appendChild(createField('', address.region, false));
-            wrapper.appendChild(createField('', address.country, false));
-            wrapper.appendChild(createField('', address.postalcode, false));
+            wrapper.appendChild(createField(addressTitle, address.street, true)); // Span 2 para a rua
+            wrapper.appendChild(createField('Continuação da Rua', address.extended, false));
+            wrapper.appendChild(createField('Caixa Postal', address.postoffice || address.pobox, false));
+            wrapper.appendChild(createField('Cidade', address.locality, false));
+            wrapper.appendChild(createField('Região', address.region, false));
+            wrapper.appendChild(createField('CEP', address.postalcode, false));
+            wrapper.appendChild(createField('País', address.country, false));
             
             container.appendChild(wrapper);
         });
+        
+        // 3. Mover Título, Papel e Organização para o .msg-body em campos separados
+        var msgBody = detailView.querySelector('.msg-body');
+        var subheader = detailView.querySelector('.msg-header-content .sg-md-display-2-subheader--thin');
+        
+        if (msgBody && subheader && !msgBody.querySelector('.tcl-prof-injected')) {
+            var text = subheader.textContent.trim();
+            if (text) {
+                // Marca que já injetamos para não duplicar
+                var marker = document.createElement('div');
+                marker.className = 'tcl-prof-injected';
+                marker.style.display = 'none';
+                msgBody.appendChild(marker);
+
+                var parts = text.split(',');
+                var titleText = '', roleText = '', orgText = '';
+                
+                if (parts.length >= 3) {
+                    titleText = parts[0].trim();
+                    roleText = parts[1].trim();
+                    orgText = parts.slice(2).join(',').trim();
+                } else if (parts.length === 2) {
+                    titleText = parts[0].trim();
+                    orgText = parts[1].trim();
+                } else {
+                    orgText = parts[0].trim(); // Padrão SOGo quando tem 1
+                }
+
+                function createBox(label, val) {
+                    var box = document.createElement('div');
+                    box.className = 'pseudo-input-container';
+                    var lbl = document.createElement('label');
+                    lbl.className = 'pseudo-input-label';
+                    lbl.textContent = label;
+                    var fld = document.createElement('div');
+                    fld.className = 'pseudo-input-field';
+                    fld.textContent = val;
+                    box.appendChild(lbl);
+                    box.appendChild(fld);
+                    return box;
+                }
+                
+                // Insere de trás pra frente pois estamos usando insertBefore no firstChild
+                msgBody.insertBefore(createBox('Organização', orgText), msgBody.firstChild);
+                msgBody.insertBefore(createBox('Papel', roleText), msgBody.firstChild);
+                msgBody.insertBefore(createBox('Título', titleText), msgBody.firstChild);
+            }
+        }
     }
 
     var observer = new MutationObserver(function() {
@@ -1395,35 +1485,4 @@ if (typeof CKEDITOR !== "undefined") {
     observer.observe(document.body, { childList: true, subtree: true });
     setTimeout(injectContactViewFeatures, 500);
 })();
-
-// ─── Auto-abrir Edição ao Clicar no Contato ──────────────────────────────
-(function() {
-    // Detecta o clique na lista de contatos
-    document.addEventListener('click', function(e) {
-        if (window.location.href.indexOf('Contacts') === -1) return;
-        
-        var btn = e.target.closest('button[ng-click*="selectCard"], md-list-item');
-        if (btn) {
-            // Em vez de depender de escopos do Angular (que estão bloqueados em produção),
-            // ou de eventos hashchange (que o Angular cancela),
-            // nós vigiamos a URL a cada milissegundo.
-            var maxTries = 40; // Tenta por 2 segundos
-            var tries = 0;
-            var watchUrl = setInterval(function() {
-                tries++;
-                var currentHash = window.location.hash;
-                
-                // Assim que o SOGo colocar .vcf na URL, nós sequestramos e botamos /edit
-                if (currentHash.match(/\.vcf$/)) {
-                    clearInterval(watchUrl);
-                    // window.location.replace não cria histórico fantasma e engata a rota
-                    window.location.replace(window.location.href + '/edit');
-                }
-                
-                if (tries > maxTries) {
-                    clearInterval(watchUrl);
-                }
-            }, 50);
-        }
-    }, true);
-})();
+// Removed auto-open edit function
