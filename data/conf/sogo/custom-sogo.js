@@ -13,6 +13,20 @@
     link.id = "teclat-premium-css";
     link.rel = "stylesheet";
     link.href = base + "teclat-premium.css?v=" + new Date().getTime();
+    
+    link.onload = function() {
+      setTimeout(function() {
+        window.dispatchEvent(new Event("resize"));
+        try {
+          var container = document.querySelector('md-virtual-repeat-container');
+          if (container && window.angular) {
+             var scope = window.angular.element(container).scope();
+             if (scope) scope.$broadcast('$md-resize');
+          }
+        } catch(e) {}
+      }, 400);
+    };
+    
     document.head.appendChild(link);
   }
 
@@ -234,7 +248,8 @@
     }
 
     // 3. Adicionar classes aos itens da sidebar para aplicar SVGs via CSS Mask
-    var listItems = scope.querySelectorAll("md-list-item, .md-button");
+    var sidenavScope = scope.querySelectorAll ? scope : document;
+    var listItems = sidenavScope.querySelectorAll("md-sidenav md-list-item, md-sidenav .md-button");
     for (var k = 0; k < listItems.length; k++) {
       var item = listItems[k];
       
