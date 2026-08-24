@@ -288,14 +288,17 @@ md-content[ui-view="content"] md-list md-divider {
 
 /* Arredondamento e espaçamento das linhas de e-mail */
 md-list-item.sg-message-list-item {
-  margin: 4px 16px !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  max-height: 56px !important;
+  margin: 0 !important;
   border-radius: 5px !important;
   background-color: transparent !important;
   transition: background-color 0.2s;
   position: relative !important;
-  height: 63px !important;
-  min-height: 63px !important;
-  max-height: 63px !important;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  box-sizing: border-box !important;
+  overflow: hidden !important;
 }
 
 /* Fundo cinza quando selecionado */
@@ -388,8 +391,9 @@ md-list-item.sg-message-list-item .md-list-item-inner,
 md-list-item.sg-message-list-item .sg-tile-icons,
 md-list-item.sg-message-list-item .md-no-style {
   position: static !important;
-  height: 63px !important;
+  height: 56px !important;
   width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 /* Corrige o botão de clique invisível que não cobria a linha inteira */
@@ -524,6 +528,58 @@ md-list-item.sg-message-list-item .sg-tile-size {
   display: none !important;
 }
 
+/* ==========================================================================
+   Diferenciação Visual: Lido vs. Não Lido
+   ========================================================================== */
+
+/* E-mails LIDOS: fundo levemente acinzentado (estilo Gmail) */
+md-list-item.sg-message-list-item:not(.unread) {
+  background-color: #f2f6fc !important;
+}
+
+/* E-mails NÃO LIDOS: fundo branco limpo */
+md-list-item.sg-message-list-item.unread {
+  background-color: #ffffff !important;
+}
+
+/* E-mails LIDOS: texto mais leve e suave */
+md-list-item.sg-message-list-item:not(.unread) .sg-md-subhead > div > span:not(.sg-label-outline) {
+  font-weight: 400 !important;
+  color: #6b7280 !important;
+}
+md-list-item.sg-message-list-item:not(.unread) .sg-tile-subject {
+  font-weight: 400 !important;
+  color: #9ca3af !important;
+}
+md-list-item.sg-message-list-item:not(.unread) .sg-tile-date {
+  font-weight: 400 !important;
+  color: #9ca3af !important;
+}
+
+/* E-mails NÃO LIDOS: negrito + indicador azul na esquerda */
+md-list-item.sg-message-list-item.unread .sg-md-subhead > div > span:not(.sg-label-outline) {
+  font-weight: 700 !important;
+  color: #0a0f1e !important;
+}
+md-list-item.sg-message-list-item.unread .sg-tile-subject {
+  font-weight: 600 !important;
+  color: #374151 !important;
+}
+md-list-item.sg-message-list-item.unread .sg-tile-date {
+  font-weight: 600 !important;
+  color: #0a0f1e !important;
+}
+md-list-item.sg-message-list-item.unread::before {
+  content: '' !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 12px !important;
+  bottom: 12px !important;
+  width: 3px !important;
+  background-color: var(--tcl-accent, #00e5ff) !important;
+  border-radius: 2px !important;
+  z-index: 200 !important;
+}
 /* Removemos o placeholder de mentira pois usaremos o nome da pasta (ex: Enviados) nativo */
 md-content[ui-view="content"] md-toolbar:not(.toolbar-main) span,
 md-content[ui-view="content"] md-toolbar:not(.toolbar-main) div {
@@ -1157,13 +1213,35 @@ body.tcl-dark-mode .view-list .md-subheader-inner {
   background-color: #040418 !important;
 }
 
-body.tcl-dark-mode md-list-item.sg-message-list-item .sg-md-subhead > div > span:not(.sg-label-outline) {
+/* Dark mode: E-mails NÃO LIDOS - texto branco forte */
+body.tcl-dark-mode md-list-item.sg-message-list-item.unread .sg-md-subhead > div > span:not(.sg-label-outline) {
   color: #ffffff !important;
+  font-weight: 700 !important;
+}
+body.tcl-dark-mode md-list-item.sg-message-list-item.unread .sg-tile-subject {
+  color: #d1d5db !important;
+  font-weight: 600 !important;
+}
+body.tcl-dark-mode md-list-item.sg-message-list-item.unread .sg-tile-date {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+body.tcl-dark-mode md-list-item.sg-message-list-item.unread {
+  background-color: #0a0e2a !important;
 }
 
-body.tcl-dark-mode md-list-item.sg-message-list-item .sg-tile-subject,
-body.tcl-dark-mode md-list-item.sg-message-list-item .sg-tile-date {
-  color: #9ca3af !important;
+/* Dark mode: E-mails LIDOS - texto mais apagado */
+body.tcl-dark-mode md-list-item.sg-message-list-item:not(.unread) .sg-md-subhead > div > span:not(.sg-label-outline) {
+  color: #6b7280 !important;
+  font-weight: 400 !important;
+}
+body.tcl-dark-mode md-list-item.sg-message-list-item:not(.unread) .sg-tile-subject,
+body.tcl-dark-mode md-list-item.sg-message-list-item:not(.unread) .sg-tile-date {
+  color: #4b5563 !important;
+  font-weight: 400 !important;
+}
+body.tcl-dark-mode md-list-item.sg-message-list-item:not(.unread) {
+  background-color: #030312 !important;
 }
 
 body.tcl-dark-mode md-list-item.sg-message-list-item:hover,
@@ -1718,10 +1796,27 @@ md-dialog.tcl-mail-modal > form {
   contain: none !important;
   padding-bottom: 20px !important; /* Espaço vazio no rodapé para os botões não baterem no texto/anexos */
 }
+/* A dropzone original cobre a tela e bloqueia cliques. Vamos deixá-la visível mas sem bloquear cliques, e reativar cliques apenas nos botões dentro dela */
+md-dialog.tcl-mail-modal .sg-dropzone {
+  display: block !important;
+  pointer-events: none !important; 
+}
+md-dialog.tcl-mail-modal .sg-dropzone * {
+  pointer-events: auto !important;
+}
 
-md-dialog.tcl-mail-modal .sg-dropzone,
+/* Exibe a barra inferior com o botão de anexo (clipe), S/MIME, etc */
+md-dialog.tcl-mail-modal md-dialog-actions {
+  justify-content: flex-start !important;
+  padding: 8px 24px !important;
+}
+
+/* Oculta os botões originais (S/MIME, etc) se quiser, ou reseta o layout do container de anexos para que ele não herde o position: absolute do cabeçalho superior */
 md-dialog.tcl-mail-modal md-dialog-actions .msg-header-buttons {
-  display: none !important;
+  position: static !important;
+  display: flex !important;
+  flex-direction: row !important;
+  width: auto !important;
 }
 
 /* Estilo Base dos botões do rodapé */
@@ -3297,13 +3392,12 @@ body[ng-app="SOGo.SchedulerUI"] .calendarView .sg-event,
 body[ng-app="SOGo.SchedulerUI"] .sg-calendar-list .sg-event {
     border-radius: 6px !important;
     box-shadow: none !important;
-    padding: 8px 12px !important;
+    padding: 4px 6px !important;
     box-sizing: border-box !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
     overflow: hidden !important;
-    height: auto !important;
 }
 
 body[ng-app="SOGo.SchedulerUI"] .calendarView .sg-event {
