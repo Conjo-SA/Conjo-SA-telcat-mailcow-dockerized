@@ -120,44 +120,92 @@
         mainSidebar.insertBefore(fakeBtn, logoElement.nextSibling);
 
         // Função universal extremamente agressiva para forçar clique em botões do Angular Material
+        // Função universal extremamente agressiva para forçar clique em botões do Angular Material
+        // Função universal para forçar clique em botões do Angular Material extraindo suas intenções nativas
         if (!window.forceSogoClick) {
             window.forceSogoClick = function(actionType) {
                 var btn = null;
-                // Busca o botão exato de criar cartão ou lista vasculhando todo o DOM
-                if (actionType === 'card') {
-                    btn = document.querySelector('[ng-click*="newCard"], [ui-sref*="newCard"], md-fab-actions button:nth-child(1)');
-                } else if (actionType === 'list') {
-                    btn = document.querySelector('[ng-click*="newList"], [ui-sref*="newList"], md-fab-actions button:nth-child(2)');
+                var actions = document.querySelectorAll('md-fab-actions button, button.md-fab');
+                
+                // 1. Encontrar o botão correto no SOGo baseado no ícone ou índice
+                for (var i = 0; i < actions.length; i++) {
+                    var icon = actions[i].querySelector('md-icon');
+                    var iconText = icon ? icon.textContent.trim() : '';
+                    if (actionType === 'card' && (iconText === 'person_add' || iconText === 'person' || iconText === 'add_circle')) {
+                        btn = actions[i]; break;
+                    } else if (actionType === 'list' && (iconText === 'group_add' || iconText === 'list' || iconText === 'group')) {
+                        btn = actions[i]; break;
+                    }
+                }
+                
+                // Fallback para índices (No SOGo Contacts, 0 = Novo Contato, 1 = Nova Lista)
+                if (!btn) {
+                    var fabActions = document.querySelectorAll('md-fab-actions button');
+                    if (actionType === 'card' && fabActions.length > 0) btn = fabActions[0];
+                    if (actionType === 'list' && fabActions.length > 1) btn = fabActions[1];
                 }
 
-                if(btn) {
-                    // Verifica se tem link nativo
-                    var href = btn.getAttribute('href');
-                    if(href && href !== '#' && href !== '') {
+                if (btn) {
+                    // 2. Extrair a intenção real do botão do Angular e executá-la diretamente
+                    
+                    // A. Link direto
+                    var href = btn.getAttribute('href') || btn.getAttribute('ng-href');
+                    if (href && href !== '#' && href !== '') {
                         window.location.href = href;
                         return;
                     }
-                    
-                    // Aciona o evento no Angular
-                    if(window.angular) {
-                        angular.element(btn).triggerHandler('click');
+
+                    // B. Se usa UI-Router (muito comum no SOGo)
+                    var uiSref = btn.getAttribute('ui-sref');
+                    if (uiSref && window.angular) {
+                        try {
+                            var stateName = uiSref.split('(')[0].replace(/['"]/g, '');
+                            var injector = angular.element(document.body).injector();
+                            if (injector) {
+                                var $state = injector.get('$state');
+                                if ($state) {
+                                    $state.go(stateName, $state.params, {reload: true});
+                                    return;
+                                }
+                            }
+                        } catch(e) {
+                            console.error('Erro ao acionar ui-sref:', e);
+                        }
+                    }
+
+                    // C. Se usa ng-click nativo
+                    var ngClick = btn.getAttribute('ng-click');
+                    if (ngClick && window.angular) {
+                        var scope = angular.element(btn).scope();
+                        if (scope) {
+                            try {
+                                scope.$eval(ngClick);
+                                return;
+                            } catch(e) {
+                                console.error('Erro ao avaliar ng-click:', e);
+                            }
+                        }
                     }
                     
+                    // D. Fallback: Clique físico (Desbloqueando o botão antes)
                     btn.removeAttribute('disabled');
+                    btn.classList.remove('md-disabled');
+                    btn.style.pointerEvents = 'auto';
+                    
+                    if (window.angular) angular.element(btn).triggerHandler('click');
                     var evt = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
                     btn.dispatchEvent(evt);
                     btn.click();
                 } else {
-                    // Fallback extremo: Invoca o escopo do Angular diretamente
+                    // 3. Fallback extremo se o botão não existir no DOM por algum motivo
                     if (window.angular) {
-                        var scope = angular.element(document.querySelector('md-content')).scope() || angular.element(document.body).scope();
-                        if (scope) {
-                            // SOGo injeta app no scope
-                            if (scope.app) {
-                                if (actionType === 'card' && scope.app.newCard) scope.app.newCard();
-                                else if (actionType === 'list' && scope.app.newList) scope.app.newList();
+                        try {
+                            var $stateFB = angular.element(document.body).injector().get('$state');
+                            if ($stateFB) {
+                                if (actionType === 'card') $stateFB.go('addressbooks.addressbook.contact.new', $stateFB.params);
+                                else if (actionType === 'list') $stateFB.go('addressbooks.addressbook.list.new', $stateFB.params);
                             }
-                        }
+                        } catch(e) {}
                     }
                 }
             };
@@ -774,6 +822,126 @@
     checkCurrentFolder();
     
     setInterval(syncCalendarDate, 100);
+    
+    // Intervalo para identificar estado de criação e aplicar classes no body e manipular DOM da Lista
+    setInterval(function() {
+        var url = window.location.hash || window.location.pathname || '';
+        
+        // Detecta se é criação de lista ou edição de lista
+        var isNewListURL = url.indexOf('/list/new') !== -1;
+        var isEditListURL = url.indexOf('/edit') !== -1 && document.querySelector('form[name="contactForm"] > div[ng-if*="$isList"]');
+        var isNewList = isNewListURL || isEditListURL;
+        var isNewContact = url.indexOf('/contact/new') !== -1 || url.indexOf('/card/new') !== -1 || (url.indexOf('/edit') !== -1 && document.querySelector('form[name="contactForm"] > div[ng-if*="!editor.card.$isList()"]'));
+
+        if (isNewList) {
+            document.body.classList.add('tcl-new-list');
+            if (isEditListURL) {
+                document.body.classList.add('tcl-edit-list');
+            } else {
+                document.body.classList.remove('tcl-edit-list');
+            }
+            
+            // Força via DOM a div flexível (já que o CSS está brigando com o tema)
+            var listContainer = document.querySelector('form[name="contactForm"] > div[ng-if*="$isList"]');
+            if (listContainer) {
+                // Se a wrapper não existe, cria
+                var wrapper = listContainer.querySelector('.tcl-flex-wrapper');
+                if (!wrapper) {
+                    wrapper = document.createElement('div');
+                    wrapper.className = 'tcl-flex-wrapper';
+                    wrapper.style.setProperty('display', 'flex', 'important');
+                    wrapper.style.setProperty('gap', '20px', 'important');
+                    wrapper.style.setProperty('width', '100%', 'important');
+                    wrapper.style.setProperty('margin-bottom', '20px', 'important');
+                    wrapper.style.setProperty('flex-wrap', 'nowrap', 'important');
+                    
+                    var firstInput = listContainer.querySelector('md-input-container');
+                    if (firstInput) {
+                        listContainer.insertBefore(wrapper, firstInput);
+                    } else {
+                        listContainer.appendChild(wrapper);
+                    }
+                }
+                
+                // Processa cada campo individualmente quando ele aparecer (evita race condition do Angular)
+                var allInputs = listContainer.querySelectorAll('md-input-container');
+                for(var i = 0; i < allInputs.length; i++) {
+                    var inp = allInputs[i];
+                    if (!inp.classList.contains('tcl-processed')) {
+                        inp.classList.add('tcl-processed');
+                        inp.style.setProperty('position', 'relative', 'important');
+                        inp.style.setProperty('top', 'auto', 'important');
+                        inp.style.setProperty('left', 'auto', 'important');
+                        inp.style.setProperty('right', 'auto', 'important');
+                        inp.style.setProperty('bottom', 'auto', 'important');
+                        inp.style.setProperty('transform', 'none', 'important');
+                        inp.style.setProperty('max-width', '100%', 'important');
+                        
+                        var modelNode = inp.querySelector('[ng-model]');
+                        var modelName = modelNode ? modelNode.getAttribute('ng-model') : '';
+                        
+                        // Exibição e Apelido dividem a tela e vão para dentro do wrapper
+                        if (modelName === 'editor.card.c_cn' || modelName === 'editor.card.nickname') {
+                            inp.style.setProperty('width', '48%', 'important');
+                            inp.style.setProperty('margin', '0', 'important');
+                            wrapper.appendChild(inp);
+                        } else {
+                            // Descrição e outros ocupam a tela toda e ficam fora do wrapper
+                            inp.style.setProperty('width', '100%', 'important');
+                                inp.style.setProperty('margin', '0 0 20px 0', 'important');
+                            }
+                        }
+                    }
+                
+                // Força os Membros a ir pro final
+                var members = listContainer.querySelector('.pseudo-input-container');
+                if (members && !members.classList.contains('tcl-processed')) {
+                    members.classList.add('tcl-processed');
+                    members.style.setProperty('order', '99', 'important');
+                    members.style.setProperty('position', 'relative', 'important');
+                    members.style.setProperty('top', 'auto', 'important');
+                    members.style.setProperty('left', 'auto', 'important');
+                    members.style.setProperty('transform', 'none', 'important');
+                    
+                    listContainer.style.setProperty('display', 'flex', 'important');
+                    listContainer.style.setProperty('flex-direction', 'column', 'important');
+                }
+            }
+            
+        } else {
+            document.body.classList.remove('tcl-new-list');
+            document.body.classList.remove('tcl-edit-list');
+        }
+
+        if (isNewContact) {
+            document.body.classList.add('tcl-new-contact');
+        } else {
+            document.body.classList.remove('tcl-new-contact');
+        }
+    }, 100);
+
+    // Identifica se estamos visualizando um Contato ou uma Lista (modo leitura) para o CSS
+    setInterval(function() {
+        var detailView = document.getElementById('detailView');
+        var isEditMode = document.querySelector('form[name="contactForm"]');
+        
+        if (detailView && !isEditMode) {
+            // Verifica o ícone do avatar para distinguir (Contato = person, Lista = group)
+            var avatarIcon = detailView.querySelector('.msg-header sg-avatar-image md-icon');
+            if (avatarIcon) {
+                if (avatarIcon.textContent.trim() === 'group') {
+                    document.body.classList.add('tcl-view-list');
+                    document.body.classList.remove('tcl-view-contact');
+                } else {
+                    document.body.classList.add('tcl-view-contact');
+                    document.body.classList.remove('tcl-view-list');
+                }
+            }
+        } else {
+            document.body.classList.remove('tcl-view-list');
+            document.body.classList.remove('tcl-view-contact');
+        }
+    }, 200);
     
     window.addEventListener("hashchange", checkCurrentFolder);
     var observer = new MutationObserver(function (mutations) {
