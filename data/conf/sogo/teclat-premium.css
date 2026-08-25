@@ -1508,6 +1508,9 @@ md-dialog.tcl-mail-modal > form > md-toolbar .md-toolbar-tools > button:not([ng-
   min-width: 40px !important;
   margin: 0 0 0 8px !important;
   padding: 8px !important;
+  z-index: 100 !important;
+  pointer-events: auto !important;
+  position: relative !important;
 }
 
 /* 4. Estilo dos Campos Para, Cc, Bcc, Assunto */
@@ -1526,6 +1529,8 @@ md-dialog.tcl-mail-modal .msg-header-content {
   gap: 8px !important;
   /* Match right space for the CC/BCC/Menu buttons (40px + 32px safe area = 72px) */
   padding-right: 72px !important;
+  position: relative !important;
+  z-index: 1 !important; /* Fica ABAIXO dos botões CC/BCC/Menu que têm z-index: 100 */
 }
 
 md-dialog.tcl-mail-modal .pseudo-input-container,
@@ -1562,8 +1567,8 @@ md-dialog.tcl-mail-modal md-input-container.md-auto-horizontal-margin input {
   border-radius: 10px !important;
   border: 1px solid #e2e2e2 !important;
   min-height: 47px !important;
-  height: 47px !important;
-  padding: 0 16px !important;
+  height: auto !important; /* Permite crescer verticalmente */
+  padding: 8px 16px !important;
   box-shadow: none !important;
   color: #101223 !important;
 }
@@ -1580,13 +1585,13 @@ md-dialog.tcl-mail-modal md-chips-wrap {
   box-shadow: none !important;
   padding: 0 !important;
   height: auto !important;
-  min-height: 45px !important;
+  min-height: 29px !important; /* Subtrai o padding do container para dar os 45px totais */
   display: flex !important;
   align-items: center !important;
   background: transparent !important;
-  flex-wrap: nowrap !important;
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
+  flex-wrap: wrap !important; /* Quebra para a próxima linha */
+  gap: 4px !important; /* Espaço entre os chips */
+  overflow: visible !important;
 }
 
 md-dialog.tcl-mail-modal md-chip {
@@ -1645,6 +1650,8 @@ md-dialog.tcl-mail-modal .msg-header-buttons {
   justify-content: flex-start !important;
   align-items: center !important;
   gap: 0px !important;
+  z-index: 100 !important;
+  pointer-events: none !important; /* Deixa o clique passar pela div vazia */
 }
 
 /* Joga o menu (três pontos) sempre para o final, alinhado com o Assunto */
@@ -1664,6 +1671,8 @@ md-dialog.tcl-mail-modal .msg-header-buttons > button {
   min-height: 20px !important;
   height: 20px !important;
   line-height: 20px !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
 }
 
 /* Restaura tamanho do ícone de três pontos que também é um button, mas dentro do md-menu */
@@ -1672,6 +1681,17 @@ md-dialog.tcl-mail-modal .msg-header-buttons md-menu button {
   height: 40px !important;
   width: 40px !important;
   padding: 8px !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* Garante que QUALQUER botão ou ícone dentro dessa div seja clicável, incluindo o botão de anexo que pode ter outra estrutura */
+md-dialog.tcl-mail-modal .msg-header-buttons button,
+md-dialog.tcl-mail-modal .msg-header-buttons md-button,
+md-dialog.tcl-mail-modal .msg-header-buttons md-icon,
+md-dialog.tcl-mail-modal .msg-header-buttons a {
+  pointer-events: auto !important;
+  cursor: pointer !important;
 }
 body.tcl-dark-mode md-dialog.tcl-mail-modal md-autocomplete input {
   color: #ffffff !important;
@@ -4690,10 +4710,25 @@ body.tcl-dark-mode .tcl-event-modal md-dialog-content .sg-form-section md-select
     padding: 0 !important;
     margin: 0 !important;
     display: inline-block !important;
+    position: relative !important;
 }
-.tcl-event-modal md-datepicker button.md-datepicker-button,
-.tcl-event-modal md-datepicker button.md-datepicker-triangle-button {
+.tcl-event-modal md-datepicker button.md-datepicker-button {
     display: none !important;
+}
+.tcl-event-modal md-datepicker button.md-datepicker-triangle-button {
+    display: block !important;
+    position: absolute !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 40px !important;
+    height: 100% !important;
+    opacity: 0 !important;
+    z-index: 100 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
 }
 .tcl-event-modal md-datepicker .md-datepicker-input-container {
     background-color: #f1f5f9 !important;
@@ -4753,7 +4788,18 @@ body.tcl-dark-mode .tcl-event-modal md-datepicker .md-datepicker-input-container
     display: inline-block !important;
 }
 .tcl-event-modal sg-timepicker .sg-timepicker-button {
-    display: none !important;
+    display: block !important;
+    position: absolute !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 40px !important;
+    height: 100% !important;
+    opacity: 0 !important;
+    z-index: 10 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    cursor: pointer !important;
 }
 .tcl-event-modal sg-timepicker input {
     background-color: #f1f5f9 !important;
